@@ -22,18 +22,41 @@ A modular GHL-style operating platform for creative service professionals (Photo
 
 ### API Endpoints
 - `POST /api/scrape` — scrape leads by industry (`photography|aesthetician|barber|chef|realtor`)
-- `GET /api/leads/:industry` — get stored leads for an industry
-- `POST /api/leads/:industry` — save a lead
-- `DELETE /api/leads/:industry/:id` — delete a lead
-- `GET /health` — health check
+- `GET /api/leads/:industry?page=1&limit=20` — get stored leads (paginated)
+- `POST /api/leads/:industry` — save a lead (validated, sanitized)
+- `DELETE /api/leads/:industry/:id` — delete a lead (UUID format enforced)
+- `GET /health` — health check + API version
+
+### Security Hardening (completed)
+- **helmet** — security headers on all responses (X-Frame-Options, X-Content-Type-Options, Referrer-Policy, etc.)
+- **CORS** — restricted to `*.replit.dev` + `localhost` only
+- **Rate limiting** — scrape: 30 req/10min; stored routes: 60 req/min per IP
+- **Input sanitization** — all string inputs stripped of `<>"'\`` chars, length-capped
+- **Industry allowlist** — all routes validate against `['photography','aesthetician','barber','chef','realtor']`
+- **UUID validation** — DELETE route rejects non-UUID id params (blocks path traversal)
+- **Body size cap** — `express.json({ limit: '16kb' })`
+- **Global error handler** — no stack traces ever leak to clients
+- **Request logging** — `[INFO/WARN/ERROR] METHOD PATH STATUS — Nms` on every request
+- **X-API-Version: 1** — stamped on all responses
+- **Error shape** — `{ success: false, error: string, code: string }` consistently
 
 ### Industry Scrapers (`server/scrapers/`)
-- `firecrawl.ts` — Firecrawl client wrapper, lead scoring, mock data fallback
-- `photography.ts` — wedding/event directories
-- `aesthetician.ts` — Yelp spa, StyleSeat, beauty directories
-- `barber.ts` — Yelp barbershop, Booksy public listings
-- `chef.ts` — Eventbrite food events, supper club directories
-- `realtor.ts` — Zillow FSBO, expired MLS, real estate directories
+- `firecrawl.ts` — Firecrawl client wrapper, lead scoring, mock data fallback, `withRetry()` helper
+- `photography.ts` — wedding/event directories (2 retries with backoff)
+- `aesthetician.ts` — Yelp spa, StyleSeat, beauty directories (2 retries)
+- `barber.ts` — Yelp barbershop, Booksy public listings (2 retries)
+- `chef.ts` — Eventbrite food events, supper club directories (2 retries)
+- `realtor.ts` — Zillow FSBO, expired MLS, real estate directories (2 retries)
+
+### CSS Input System (completed)
+Each industry folder defines its own fully-styled input class in `_group.css`:
+- `neo-input-light` (photography) — amber focus ring
+- `neo-aesthetician-input-light` — pink focus ring
+- `neo-barber-input-light` — blue focus ring
+- `neo-chef-input-light` — orange focus ring
+- `neo-realtor-input-light` — indigo focus ring
+- `neo-dashboard-input` / `neo-dashboard-select` — dark glass style, amber focus (all dashboards)
+All inputs: 10px radius, hover state, placeholder color, focus glow ring, `appearance:none` on selects.
 
 ## Mockup Components
 

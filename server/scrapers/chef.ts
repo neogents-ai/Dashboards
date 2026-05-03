@@ -1,5 +1,5 @@
 import { Lead } from '../store/leads';
-import { getFirecrawlClient, getMockLeads, calculateScore } from './firecrawl';
+import { getFirecrawlClient, getMockLeads, calculateScore, withRetry } from './firecrawl';
 import { v4 as uuidv4 } from 'uuid';
 
 export const scrapeChef = async (query: string, location: string): Promise<Lead[]> => {
@@ -7,28 +7,29 @@ export const scrapeChef = async (query: string, location: string): Promise<Lead[
   if (!client) return getMockLeads('chef', query, location);
 
   try {
-    const searchResult = await client.search(`${query} ${location} popup chef private chef`, {
-      limit: 10,
-    });
+    const searchResult = await withRetry(() =>
+      client.search(`${query} ${location} popup chef private chef`, { limit: 10 })
+    );
 
     if (!searchResult.success) return getMockLeads('chef', query, location);
 
     return searchResult.data.map((item: any) => ({
-      id: uuidv4(),
-      name: item.title || 'Unknown',
-      business: item.title || 'Unknown',
-      email: item.email || null,
-      phone: item.phone || null,
-      website: item.url || null,
-      address: item.address || location,
-      source: 'eventbrite',
-      score: calculateScore({ email: item.email, phone: item.phone, website: item.url }),
-      tags: ['chef', location.toLowerCase()],
-      notes: item.description || null,
+      id:         uuidv4(),
+      name:       item.title || 'Unknown',
+      business:   item.title || 'Unknown',
+      email:      item.email   || null,
+      phone:      item.phone   || null,
+      website:    item.url     || null,
+      address:    item.address || location,
+      source:     'eventbrite',
+      score:      calculateScore({ email: item.email, phone: item.phone, website: item.url }),
+      tags:       ['chef', location.toLowerCase()],
+      notes:      item.description || null,
       scraped_at: new Date().toISOString(),
-      industry: 'chef'
+      industry:   'chef',
     }));
   } catch (error) {
+    console.error('Chef scrape error (after retries):', error);
     return getMockLeads('chef', query, location);
   }
 };
