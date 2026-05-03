@@ -1,0 +1,108 @@
+@import url('https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500&family=Playfair+Display:ital,wght@0,400;0,500;0,600;1,400;1,500&display=swap');
+
+:root {
+  --neo-bg: #0A0A0A;
+  --neo-fg: #F4F0EA;
+  --neo-cream: #EAE6DF;
+  --neo-accent: #C7BBA5;
+  --neo-muted: #2A2A2A;
+  --neo-border: #1A1A1A;
+}
+
+.neo-landing {
+  font-family: 'DM Sans', sans-serif;
+  background-color: var(--neo-bg);
+  color: var(--neo-fg);
+  overflow-x: hidden;
+}
+
+.neo-heading {
+  font-family: 'Playfair Display', serif;
+}
+
+.neo-gallery-container {
+  position: relative;
+  width: 100vw;
+  height: 100vh;
+  background-color: var(--neo-bg);
+  overflow: hidden;
+}
+
+.neo-gallery-card {
+  position: absolute;
+  width: 180px;
+  height: 240px;
+  border-radius: 4px;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+  transition: opacity 0.5s ease, filter 0.5s ease;
+  will-change: transform;
+  pointer-events: none; /* Let the container handle mouse move */
+}
+
+.neo-gallery-card img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 4px;
+}
+
+/* Sections */
+.neo-section {
+  padding: 8rem 2rem;
+  max-width: 1200px;
+  margin: 0 auto;
+  opacity: 0;
+  transform: translateY(30px);
+  transition: opacity 1s ease, transform 1s ease;
+}
+
+.neo-section.is-visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.neo-input {
+  background: transparent;
+  border: none;
+  border-bottom: 1px solid var(--neo-border);
+  color: var(--neo-fg);
+  padding: 0.75rem 0;
+  width: 100%;
+  font-family: 'DM Sans', sans-serif;
+  transition: border-color 0.3s ease;
+}
+
+.neo-input:focus {
+  outline: none;
+  border-bottom-color: var(--neo-accent);
+}
+
+.neo-input::placeholder {
+  color: #666;
+}
+
+.neo-btn {
+  background-color: var(--neo-fg);
+  color: var(--neo-bg);
+  padding: 1rem 2rem;
+  font-family: 'DM Sans', sans-serif;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  font-size: 0.85rem;
+  border: none;
+  cursor: pointer;
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.neo-btn:hover {
+  background-color: var(--neo-accent);
+  color: var(--neo-bg);
+}
+
+.neo-glass {
+  background: rgba(10, 10, 10, 0.4);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+}
