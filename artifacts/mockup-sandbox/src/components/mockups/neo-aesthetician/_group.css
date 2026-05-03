@@ -1,75 +1,43 @@
-@import url('https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,100..1000;1,9..40,100..1000&family=Playfair+Display:ital,wght@0,400..900;1,400..900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap');
 
-.neo-aesthetician-font-sans {
-  font-family: 'DM Sans', sans-serif;
+.neo-dashboard-container {
+  font-family: 'Outfit', sans-serif;
 }
 
-.neo-aesthetician-font-serif {
-  font-family: 'Playfair Display', serif;
+.neo-dashboard-container ::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+.neo-dashboard-container ::-webkit-scrollbar-track {
+  background: transparent;
+}
+.neo-dashboard-container ::-webkit-scrollbar-thumb {
+  background: #333;
+  border-radius: 4px;
+}
+.neo-dashboard-container ::-webkit-scrollbar-thumb:hover {
+  background: #555;
 }
 
-.neo-aesthetician-accent {
-  color: #d4a0b0;
-}
-
-.neo-aesthetician-bg-accent {
-  background-color: #d4a0b0;
-}
-
-.neo-aesthetician-glass-card {
-  background: rgba(255, 255, 255, 0.05);
+.neo-glass-panel {
+  background: rgba(20, 20, 20, 0.7);
   backdrop-filter: blur(12px);
   -webkit-backdrop-filter: blur(12px);
-  border: 1px solid rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.05);
 }
 
-.neo-aesthetician-input-light {
-  background: #ffffff;
-  border: 1px solid #e5e5e5;
-  color: #0a0608;
-  padding: 0.75rem 1rem;
-  border-radius: 4px;
-  width: 100%;
-  font-family: 'DM Sans', sans-serif;
-  transition: border-color 0.3s ease;
+.neo-kanban-col {
+  min-width: 280px;
 }
 
-.neo-aesthetician-input-light:focus {
-  outline: none;
-  border-color: #d4a0b0;
+@keyframes pulse-pink {
+  0% { box-shadow: 0 0 0 0 rgba(236, 72, 153, 0.4); }
+  70% { box-shadow: 0 0 0 6px rgba(236, 72, 153, 0); }
+  100% { box-shadow: 0 0 0 0 rgba(236, 72, 153, 0); }
 }
 
-.neo-aesthetician-btn-mauve {
-  background-color: #d4a0b0;
-  color: #ffffff;
-  padding: 0.75rem 1.5rem;
-  border-radius: 9999px;
-  font-weight: 500;
-  transition: background-color 0.2s, transform 0.2s;
-  border: none;
-  cursor: pointer;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  gap: 0.5rem;
-}
-.neo-aesthetician-btn-mauve:hover {
-  background-color: #c48c9e;
-  transform: translateY(-1px);
-}
-
-.neo-aesthetician-btn-ghost {
-  background-color: transparent;
-  color: #ffffff;
-  padding: 0.75rem 1.5rem;
-  border-radius: 9999px;
-  font-weight: 500;
-  transition: background-color 0.2s;
-  border: 1px solid rgba(255, 255, 255, 0.3);
-  cursor: pointer;
-}
-.neo-aesthetician-btn-ghost:hover {
-  background-color: rgba(255, 255, 255, 0.1);
+.animate-pulse-pink {
+  animation: pulse-pink 2s infinite;
 }
 
 @keyframes noriFloat {

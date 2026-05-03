@@ -1,67 +1,44 @@
+@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,100..1000;1,9..40,100..1000&family=Playfair+Display:ital,wght@0,400..900;1,400..900&display=swap');
 
-.neo-barber-font-sans {
-  font-family: 'DM Sans', sans-serif;
+.neo-barber-dashboard-container {
+  font-family: 'Outfit', sans-serif;
 }
 
-.neo-barber-font-serif {
-  font-family: 'Playfair Display', serif;
+.neo-barber-dashboard-container ::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+.neo-barber-dashboard-container ::-webkit-scrollbar-track {
+  background: transparent;
+}
+.neo-barber-dashboard-container ::-webkit-scrollbar-thumb {
+  background: #333;
+  border-radius: 4px;
+}
+.neo-barber-dashboard-container ::-webkit-scrollbar-thumb:hover {
+  background: #555;
 }
 
-.neo-barber-glass-card {
-  background: rgba(255, 255, 255, 0.05);
+.neo-glass-panel {
+  background: rgba(20, 20, 20, 0.7);
   backdrop-filter: blur(12px);
   -webkit-backdrop-filter: blur(12px);
-  border: 1px solid rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.05);
 }
 
-.neo-barber-input-light {
-  background: #ffffff;
-  border: 1px solid #e5e5e5;
-  color: #060608;
-  padding: 0.75rem 1rem;
-  border-radius: 4px;
-  width: 100%;
-  font-family: 'DM Sans', sans-serif;
-  transition: border-color 0.3s ease;
+.neo-kanban-col {
+  min-width: 280px;
 }
 
-.neo-barber-input-light:focus {
-  outline: none;
-  border-color: #c8a84b;
+@keyframes pulse-blue {
+  0% { box-shadow: 0 0 0 0 rgba(59, 130, 246, 0.4); }
+  70% { box-shadow: 0 0 0 6px rgba(59, 130, 246, 0); }
+  100% { box-shadow: 0 0 0 0 rgba(59, 130, 246, 0); }
 }
 
-.neo-barber-btn-gold {
-  background-color: #c8a84b;
-  color: #060608;
-  padding: 0.75rem 1.5rem;
-  border-radius: 9999px;
-  font-weight: 600;
-  transition: background-color 0.2s, transform 0.2s;
-  border: none;
-  cursor: pointer;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  gap: 0.5rem;
-}
-.neo-barber-btn-gold:hover {
-  background-color: #b8983b;
-  transform: translateY(-1px);
-}
-
-.neo-barber-btn-ghost {
-  background-color: transparent;
-  color: #ffffff;
-  padding: 0.75rem 1.5rem;
-  border-radius: 9999px;
-  font-weight: 500;
-  transition: background-color 0.2s;
-  border: 1px solid rgba(255, 255, 255, 0.3);
-  cursor: pointer;
-}
-.neo-barber-btn-ghost:hover {
-  background-color: rgba(255, 255, 255, 0.1);
+.animate-pulse-blue {
+  animation: pulse-blue 2s infinite;
 }
 
 @keyframes noriFloat {
@@ -73,4 +50,12 @@
 .nori-animated {
   animation: noriFloat 2.4s ease-in-out infinite alternate;
   transform-origin: center bottom;
+}
+
+.neo-barber-font-sans {
+  font-family: 'DM Sans', sans-serif;
+}
+
+.neo-barber-font-serif {
+  font-family: 'Playfair Display', serif;
 }
