@@ -289,6 +289,60 @@ export function LandingRealtor() {
         </form>
       </section>
 
+      {/* PRICING SECTION */}
+      <section className="py-24 px-6 md:px-12 bg-[#06080f] text-white">
+        <div className="max-w-5xl mx-auto">
+          <div className="text-center mb-16">
+            <span className="inline-block text-xs font-bold tracking-widest text-[#6366F1] uppercase mb-4 border border-[#6366F1]/30 px-3 py-1 rounded-full">Simple Pricing</span>
+            <h2 className="text-3xl md:text-5xl font-bold mb-4">Start free. Scale when you're ready.</h2>
+            <p className="text-white/50 text-lg max-w-xl mx-auto">Your first 20 leads are on us. No credit card. No contracts. Cancel anytime.</p>
+          </div>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+            <div className="bg-[#0c0e18] border border-white/10 rounded-2xl p-8 flex flex-col">
+              <div className="mb-6">
+                <p className="text-sm font-semibold text-white/50 uppercase tracking-wider mb-2">Starter</p>
+                <div className="flex items-end gap-1 mb-2"><span className="text-5xl font-black text-white">$0</span><span className="text-white/40 mb-2">/mo</span></div>
+                <p className="text-white/40 text-sm">Your first 20 AI-scraped leads, free forever.</p>
+              </div>
+              <ul className="space-y-3 flex-1 mb-8">
+                {['20 leads/month via Firecrawl AI','1 industry dashboard','Basic CRM (25 contacts)','5 scheduled social posts','Community support'].map(f => (
+                  <li key={f} className="flex items-start gap-2.5 text-sm text-white/60"><span className="text-[#6366F1] mt-0.5 flex-shrink-0">✓</span>{f}</li>
+                ))}
+              </ul>
+              <button className="w-full py-3 rounded-xl border border-white/20 text-white/70 font-semibold hover:border-white/40 hover:text-white transition-all text-sm">Get Started Free</button>
+            </div>
+            <div className="relative bg-[#0c0e18] border-2 border-[#6366F1] rounded-2xl p-8 flex flex-col shadow-[0_0_40px_rgba(99,102,241,0.15)]">
+              <div className="absolute -top-3.5 left-1/2 -translate-x-1/2 bg-[#6366F1] text-white text-[11px] font-black uppercase tracking-widest px-4 py-1 rounded-full">Most Popular</div>
+              <div className="mb-6">
+                <p className="text-sm font-semibold text-[#6366F1] uppercase tracking-wider mb-2">Pro</p>
+                <div className="flex items-end gap-1 mb-2"><span className="text-5xl font-black text-white">$49</span><span className="text-white/40 mb-2">/mo</span></div>
+                <p className="text-white/40 text-sm">Everything you need to dominate your market.</p>
+              </div>
+              <ul className="space-y-3 flex-1 mb-8">
+                {['Unlimited AI lead scraping','Full 9-tab dashboard','Unlimited CRM contacts','Neighborhood Intel — live market pulse','Transaction tracker + commission log','Social media scheduler','Review request automation','Email support'].map(f => (
+                  <li key={f} className="flex items-start gap-2.5 text-sm text-white/80"><span className="text-[#6366F1] mt-0.5 flex-shrink-0">✓</span>{f}</li>
+                ))}
+              </ul>
+              <button className="w-full py-3 rounded-xl font-bold transition-all text-sm shadow-lg text-white" style={{background:'#6366F1'}}>Start Pro — $49/mo</button>
+            </div>
+            <div className="bg-[#0c0e18] border border-white/10 rounded-2xl p-8 flex flex-col">
+              <div className="mb-6">
+                <p className="text-sm font-semibold text-white/50 uppercase tracking-wider mb-2">Agency</p>
+                <div className="flex items-end gap-1 mb-2"><span className="text-5xl font-black text-white">$97</span><span className="text-white/40 mb-2">/mo</span></div>
+                <p className="text-white/40 text-sm">Run multiple verticals. Build a team.</p>
+              </div>
+              <ul className="space-y-3 flex-1 mb-8">
+                {['Everything in Pro','All 5 industry verticals','3 team seats included','White-label branding','Advanced analytics','Priority support + onboarding','Early access to new features'].map(f => (
+                  <li key={f} className="flex items-start gap-2.5 text-sm text-white/60"><span className="text-[#6366F1] mt-0.5 flex-shrink-0">✓</span>{f}</li>
+                ))}
+              </ul>
+              <button className="w-full py-3 rounded-xl border border-white/20 text-white/70 font-semibold hover:border-[#6366F1]/50 hover:text-[#6366F1] transition-all text-sm">Contact Sales</button>
+            </div>
+          </div>
+          <p className="text-center text-white/30 text-xs mt-10">kvCORE is $499+/mo. Follow Up Boss is $69+/mo per user. BoomTown is $1,000+/mo. NEO Gents is $49/mo with unlimited AI scraping built in.</p>
+        </div>
+      </section>
+
       {/* SECTION 5 */}
       <footer className="py-12 px-6 md:px-12 border-t border-black/5 bg-white text-black/60 text-sm">
         <div className="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-center gap-6">
