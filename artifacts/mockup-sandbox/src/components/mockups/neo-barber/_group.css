@@ -1,0 +1,65 @@
+@import url('https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,100..1000;1,9..40,100..1000&family=Playfair+Display:ital,wght@0,400..900;1,400..900&display=swap');
+
+.neo-barber-font-sans {
+  font-family: 'DM Sans', sans-serif;
+}
+
+.neo-barber-font-serif {
+  font-family: 'Playfair Display', serif;
+}
+
+.neo-barber-glass-card {
+  background: rgba(255, 255, 255, 0.05);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.neo-barber-input-light {
+  background: #ffffff;
+  border: 1px solid #e5e5e5;
+  color: #060608;
+  padding: 0.75rem 1rem;
+  border-radius: 4px;
+  width: 100%;
+  font-family: 'DM Sans', sans-serif;
+  transition: border-color 0.3s ease;
+}
+
+.neo-barber-input-light:focus {
+  outline: none;
+  border-color: #c8a84b;
+}
+
+.neo-barber-btn-gold {
+  background-color: #c8a84b;
+  color: #060608;
+  padding: 0.75rem 1.5rem;
+  border-radius: 9999px;
+  font-weight: 600;
+  transition: background-color 0.2s, transform 0.2s;
+  border: none;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+}
+.neo-barber-btn-gold:hover {
+  background-color: #b8983b;
+  transform: translateY(-1px);
+}
+
+.neo-barber-btn-ghost {
+  background-color: transparent;
+  color: #ffffff;
+  padding: 0.75rem 1.5rem;
+  border-radius: 9999px;
+  font-weight: 500;
+  transition: background-color 0.2s;
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  cursor: pointer;
+}
+.neo-barber-btn-ghost:hover {
+  background-color: rgba(255, 255, 255, 0.1);
+}
