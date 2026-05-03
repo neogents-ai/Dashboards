@@ -30,6 +30,57 @@
   min-width: 280px;
 }
 
+.neo-aesthetician-input-light {
+  background: #ffffff;
+  border: 1.5px solid #d1d5db;
+  color: #0a0608;
+  padding: 0.85rem 1.1rem;
+  border-radius: 10px;
+  width: 100%;
+  font-family: 'Outfit', sans-serif;
+  font-size: 0.9375rem;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+  appearance: none;
+  -webkit-appearance: none;
+}
+
+.neo-aesthetician-input-light::placeholder {
+  color: #9ca3af;
+  font-weight: 400;
+}
+
+.neo-aesthetician-input-light:hover {
+  border-color: #9ca3af;
+}
+
+.neo-aesthetician-input-light:focus {
+  outline: none;
+  border-color: #EC4899;
+  box-shadow: 0 0 0 3px rgba(236, 72, 153, 0.12);
+}
+
+.neo-aesthetician-dashboard-input {
+  background: rgba(255,255,255,0.06);
+  border: 1.5px solid rgba(255,255,255,0.1);
+  color: #ffffff;
+  padding: 0.65rem 0.9rem;
+  border-radius: 8px;
+  width: 100%;
+  font-family: 'Outfit', sans-serif;
+  font-size: 0.875rem;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.neo-aesthetician-dashboard-input::placeholder {
+  color: rgba(255,255,255,0.3);
+}
+
+.neo-aesthetician-dashboard-input:focus {
+  outline: none;
+  border-color: #EC4899;
+  box-shadow: 0 0 0 3px rgba(236, 72, 153, 0.12);
+}
+
 @keyframes pulse-pink {
   0% { box-shadow: 0 0 0 0 rgba(236, 72, 153, 0.4); }
   70% { box-shadow: 0 0 0 6px rgba(236, 72, 153, 0); }

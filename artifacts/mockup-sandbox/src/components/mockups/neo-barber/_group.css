@@ -59,3 +59,54 @@
 .neo-barber-font-serif {
   font-family: 'Playfair Display', serif;
 }
+
+.neo-barber-input-light {
+  background: #ffffff;
+  border: 1.5px solid #d1d5db;
+  color: #060608;
+  padding: 0.85rem 1.1rem;
+  border-radius: 10px;
+  width: 100%;
+  font-family: 'DM Sans', sans-serif;
+  font-size: 0.9375rem;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+  appearance: none;
+  -webkit-appearance: none;
+}
+
+.neo-barber-input-light::placeholder {
+  color: #9ca3af;
+  font-weight: 400;
+}
+
+.neo-barber-input-light:hover {
+  border-color: #9ca3af;
+}
+
+.neo-barber-input-light:focus {
+  outline: none;
+  border-color: #3B82F6;
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.12);
+}
+
+.neo-barber-dashboard-input {
+  background: rgba(255,255,255,0.06);
+  border: 1.5px solid rgba(255,255,255,0.1);
+  color: #ffffff;
+  padding: 0.65rem 0.9rem;
+  border-radius: 8px;
+  width: 100%;
+  font-family: 'Outfit', sans-serif;
+  font-size: 0.875rem;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.neo-barber-dashboard-input::placeholder {
+  color: rgba(255,255,255,0.3);
+}
+
+.neo-barber-dashboard-input:focus {
+  outline: none;
+  border-color: #3B82F6;
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.12);
+}
