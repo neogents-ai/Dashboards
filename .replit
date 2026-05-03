@@ -5,6 +5,31 @@ expertMode = true
 [workflows]
 runButton = "Project"
 
+[[workflows.workflow]]
+name = "Project"
+mode = "parallel"
+author = "agent"
+
+[[workflows.workflow.tasks]]
+task = "workflow.run"
+args = "NEO Gents API Server"
+
+[[workflows.workflow]]
+name = "NEO Gents API Server"
+author = "agent"
+
+[[workflows.workflow.tasks]]
+task = "shell.exec"
+args = "cd server && npx ts-node index.ts"
+waitForPort = 3001
+
+[workflows.workflow.metadata]
+outputType = "console"
+
+[[ports]]
+localPort = 3001
+externalPort = 3001
+
 [[ports]]
 localPort = 23636
 externalPort = 80

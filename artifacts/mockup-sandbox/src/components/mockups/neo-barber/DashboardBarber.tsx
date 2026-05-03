@@ -438,28 +438,72 @@ function BookingsTab() {
 function LeadsTab() {
   const [scanState, setScanState] = useState<'idle' | 'running' | 'done'>('idle');
   const [logLines, setLogLines] = useState<{time: string, msg: string, color: string}[]>([]);
+  const [leads, setLeads] = useState<any[]>([]);
+  const [query, setQuery] = useState('Best fades, Barbershops West LA');
+  const [location, setLocation] = useState('Los Angeles, CA');
   const logRef = useRef<HTMLDivElement>(null);
 
-  const startScan = () => {
+  useEffect(() => {
+    if (logRef.current) {
+      logRef.current.scrollTop = logRef.current.scrollHeight;
+    }
+  }, [logLines]);
+
+  const startScan = async () => {
     setScanState('running');
     setLogLines([]);
-    const lines = [
-      { time: '10:01', msg: 'Initializing Firecrawl engine...', color: 'text-white' },
-      { time: '10:02', msg: 'Targeting: Google Maps "Barbershops Near West LA"', color: 'text-blue-400' },
-      { time: '10:03', msg: 'Crawl starting at maps.google.com/search?q=barbershop...', color: 'text-[#888]' },
-      { time: '10:05', msg: 'Found 12 business listings, bypassing bot detection...', color: 'text-emerald-500' },
-      { time: '10:07', msg: 'Extracting reviews & traffic patterns for competition analysis...', color: 'text-[#888]' },
-      { time: '10:08', msg: 'Success: Scraped 8 high-intent local directories.', color: 'text-emerald-500' },
-      { time: '10:10', msg: 'AI Filter: Removing duplicates & low-intent leads...', color: 'text-purple-400' },
-      { time: '10:12', msg: 'Scan complete. 7 qualified leads found.', color: 'text-blue-500 font-bold' },
-    ];
+    setLeads([]);
     
-    lines.forEach((line, i) => {
-      setTimeout(() => {
-        setLogLines(prev => [...prev, line]);
-        if (i === lines.length - 1) setScanState('done');
-      }, (i + 1) * 600);
-    });
+    const startTime = new Date();
+    const addLog = (msg: string, color: string = 'text-[#888]') => {
+      const now = new Date();
+      const timeStr = `${now.getHours()}:${now.getMinutes().toString().padStart(2, '0')}`;
+      setLogLines(prev => [...prev, { time: timeStr, msg, color }]);
+    };
+
+    addLog('Initializing Firecrawl engine...', 'text-white');
+    
+    const logInterval = setInterval(() => {
+      const phrases = [
+        'Bypassing bot detection...',
+        'Scanning local directories...',
+        'Extracting business metadata...',
+        'Analyzing review patterns...',
+        'Validating contact information...',
+        'Filtering low-intent results...',
+        'Optimizing lead scores...'
+      ];
+      addLog(phrases[Math.floor(Math.random() * phrases.length)]);
+    }, 1500);
+
+    try {
+      const response = await fetch('/api/scrape', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          industry: 'barber',
+          query,
+          location,
+          limit: 10
+        })
+      });
+
+      const data = await response.json();
+      clearInterval(logInterval);
+
+      if (data.success) {
+        setLeads(data.leads);
+        addLog(`Success: Scraped ${data.scraped} high-intent leads.`, 'text-emerald-500');
+        addLog('Scan complete.', 'text-blue-500 font-bold');
+      } else {
+        addLog('Scan failed: ' + (data.error || 'Unknown error'), 'text-red-500');
+      }
+    } catch (err) {
+      clearInterval(logInterval);
+      addLog('Network error during scan.', 'text-red-500');
+    } finally {
+      setScanState('done');
+    }
   };
 
   return (
@@ -473,7 +517,24 @@ function LeadsTab() {
         <div className="space-y-6 flex-1">
           <div className="space-y-2">
             <label className="text-xs text-[#888] font-medium uppercase tracking-wider">Target Keywords</label>
-            <input type="text" defaultValue="Best fades, Barbershops West LA" className="w-full bg-[#141414] border border-[#222] rounded-lg px-4 py-2 text-sm text-white focus:outline-none focus:border-blue-500" />
+            <input 
+              type="text" 
+              value={query}
+              onChange={(e) => setQuery(e.target.value)}
+              placeholder="e.g. Best fades, Barbershops"
+              className="w-full bg-[#141414] border border-[#222] rounded-lg px-4 py-2 text-sm text-white focus:outline-none focus:border-blue-500" 
+            />
+          </div>
+
+          <div className="space-y-2">
+            <label className="text-xs text-[#888] font-medium uppercase tracking-wider">Location</label>
+            <input 
+              type="text" 
+              value={location}
+              onChange={(e) => setLocation(e.target.value)}
+              placeholder="e.g. Los Angeles, CA"
+              className="w-full bg-[#141414] border border-[#222] rounded-lg px-4 py-2 text-sm text-white focus:outline-none focus:border-blue-500" 
+            />
           </div>
 
           <div className="space-y-2">
@@ -482,7 +543,7 @@ function LeadsTab() {
               <SourceToggle label="Google Maps" active />
               <SourceToggle label="Yelp / Local Directories" active />
               <SourceToggle label="Instagram Geotags" />
-              <SourceToggle label="Nextdoor / Reddit" />
+              <SourceToggle label="Booksy / StyleSeat" active />
             </div>
           </div>
 
@@ -515,15 +576,37 @@ function LeadsTab() {
 
         {/* Results / Pipeline */}
         <div className="flex-1 overflow-x-auto p-6 bg-[#09090b] flex gap-6 custom-scrollbar">
-           <PipelineCol title="New Leads" count={7} color="border-blue-500">
-              <LeadCard name="Jason Bourne" type="Corporate Grooming" price="$85" time="Inquiry 2h ago" initial="J" color="bg-blue-500" />
-              <LeadCard name="Elite Law Firm" type="Group Booking" price="$450" time="Google Maps Lead" initial="E" color="bg-indigo-500" isHot />
+           <PipelineCol title="New Leads" count={leads.length} color="border-blue-500">
+              {leads.length > 0 ? (
+                leads.map((lead) => (
+                  <LeadCard 
+                    key={lead.id}
+                    name={lead.name}
+                    type={lead.business || 'Local Barber'}
+                    price={`Score: ${lead.score}`}
+                    time={lead.source}
+                    initial={lead.name[0]}
+                    color="bg-blue-500"
+                    isHot={lead.score > 80}
+                    email={lead.email}
+                    phone={lead.phone}
+                    website={lead.website}
+                  />
+                ))
+              ) : (
+                scanState === 'idle' && (
+                  <>
+                    <LeadCard name="Jason Bourne" type="Corporate Grooming" price="$85" time="Inquiry 2h ago" initial="J" color="bg-blue-500" />
+                    <LeadCard name="Elite Law Firm" type="Group Booking" price="$450" time="Google Maps Lead" initial="E" color="bg-indigo-500" isHot />
+                  </>
+                )
+              )}
            </PipelineCol>
-           <PipelineCol title="Contacted" count={4} color="border-purple-500">
-              <LeadCard name="Tyler Durden" type="Weekly Maintenance" price="$65" time="Sent text 1d ago" initial="T" color="bg-purple-500" />
+           <PipelineCol title="Contacted" count={leads.length > 0 ? 0 : 4} color="border-purple-500">
+              {leads.length === 0 && <LeadCard name="Tyler Durden" type="Weekly Maintenance" price="$65" time="Sent text 1d ago" initial="T" color="bg-purple-500" />}
            </PipelineCol>
-           <PipelineCol title="Scheduled" count={12} color="border-emerald-500" />
-           <PipelineCol title="Completed" count={84} color="border-[#222]" />
+           <PipelineCol title="Scheduled" count={leads.length > 0 ? 0 : 12} color="border-emerald-500" />
+           <PipelineCol title="Completed" count={leads.length > 0 ? 0 : 84} color="border-[#222]" />
         </div>
       </div>
     </div>
@@ -700,7 +783,7 @@ function PipelineCol({ title, count, children, color }: { title: string, count: 
   );
 }
 
-function LeadCard({ name, type, price, time, initial, color, isHot }: { name: string, type: string, price: string, time: string, initial: string, color: string, isHot?: boolean }) {
+function LeadCard({ name, type, price, time, initial, color, isHot, email, phone, website }: { name: string, type: string, price: string, time: string, initial: string, color: string, isHot?: boolean, email?: string | null, phone?: string | null, website?: string | null }) {
   return (
     <div className="bg-[#141414] border border-[#222] rounded-xl p-3 hover:border-[#444] transition-all cursor-pointer group">
       <div className="flex items-center gap-2 mb-3">
@@ -711,6 +794,19 @@ function LeadCard({ name, type, price, time, initial, color, isHot }: { name: st
         </div>
         {isHot && <div className="w-2 h-2 rounded-full bg-red-500 animate-pulse"></div>}
       </div>
+      
+      {(email || phone || website) && (
+        <div className="flex flex-wrap gap-1 mb-3">
+          {email && <div className="px-1.5 py-0.5 bg-blue-500/10 border border-blue-500/20 rounded text-[9px] text-blue-400 truncate max-w-full" title={email}>{email}</div>}
+          {phone && <div className="px-1.5 py-0.5 bg-blue-500/10 border border-blue-500/20 rounded text-[9px] text-blue-400">{phone}</div>}
+          {website && (
+            <a href={website} target="_blank" rel="noopener noreferrer" onClick={(e) => e.stopPropagation()} className="px-1.5 py-0.5 bg-blue-500/10 border border-blue-500/20 rounded text-[9px] text-blue-400 flex items-center gap-1 hover:bg-blue-500/20 transition-colors">
+              <Globe className="w-2 h-2" /> Web
+            </a>
+          )}
+        </div>
+      )}
+
       <div className="flex justify-between items-end">
         <div>
           <p className="text-xs font-bold text-white">{price}</p>

@@ -575,7 +575,76 @@ function BookingsTab() {
 
 function LeadsTab() {
   const [scanState, setScanState] = useState<'idle' | 'running' | 'done'>('idle');
-  
+  const [leads, setLeads] = useState<any[]>([]);
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+  const [logLines, setLogLines] = useState<{ time: string, msg: string, color?: string }[]>([]);
+  const [query, setQuery] = useState('esthetician, skin care clinic, facial treatment');
+  const [location, setLocation] = useState('Los Angeles, CA');
+  const logRef = useRef<HTMLDivElement>(null);
+  const intervalRef = useRef<ReturnType<typeof setInterval> | null>(null);
+
+  const startScan = async () => {
+    setIsLoading(true);
+    setScanState('running');
+    setError(null);
+    setLeads([]);
+    setLogLines([]);
+
+    const LOG_TEMPLATES = [
+      { msg: 'Initializing Firecrawl v4.2.0...', color: 'text-pink-500' },
+      { msg: `Target: ${location}`, color: 'text-white' },
+      { msg: 'Crawling Yelp "Skincare & Aesthetician" category...', color: 'text-[#aaa]' },
+      { msg: 'Accessing StyleSeat public listings...', color: 'text-[#aaa]' },
+      { msg: 'Filtering for solo practitioners and boutique clinics...', color: 'text-[#aaa]' },
+      { msg: 'Signal detected: Local social mentions for "facialist recommendations"', color: 'text-emerald-500' },
+      { msg: 'Analyzing sentiment and lead quality...', color: 'text-[#aaa]' },
+      { msg: 'AI Scoring leads based on digital footprint...', color: 'text-pink-400' },
+      { msg: 'Finalizing lead extraction...', color: 'text-emerald-500' },
+    ];
+
+    let i = 0;
+    intervalRef.current = setInterval(() => {
+      if (i < LOG_TEMPLATES.length) {
+        setLogLines(prev => [...prev, { time: `${(i * 0.8).toFixed(1)}s`, ...LOG_TEMPLATES[i] }]);
+        i++;
+        if (logRef.current) logRef.current.scrollTop = logRef.current.scrollHeight;
+      }
+    }, 800);
+
+    try {
+      const response = await fetch('/api/scrape', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          industry: 'aesthetician',
+          query,
+          location,
+          limit: 10
+        })
+      });
+
+      const data = await response.json();
+      if (data.success) {
+        setLeads(data.leads);
+        setScanState('done');
+      } else {
+        setError(data.error || 'Failed to fetch leads');
+        setScanState('idle');
+      }
+    } catch (err) {
+      setError('Connection to scraping server failed');
+      setScanState('idle');
+    } finally {
+      setIsLoading(false);
+      if (intervalRef.current) clearInterval(intervalRef.current);
+    }
+  };
+
+  useEffect(() => {
+    return () => { if (intervalRef.current) clearInterval(intervalRef.current); };
+  }, []);
+
   return (
     <div className="flex h-full">
       <div className="w-[400px] border-r border-[#1f1f1f] bg-[#0d0d0d] p-8 flex flex-col gap-6">
@@ -586,12 +655,23 @@ function LeadsTab() {
 
         <div className="space-y-4">
           <div className="space-y-1.5">
-            <label className="text-[10px] font-bold text-[#555] uppercase tracking-widest">Radius</label>
-            <select className="w-full bg-[#141414] border border-[#222] rounded-lg p-3 text-sm text-white focus:outline-none focus:border-pink-500">
-              <option>Los Angeles (10 miles)</option>
-              <option>Santa Monica (5 miles)</option>
-              <option>Beverly Hills (5 miles)</option>
-            </select>
+            <label className="text-[10px] font-bold text-[#555] uppercase tracking-widest">Location</label>
+            <input 
+              value={location}
+              onChange={(e) => setLocation(e.target.value)}
+              placeholder="e.g. Beverly Hills, CA"
+              className="w-full bg-[#141414] border border-[#222] rounded-lg p-3 text-sm text-white focus:outline-none focus:border-pink-500" 
+            />
+          </div>
+
+          <div className="space-y-1.5">
+            <label className="text-[10px] font-bold text-[#555] uppercase tracking-widest">Keywords</label>
+            <textarea 
+              value={query}
+              onChange={(e) => setQuery(e.target.value)}
+              rows={3}
+              className="w-full bg-[#141414] border border-[#222] rounded-lg p-3 text-sm text-white focus:outline-none focus:border-pink-500 resize-none"
+            />
           </div>
 
           <div className="space-y-1.5">
@@ -604,7 +684,7 @@ function LeadsTab() {
                 <MapPin size={14} /> Google Maps
               </button>
               <button className="p-3 bg-[#141414] border border-[#222] rounded-lg text-[10px] font-bold text-[#888] flex items-center gap-2">
-                <Search size={14} /> Instagram Bio
+                <Search size={14} /> StyleSeat
               </button>
               <button className="p-3 bg-[#141414] border border-[#222] rounded-lg text-[10px] font-bold text-[#888] flex items-center gap-2">
                 <Activity size={14} /> Local Reels
@@ -614,13 +694,12 @@ function LeadsTab() {
 
           <div className="pt-4">
             <button 
-              onClick={() => {
-                setScanState('running');
-                setTimeout(() => setScanState('done'), 2000);
-              }}
-              className="w-full bg-pink-500 hover:bg-pink-600 text-white font-bold py-3 rounded-xl transition-all flex items-center justify-center gap-2"
+              onClick={startScan}
+              disabled={isLoading}
+              className="w-full bg-pink-500 hover:bg-pink-600 disabled:opacity-50 text-white font-bold py-3 rounded-xl transition-all flex items-center justify-center gap-2"
             >
-              <Zap size={16} /> {scanState === 'running' ? 'Scanning...' : 'Run Firecrawl Scan'}
+              {isLoading ? <RefreshCw className="w-4 h-4 animate-spin" /> : <Zap size={16} />} 
+              {isLoading ? 'Scanning...' : 'Run Firecrawl Scan'}
             </button>
           </div>
         </div>
@@ -634,46 +713,79 @@ function LeadsTab() {
             </div>
             <h3 className="text-white font-bold text-lg mb-2">No active scan</h3>
             <p className="text-[#555] text-sm">Configure your parameters and start the Firecrawl AI engine to discover qualified leads in your area.</p>
+            {error && (
+              <div className="mt-4 p-3 bg-red-500/10 border border-red-500/20 rounded-lg text-red-500 text-xs flex items-center gap-2">
+                <AlertCircle size={14} /> {error}
+              </div>
+            )}
           </div>
         ) : scanState === 'running' ? (
           <div className="space-y-4">
-            <div className="h-64 bg-[#0d0d0d] border border-[#1f1f1f] rounded-2xl p-6 font-mono text-xs text-pink-500/80 overflow-y-auto">
-              <p className="mb-1 text-pink-500">Initializing Firecrawl v4.2.0...</p>
-              <p className="mb-1">Target: Beverly Hills, CA (5mi radius)</p>
-              <p className="mb-1 text-white">Crawling Yelp "Skincare & Aesthetician" category...</p>
-              <p className="mb-1 text-[#555]">Found 142 results, filtering for "Solo Practice"...</p>
-              <p className="mb-1 text-emerald-500">Signal detected: Instagram post "looking for new facialist" in BH zip code</p>
-              <p className="mb-1 text-[#555]">Analyzing sentiment for 12 social mentions...</p>
-              <p className="mb-1">AI Scoring leads based on budget history...</p>
-              <p className="animate-pulse">_</p>
+            <div 
+              ref={logRef}
+              className="h-80 bg-[#0d0d0d] border border-[#1f1f1f] rounded-2xl p-6 font-mono text-xs overflow-y-auto custom-scrollbar"
+            >
+              {logLines.map((line, idx) => (
+                <p key={idx} className={`mb-1.5 ${line.color || 'text-[#888]'}`}>
+                  <span className="text-[#444] mr-3">[{line.time}]</span>
+                  {line.msg}
+                </p>
+              ))}
+              <p className="animate-pulse text-pink-500 mt-2">_</p>
             </div>
           </div>
         ) : (
           <div className="space-y-6">
             <div className="flex items-center justify-between">
-              <h3 className="text-lg font-bold text-white">Scanned Results <span className="text-[#555] font-normal text-sm">(12 qualified)</span></h3>
-              <button className="text-xs font-bold text-pink-500">Export as CSV</button>
+              <h3 className="text-lg font-bold text-white">Scanned Results <span className="text-[#555] font-normal text-sm">({leads.length} qualified)</span></h3>
+              <div className="flex gap-3">
+                <button className="text-xs font-bold text-pink-500">Export as CSV</button>
+                <button 
+                  onClick={() => setScanState('idle')}
+                  className="text-xs font-bold text-[#555] hover:text-white transition-colors"
+                >New Scan</button>
+              </div>
             </div>
             <div className="grid grid-cols-1 gap-4">
-              {[
-                { name: 'Chloe Madison', signal: 'Mentioned "skin crisis" on IG 2h ago', score: 94 },
-                { name: 'Sienna West', signal: 'Frequent luxury spa reviewer in your zip', score: 88 },
-                { name: 'Isabella Reed', signal: 'Moved to area, searching for "HydraFacial"', score: 82 }
-              ].map(lead => (
-                <div key={lead.name} className="p-5 bg-[#141414] border border-[#222] rounded-2xl flex items-center justify-between hover:border-pink-500/50 transition-colors cursor-pointer group">
+              {leads.map((lead, idx) => (
+                <div key={lead.id || idx} className="p-5 bg-[#141414] border border-[#222] rounded-2xl flex items-center justify-between hover:border-pink-500/50 transition-colors cursor-pointer group">
                   <div className="flex items-center gap-4">
-                    <div className="w-12 h-12 rounded-full bg-[#222] flex items-center justify-center font-bold text-white">{lead.name[0]}</div>
+                    <div className="w-12 h-12 rounded-full bg-gradient-to-tr from-pink-600 to-pink-400 flex items-center justify-center font-bold text-white shadow-lg shadow-pink-500/10">
+                      {(lead.name || lead.business || 'L')[0]}
+                    </div>
                     <div>
-                      <h4 className="text-white font-bold">{lead.name}</h4>
-                      <p className="text-xs text-[#555]">{lead.signal}</p>
+                      <h4 className="text-white font-bold">{lead.name || lead.business}</h4>
+                      <div className="flex flex-wrap gap-2 mt-1">
+                        {lead.source && (
+                          <span className="text-[10px] bg-[#1a1a1a] border border-[#333] text-[#888] px-2 py-0.5 rounded-full uppercase tracking-tighter">
+                            {lead.source}
+                          </span>
+                        )}
+                        {lead.email && (
+                          <span className="text-[10px] bg-emerald-500/10 border border-emerald-500/20 text-emerald-500 px-2 py-0.5 rounded-full flex items-center gap-1">
+                            <Mail size={10} /> Email
+                          </span>
+                        )}
+                        {lead.phone && (
+                          <span className="text-[10px] bg-blue-500/10 border border-blue-500/20 text-blue-500 px-2 py-0.5 rounded-full flex items-center gap-1">
+                            <Smartphone size={10} /> Phone
+                          </span>
+                        )}
+                        {lead.website && (
+                          <span className="text-[10px] bg-purple-500/10 border border-purple-500/20 text-purple-500 px-2 py-0.5 rounded-full flex items-center gap-1">
+                            <Globe size={10} /> Web
+                          </span>
+                        )}
+                      </div>
+                      <p className="text-xs text-[#555] mt-2 italic line-clamp-1">{lead.notes || `Found via ${lead.source} scan in ${location}`}</p>
                     </div>
                   </div>
                   <div className="flex items-center gap-6">
                     <div className="text-right">
                       <p className="text-[10px] text-[#555] font-bold uppercase tracking-wider mb-1">AI Score</p>
-                      <p className="text-xl font-bold text-emerald-500">{lead.score}</p>
+                      <p className="text-xl font-bold text-pink-500">{lead.score || 85}</p>
                     </div>
-                    <button className="bg-pink-500 text-white px-4 py-2 rounded-lg text-xs font-bold opacity-0 group-hover:opacity-100 transition-opacity">Add to CRM</button>
+                    <button className="bg-pink-500 hover:bg-pink-600 text-white px-4 py-2 rounded-lg text-xs font-bold transition-all shadow-lg shadow-pink-500/20">Add to CRM</button>
                   </div>
                 </div>
               ))}

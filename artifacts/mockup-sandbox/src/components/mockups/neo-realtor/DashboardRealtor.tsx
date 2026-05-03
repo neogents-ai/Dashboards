@@ -503,31 +503,75 @@ function PropertyCard({ address, price, specs, status, views }: any) {
 function LeadsTab() {
   const [scanState, setScanState] = useState<'idle' | 'running' | 'done'>('idle');
   const [logLines, setLogLines] = useState<any[]>([]);
+  const [leads, setLeads] = useState<any[]>([]);
+  const [query, setQuery] = useState('');
+  const [location, setLocation] = useState('');
   const logRef = useRef<HTMLDivElement>(null);
 
-  const runScan = () => {
+  const runScan = async () => {
+    if (!location) {
+      alert("Please enter a target zone (location)");
+      return;
+    }
+
     setScanState('running');
+    setLeads([]);
     setLogLines([]);
     
-    const lines = [
-      { time: '10:00:01', msg: 'Initializing Firecrawl engine...', color: 'text-white' },
-      { time: '10:00:02', msg: 'Targeting local real estate directories...', color: 'text-white' },
-      { time: '10:00:04', msg: 'Crawling FSBO listings (Zillow, ForSaleByOwner.com)...', color: 'text-indigo-400' },
-      { time: '10:00:06', msg: 'Analyzing recently expired listings in Heights...', color: 'text-indigo-400' },
-      { time: '10:00:08', msg: 'Extracting contact signals from social feeds...', color: 'text-white' },
-      { time: '10:00:10', msg: 'AI scoring potential seller intent...', color: 'text-purple-400' },
-      { time: '10:00:12', msg: 'Scan complete. 14 high-intent leads found.', color: 'text-emerald-400' },
+    // Start fake logging
+    const logIntervals = [
+      { time: new Date().toLocaleTimeString(), msg: 'Initializing Firecrawl engine...', color: 'text-white' },
+      { time: new Date().toLocaleTimeString(), msg: `Targeting local real estate directories in ${location}...`, color: 'text-white' },
+      { time: new Date().toLocaleTimeString(), msg: 'Crawling FSBO listings (Zillow, ForSaleByOwner.com)...', color: 'text-indigo-400' },
+      { time: new Date().toLocaleTimeString(), msg: 'Analyzing recently expired listings...', color: 'text-indigo-400' },
+      { time: new Date().toLocaleTimeString(), msg: 'Extracting contact signals from social feeds...', color: 'text-white' },
+      { time: new Date().toLocaleTimeString(), msg: 'AI scoring potential seller intent...', color: 'text-purple-400' },
     ];
 
-    let i = 0;
+    let logIdx = 0;
     const interval = setInterval(() => {
-      setLogLines(prev => [...prev, lines[i]]);
-      i++;
-      if (i >= lines.length) {
-        clearInterval(interval);
-        setScanState('done');
+      if (logIdx < logIntervals.length) {
+        setLogLines(prev => [...prev, logIntervals[logIdx]]);
+        logIdx++;
       }
-    }, 1000);
+    }, 1200);
+
+    try {
+      const response = await fetch('/api/scrape', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          industry: 'realtor',
+          query: query || 'for sale by owner',
+          location: location,
+          limit: 10
+        })
+      });
+
+      const data = await response.json();
+      
+      clearInterval(interval);
+
+      if (data.success) {
+        setLogLines(prev => [...prev, { 
+          time: new Date().toLocaleTimeString(), 
+          msg: `Scan complete. ${data.leads.length} high-intent leads found.`, 
+          color: 'text-emerald-400' 
+        }]);
+        setLeads(data.leads);
+        setScanState('done');
+      } else {
+        throw new Error(data.error || 'Scrape failed');
+      }
+    } catch (err: any) {
+      clearInterval(interval);
+      setLogLines(prev => [...prev, { 
+        time: new Date().toLocaleTimeString(), 
+        msg: `Error: ${err.message}`, 
+        color: 'text-red-400' 
+      }]);
+      setScanState('done');
+    }
   };
 
   useEffect(() => {
@@ -548,7 +592,23 @@ function LeadsTab() {
         <div className="space-y-4 flex-1">
           <div>
             <label className="text-xs text-[#888] uppercase tracking-wider mb-2 block font-bold">Target Zone</label>
-            <input type="text" placeholder="Heights, Westside..." className="w-full bg-[#141414] border border-[#222] rounded-lg px-3 py-2 text-sm text-white focus:outline-none focus:border-indigo-500" />
+            <input 
+              type="text" 
+              placeholder="Heights, Westside..." 
+              value={location}
+              onChange={(e) => setLocation(e.target.value)}
+              className="w-full bg-[#141414] border border-[#222] rounded-lg px-3 py-2 text-sm text-white focus:outline-none focus:border-indigo-500" 
+            />
+          </div>
+          <div>
+            <label className="text-xs text-[#888] uppercase tracking-wider mb-2 block font-bold">Search Query (Optional)</label>
+            <input 
+              type="text" 
+              placeholder="FSBO, expired..." 
+              value={query}
+              onChange={(e) => setQuery(e.target.value)}
+              className="w-full bg-[#141414] border border-[#222] rounded-lg px-3 py-2 text-sm text-white focus:outline-none focus:border-indigo-500" 
+            />
           </div>
           <div>
             <label className="text-xs text-[#888] uppercase tracking-wider mb-2 block font-bold">Lead Type</label>
@@ -614,14 +674,20 @@ function LeadsTab() {
           {scanState === 'done' && (
             <div className="space-y-4">
               <div className="flex justify-between items-center mb-6">
-                <h3 className="font-bold text-white">14 Leads Found</h3>
+                <h3 className="font-bold text-white">{leads.length} Leads Found</h3>
                 <button className="text-xs text-indigo-500 border border-indigo-500/30 px-3 py-1.5 rounded-lg hover:bg-indigo-500/10 transition-colors font-bold">Add All to Pipeline</button>
               </div>
               
-              <ScrapedLeadCard name="Michael Chen" address="122 Oak Street" type="FSBO" value="$1.2M" confidence={94} />
-              <ScrapedLeadCard name="Janet Doe" address="88 Sunset Blvd" type="Expired" value="$845k" confidence={88} />
-              <ScrapedLeadCard name="The Smith Estate" address="15 Pine Court" type="Probate" value="$650k" confidence={82} />
-              <ScrapedLeadCard name="Luxury Condo 4B" address="888 Main St" type="Off-Market" value="$3.5M" confidence={91} />
+              {leads.map((lead) => (
+                <ScrapedLeadCard 
+                  key={lead.id}
+                  name={lead.name} 
+                  address={lead.address || lead.business} 
+                  type={lead.source} 
+                  value={lead.notes?.includes('$') ? lead.notes.split(' ').find((w: string) => w.startsWith('$')) : "Contact for price"} 
+                  confidence={lead.score} 
+                />
+              ))}
             </div>
           )}
         </div>
@@ -635,11 +701,11 @@ function ScrapedLeadCard({ name, address, type, value, confidence }: any) {
     <div className="bg-[#141414] border border-[#222] rounded-xl p-4 flex items-center justify-between hover:border-[#333] transition-colors">
       <div className="flex items-center gap-4">
         <div className="w-10 h-10 rounded-full bg-indigo-500/10 flex items-center justify-center text-indigo-500 font-bold">
-          {name[0]}
+          {name ? name[0] : '?'}
         </div>
         <div>
           <h4 className="text-sm font-bold text-white">{name}</h4>
-          <p className="text-xs text-[#888]">{address} · <span className="text-indigo-500">{type}</span></p>
+          <p className="text-xs text-[#888]">{address} · <span className="text-indigo-500 uppercase">{type}</span></p>
         </div>
       </div>
       <div className="flex gap-8 items-center">
@@ -649,7 +715,7 @@ function ScrapedLeadCard({ name, address, type, value, confidence }: any) {
         </div>
         <div className="text-center w-16">
           <p className="text-[10px] text-[#555] uppercase font-bold">Score</p>
-          <p className="text-sm font-bold text-emerald-500">{confidence}%</p>
+          <p className="text-sm font-bold text-indigo-500">{confidence}%</p>
         </div>
         <button className="bg-[#222] hover:bg-indigo-500 hover:text-black p-2 rounded-lg transition-colors">
           <Plus className="w-4 h-4" />

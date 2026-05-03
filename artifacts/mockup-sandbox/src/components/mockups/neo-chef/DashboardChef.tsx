@@ -402,29 +402,82 @@ function EventsTab() {
 function LeadsTab() {
   const [scanState, setScanState] = useState('idle');
   const [logLines, setLogLines] = useState<{time: string, msg: string, color: string}[]>([]);
+  const [query, setQuery] = useState('');
+  const [location, setLocation] = useState('Brooklyn, NY');
+  const [leads, setLeads] = useState<any[]>([]);
+  const [error, setError] = useState<string | null>(null);
   const logRef = useRef<HTMLDivElement>(null);
 
-  const startScan = () => {
+  useEffect(() => {
+    if (logRef.current) {
+      logRef.current.scrollTop = logRef.current.scrollHeight;
+    }
+  }, [logLines]);
+
+  const startScan = async () => {
     setScanState('running');
     setLogLines([]);
-    
-    const logs = [
-      { time: '14:02:01', msg: 'Initializing Firecrawl browser instance...', color: 'text-white' },
-      { time: '14:02:03', msg: 'Targeting: Corporate Catering & Venue Partners', color: 'text-orange-400' },
-      { time: '14:02:05', msg: 'Crawling local event spaces (32 sources)...', color: 'text-[#888]' },
-      { time: '14:02:08', msg: 'Found: 14 potential venues in Brooklyn Area', color: 'text-emerald-400' },
-      { time: '14:02:11', msg: 'Analyzing capacity & permit status...', color: 'text-[#888]' },
-      { time: '14:02:14', msg: 'Scraping decision maker contact info...', color: 'text-[#888]' },
-      { time: '14:02:17', msg: 'Filtering by "Open Kitchen" amenities...', color: 'text-orange-400' },
-      { time: '14:02:20', msg: 'Scan complete. 6 high-quality leads found.', color: 'text-emerald-400' },
+    setLeads([]);
+    setError(null);
+
+    const logMessages = [
+      { msg: 'Initializing Firecrawl browser instance...', color: 'text-white' },
+      { msg: `Targeting: Chef & Event Partners in ${location}`, color: 'text-orange-400' },
+      { msg: 'Crawling local event spaces and catering directories...', color: 'text-[#888]' },
+      { msg: 'Found potential venues and corporate leads...', color: 'text-emerald-400' },
+      { msg: 'Analyzing capacity and kitchen amenities...', color: 'text-[#888]' },
+      { msg: 'Scraping decision maker contact info...', color: 'text-[#888]' },
+      { msg: 'Filtering by high-intent signals...', color: 'text-orange-400' },
+      { msg: 'Finalizing lead scores...', color: 'text-emerald-400' },
     ];
 
-    logs.forEach((log, i) => {
-      setTimeout(() => {
-        setLogLines(prev => [...prev, log]);
-        if (i === logs.length - 1) setScanState('done');
-      }, i * 1000);
-    });
+    let logIndex = 0;
+    const interval = setInterval(() => {
+      if (logIndex < logMessages.length) {
+        setLogLines(prev => [...prev, {
+          time: new Date().toLocaleTimeString([], { hour12: false }),
+          ...logMessages[logIndex]
+        }]);
+        logIndex++;
+      }
+    }, 800);
+
+    try {
+      const response = await fetch('/api/scrape', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          industry: 'chef',
+          query: query || 'event spaces for popup dinner',
+          location: location
+        })
+      });
+
+      const data = await response.json();
+      
+      clearInterval(interval);
+
+      if (data.success) {
+        setLeads(data.leads);
+        setLogLines(prev => [...prev, {
+          time: new Date().toLocaleTimeString([], { hour12: false }),
+          msg: `Scan complete. ${data.leads.length} high-quality leads found.`,
+          color: 'text-emerald-400'
+        }]);
+        setScanState('done');
+      } else {
+        throw new Error(data.error || 'Failed to fetch leads');
+      }
+    } catch (err: any) {
+      clearInterval(interval);
+      setError(err.message);
+      setScanState('idle');
+      setLogLines(prev => [...prev, {
+        time: new Date().toLocaleTimeString([], { hour12: false }),
+        msg: `Error: ${err.message}`,
+        color: 'text-rose-500'
+      }]);
+    }
   };
 
   return (
@@ -454,16 +507,28 @@ function LeadsTab() {
             </div>
 
             <div className="space-y-2">
-              <label className="text-[10px] text-[#555] uppercase tracking-widest font-bold">Location Radius</label>
+              <label className="text-[10px] text-[#555] uppercase tracking-widest font-bold">Location</label>
               <div className="relative">
                 <MapPin className="w-4 h-4 text-[#444] absolute left-3 top-1/2 -translate-y-1/2" />
-                <input type="text" placeholder="Brooklyn, NY (10 miles)" className="w-full bg-[#141414] border border-[#222] rounded-lg py-2.5 pl-10 pr-4 text-sm text-white focus:outline-none focus:border-orange-500" />
+                <input 
+                  type="text" 
+                  value={location}
+                  onChange={(e) => setLocation(e.target.value)}
+                  placeholder="Brooklyn, NY" 
+                  className="w-full bg-[#141414] border border-[#222] rounded-lg py-2.5 pl-10 pr-4 text-sm text-white focus:outline-none focus:border-orange-500" 
+                />
               </div>
             </div>
 
             <div className="space-y-2">
               <label className="text-[10px] text-[#555] uppercase tracking-widest font-bold">Search Keywords</label>
-              <input type="text" placeholder="rooftop, industrial, kitchen, popup" className="w-full bg-[#141414] border border-[#222] rounded-lg p-2.5 text-sm text-white focus:outline-none focus:border-orange-500" />
+              <input 
+                type="text" 
+                value={query}
+                onChange={(e) => setQuery(e.target.value)}
+                placeholder="rooftop, industrial, kitchen, popup" 
+                className="w-full bg-[#141414] border border-[#222] rounded-lg p-2.5 text-sm text-white focus:outline-none focus:border-orange-500" 
+              />
             </div>
 
             <button 
@@ -478,6 +543,12 @@ function LeadsTab() {
               {scanState === 'running' ? <RefreshCw className="w-4 h-4 animate-spin" /> : <Zap className="w-4 h-4" />}
               {scanState === 'running' ? 'SCANNING...' : 'RUN FIRECRAWL SCAN'}
             </button>
+
+            {error && (
+              <p className="text-xs text-rose-500 mt-2 flex items-center gap-1">
+                <AlertCircle className="w-3 h-3" /> {error}
+              </p>
+            )}
           </div>
         </div>
 
@@ -506,7 +577,7 @@ function LeadsTab() {
         {/* Terminal Log */}
         <div className="h-48 flex-shrink-0 border-b border-[#1f1f1f] bg-[#070709] font-mono overflow-y-auto p-4" ref={logRef}>
           <div className="flex items-center gap-2 mb-3">
-            <TerminalIcon className="w-3.5 h-3.5 text-emerald-500" />
+            <div className="w-3 h-3 rounded-full bg-emerald-500 animate-pulse" />
             <span className="text-xs text-emerald-500 font-bold uppercase tracking-widest">FIRECRAWL_SYSTEM_LOG</span>
           </div>
           {logLines.length === 0 && scanState === 'idle' && (
@@ -522,7 +593,7 @@ function LeadsTab() {
 
         {/* Results Grid */}
         <div className="flex-1 overflow-y-auto p-6">
-          {scanState === 'idle' && (
+          {scanState === 'idle' && leads.length === 0 && (
             <div className="h-full flex flex-col items-center justify-center text-center max-w-sm mx-auto">
               <div className="w-16 h-16 rounded-full bg-orange-500/5 border border-orange-500/10 flex items-center justify-center mb-4">
                 <Search className="w-8 h-8 text-[#222]" />
@@ -532,19 +603,71 @@ function LeadsTab() {
             </div>
           )}
 
-          {scanState === 'running' && (
+          {scanState === 'running' && leads.length === 0 && (
             <div className="h-full flex flex-col items-center justify-center">
               <RefreshCw className="w-10 h-10 text-orange-500 animate-spin mb-4" />
               <p className="text-white font-medium">Scouring the web for venues...</p>
             </div>
           )}
 
-          {scanState === 'done' && (
+          {(scanState === 'done' || leads.length > 0) && (
             <div className="grid grid-cols-1 xl:grid-cols-2 gap-4">
-              <LeadCard name="The Glass House" type="Event Space" source="Google Maps" location="Chelsea, NY" rating={4.9} signal="Recently hosted a food popup series." />
-              <LeadCard name="Foundry Works" type="Industrial Venue" source="Yelp" location="Long Island City" rating={4.7} signal="Mentioned 'open to catering partners' on site." />
-              <LeadCard name="Skylark Offices" type="Corporate" source="LinkedIn" location="Financial District" rating={4.8} signal="New office opening event planned for June." />
-              <LeadCard name="Aloft Rooftop" type="Hotel/Bar" source="Instagram" location="Brooklyn" rating={4.6} signal="Tagged in 12 popup chef stories last month." />
+              {leads.map((lead) => (
+                <div key={lead.id} className="bg-[#0d0d0d] border border-[#1f1f1f] rounded-2xl p-5 hover:border-[#333] transition-all group">
+                  <div className="flex justify-between items-start mb-4">
+                    <div>
+                      <div className="flex items-center gap-2 mb-1">
+                        <h3 className="text-lg font-bold text-white group-hover:text-orange-500 transition-colors">{lead.business || lead.name}</h3>
+                        <span className="bg-orange-500/10 text-orange-500 text-[10px] font-bold px-1.5 py-0.5 rounded uppercase border border-orange-500/20">
+                          Score: {lead.score}
+                        </span>
+                      </div>
+                      <div className="flex items-center gap-3 text-xs text-[#555]">
+                        <span className="flex items-center gap-1"><MapPin className="w-3 h-3" /> {lead.address || 'Location N/A'}</span>
+                        <span className="flex items-center gap-1 text-orange-400/80"><Globe className="w-3 h-3" /> {lead.source}</span>
+                      </div>
+                    </div>
+                    <div className="w-10 h-10 rounded-xl bg-[#141414] border border-[#222] flex items-center justify-center text-white">
+                      <ChevronRight className="w-5 h-5 group-hover:translate-x-0.5 transition-transform" />
+                    </div>
+                  </div>
+
+                  <p className="text-sm text-[#888] mb-4 line-clamp-2">
+                    {lead.notes || `Potential venue partner for ${lead.business || 'popup events'}. Verified lead from ${lead.source}.`}
+                  </p>
+
+                  <div className="flex flex-wrap gap-2 mb-4">
+                    {lead.email && (
+                      <div className="flex items-center gap-1.5 px-2 py-1 rounded bg-[#141414] border border-[#222] text-[10px] text-white">
+                        <Mail className="w-3 h-3 text-orange-500" /> {lead.email}
+                      </div>
+                    )}
+                    {lead.phone && (
+                      <div className="flex items-center gap-1.5 px-2 py-1 rounded bg-[#141414] border border-[#222] text-[10px] text-white">
+                        <Smartphone className="w-3 h-3 text-orange-500" /> {lead.phone}
+                      </div>
+                    )}
+                    {lead.website && (
+                      <div className="flex items-center gap-1.5 px-2 py-1 rounded bg-[#141414] border border-[#222] text-[10px] text-white">
+                        <Globe className="w-3 h-3 text-orange-500" /> Website
+                      </div>
+                    )}
+                  </div>
+
+                  <div className="flex items-center justify-between pt-4 border-t border-[#1f1f1f]">
+                    <div className="flex gap-2">
+                      {lead.tags?.slice(0, 2).map((tag: string, i: number) => (
+                        <span key={i} className="text-[9px] font-bold text-[#444] uppercase tracking-widest bg-[#111] px-2 py-0.5 rounded border border-[#1f1f1f]">
+                          {tag}
+                        </span>
+                      ))}
+                    </div>
+                    <button className="text-[11px] font-bold text-orange-500 hover:text-orange-400 transition-colors flex items-center gap-1">
+                      SAVE LEAD <Plus className="w-3 h-3" />
+                    </button>
+                  </div>
+                </div>
+              ))}
             </div>
           )}
         </div>

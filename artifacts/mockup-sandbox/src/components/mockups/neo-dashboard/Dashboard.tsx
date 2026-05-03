@@ -862,36 +862,82 @@ const LOG_LINES = [
 
 function FindLeadsView() {
   const [scanState, setScanState] = useState<'idle' | 'running' | 'done'>('idle');
-  const [logLines, setLogLines] = useState<typeof LOG_LINES>([]);
-  const [industry, setIndustry] = useState('Photography');
+  const [logLines, setLogLines] = useState<{ time: string, msg: string, color?: string }[]>([]);
+  const [results, setResults] = useState<any[]>([]);
+  const [error, setError] = useState<string | null>(null);
+
+  const [industry, setIndustry] = useState('photography');
   const [location, setLocation] = useState('Los Angeles, CA');
   const [keywords, setKeywords] = useState('wedding, engagement, commercial, brand shoot');
   const [sources, setSources] = useState(['theknot.com', 'Instagram', 'LinkedIn', 'Yelp', 'Google Maps']);
   const [playwright, setPlaywright] = useState(true);
-  const [addedIds, setAddedIds] = useState<number[]>([]);
+  const [addedIds, setAddedIds] = useState<string[]>([]);
   const logRef = useRef<HTMLDivElement>(null);
   const intervalRef = useRef<ReturnType<typeof setInterval> | null>(null);
 
-  const runScan = () => {
+  const runScan = async () => {
     setScanState('running');
     setLogLines([]);
-    let i = 0;
-    intervalRef.current = setInterval(() => {
-      if (i < LOG_LINES.length) {
-        setLogLines(prev => [...prev, LOG_LINES[i]]);
-        i++;
+    setResults([]);
+    setError(null);
+
+    // Fake log line streaming
+    const fakeLogs = [
+      { msg: 'Firecrawl initialized · endpoint: api.firecrawl.dev', color: 'text-emerald-400' },
+      { msg: 'Playwright browser launched · headless: true', color: 'text-blue-400' },
+      { msg: `Crawling industry targets for ${industry} in ${location}...`, color: 'text-[#aaa]' },
+      { msg: 'Extracting prospect profiles · filtering by intent signals', color: 'text-[#aaa]' },
+      { msg: 'AI scoring pass — ranking by lead quality', color: 'text-purple-400' },
+    ];
+
+    let logIdx = 0;
+    const logInterval = setInterval(() => {
+      if (logIdx < fakeLogs.length) {
+        setLogLines(prev => [...prev, { time: `${(logIdx * 1.2).toFixed(1)}s`, ...fakeLogs[logIdx] }]);
+        logIdx++;
         if (logRef.current) logRef.current.scrollTop = logRef.current.scrollHeight;
       } else {
-        if (intervalRef.current) clearInterval(intervalRef.current);
-        setScanState('done');
+        clearInterval(logInterval);
       }
-    }, 900);
+    }, 800);
+
+    try {
+      const response = await fetch('/api/scrape', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          industry,
+          query: keywords,
+          location,
+          limit: 10
+        })
+      });
+
+      const data = await response.json();
+
+      if (data.success) {
+        setResults(data.leads);
+        setLogLines(prev => [...prev, {
+          time: `${(logIdx * 1.2 + 0.5).toFixed(1)}s`,
+          msg: `Scan complete. ${data.leads.length} leads found.`,
+          color: 'text-emerald-400'
+        }]);
+      } else {
+        setError(data.error || 'Failed to fetch leads');
+      }
+    } catch (err) {
+      setError('Connection error: Make sure the backend server is running on port 3001');
+      console.error(err);
+    } finally {
+      clearInterval(logInterval);
+      setScanState('done');
+    }
   };
 
   useEffect(() => () => { if (intervalRef.current) clearInterval(intervalRef.current); }, []);
 
   const toggleSource = (s: string) => setSources(prev => prev.includes(s) ? prev.filter(x => x !== s) : [...prev, s]);
-  const addToPipeline = (id: number) => setAddedIds(prev => [...prev, id]);
+  const addToPipeline = (id: string) => setAddedIds(prev => [...prev, id]);
 
   const allSources = ['theknot.com', 'Instagram', 'LinkedIn', 'Yelp', 'Google Maps', 'WeddingWire', 'Shopify'];
 
@@ -909,11 +955,11 @@ function FindLeadsView() {
               <div>
                 <label className="text-xs text-[#666] mb-1 block">Industry</label>
                 <select value={industry} onChange={e => setIndustry(e.target.value)} className="w-full bg-[#141414] border border-[#222] rounded-lg px-3 py-2 text-sm text-white focus:outline-none focus:border-amber-500">
-                  <option>Photography</option>
-                  <option>Aesthetician</option>
-                  <option>Barbershop</option>
-                  <option>Realtor</option>
-                  <option>Popup Chef</option>
+                  <option value="photography">Photography</option>
+                  <option value="aesthetician">Aesthetician</option>
+                  <option value="barber">Barbershop</option>
+                  <option value="realtor">Realtor</option>
+                  <option value="chef">Popup Chef</option>
                 </select>
               </div>
               <div>
@@ -1037,7 +1083,20 @@ function FindLeadsView() {
 
         {/* Results */}
         <div className="flex-1 overflow-y-auto custom-scrollbar">
-          {scanState === 'idle' && (
+          {error && (
+            <div className="h-full flex flex-col items-center justify-center text-center p-8">
+              <div className="w-16 h-16 rounded-full bg-red-500/10 flex items-center justify-center mb-4">
+                <AlertCircle className="w-8 h-8 text-red-500" />
+              </div>
+              <h3 className="text-lg font-semibold text-white mb-2">Scan Failed</h3>
+              <p className="text-[#888] max-w-md">{error}</p>
+              <button onClick={runScan} className="mt-6 px-6 py-2 bg-[#1a1a1a] border border-[#333] text-white rounded-lg hover:bg-[#222] transition-colors">
+                Try Again
+              </button>
+            </div>
+          )}
+
+          {!error && scanState === 'idle' && (
             <div className="flex flex-col items-center justify-center h-full gap-3 text-center px-8">
               <div className="w-16 h-16 rounded-full bg-amber-500/10 border border-amber-500/20 flex items-center justify-center">
                 <Globe className="w-7 h-7 text-amber-500/60" />
@@ -1047,7 +1106,7 @@ function FindLeadsView() {
             </div>
           )}
 
-          {scanState === 'running' && (
+          {!error && scanState === 'running' && results.length === 0 && (
             <div className="flex flex-col items-center justify-center h-full gap-3">
               <RefreshCw className="w-8 h-8 text-amber-500 animate-spin" />
               <p className="text-white font-medium">Scanning the web...</p>
@@ -1055,14 +1114,14 @@ function FindLeadsView() {
             </div>
           )}
 
-          {scanState === 'done' && (
+          {!error && (scanState === 'done' || results.length > 0) && (
             <div className="p-5">
               <div className="flex items-center justify-between mb-4">
                 <div className="flex items-center gap-3">
                   <CheckCircle2 className="w-5 h-5 text-emerald-500" />
                   <div>
-                    <p className="text-white font-semibold">7 leads discovered</p>
-                    <p className="text-xs text-[#555]">Avg quality score 81/100 · 9 duplicates removed</p>
+                    <p className="text-white font-semibold">{results.length} leads discovered</p>
+                    <p className="text-xs text-[#555]">Real-time results from Firecrawl scan</p>
                   </div>
                 </div>
                 <div className="flex gap-2">
@@ -1070,7 +1129,7 @@ function FindLeadsView() {
                     <Download className="w-3 h-3" />Export CSV
                   </button>
                   <button
-                    onClick={() => SCRAPED_LEADS.forEach(l => addToPipeline(l.id))}
+                    onClick={() => results.forEach(l => addToPipeline(l.id))}
                     className="px-3 py-1.5 bg-amber-500/10 border border-amber-500/30 rounded-lg text-xs text-amber-400 hover:bg-amber-500/20 transition-colors flex items-center gap-1.5"
                   >
                     <Plus className="w-3 h-3" />Add All to Pipeline
@@ -1079,7 +1138,7 @@ function FindLeadsView() {
               </div>
 
               <div className="space-y-3">
-                {SCRAPED_LEADS.map(lead => {
+                {results.map(lead => {
                   const added = addedIds.includes(lead.id);
                   const scoreColor = lead.score >= 85 ? 'text-emerald-400' : lead.score >= 70 ? 'text-amber-400' : 'text-[#888]';
                   const scoreBg = lead.score >= 85 ? 'bg-emerald-500/10 border-emerald-500/20' : lead.score >= 70 ? 'bg-amber-500/10 border-amber-500/20' : 'bg-[#141414] border-[#222]';
@@ -1089,28 +1148,25 @@ function FindLeadsView() {
                         <div className="flex-1 min-w-0">
                           <div className="flex items-center gap-2 flex-wrap mb-1">
                             <p className="text-sm font-semibold text-white">{lead.name}</p>
-                            <span className="text-[10px] bg-[#1a1a1a] border border-[#2a2a2a] text-[#888] px-2 py-0.5 rounded-full">{lead.type}</span>
+                            <span className="text-[10px] bg-[#1a1a1a] border border-[#2a2a2a] text-[#888] px-2 py-0.5 rounded-full">{lead.business || 'Individual'}</span>
                           </div>
-                          <div className="flex items-center gap-3 text-xs text-[#555] mb-2">
+                          <div className="flex items-center gap-3 text-xs text-[#555] mb-2 flex-wrap">
                             <span className="flex items-center gap-1"><Globe className="w-3 h-3" />{lead.source}</span>
-                            <span className="flex items-center gap-1"><MapPin className="w-3 h-3" />{lead.location}</span>
+                            <span className="flex items-center gap-1"><MapPin className="w-3 h-3" />{lead.address || 'Location N/A'}</span>
                             {lead.email && <span className="flex items-center gap-1"><Mail className="w-3 h-3" />{lead.email}</span>}
+                            {lead.phone && <span className="flex items-center gap-1"><Smartphone className="w-3 h-3" />{lead.phone}</span>}
                           </div>
-                          <div className="bg-[#141414] border border-[#222] rounded-lg px-3 py-2">
-                            <div className="flex items-start gap-2">
-                              <Sparkles className="w-3 h-3 text-purple-400 mt-0.5 flex-shrink-0" />
-                              <p className="text-xs text-[#aaa] leading-relaxed">{lead.signal}</p>
-                            </div>
-                          </div>
+                          {lead.website && (
+                            <a href={lead.website} target="_blank" rel="noreferrer" className="text-[10px] text-amber-500/80 hover:text-amber-500 flex items-center gap-1 transition-colors mt-1">
+                              <ExternalLink className="w-3 h-3" /> {lead.website}
+                            </a>
+                          )}
                         </div>
                         <div className="flex flex-col items-end gap-2 flex-shrink-0">
                           <div className={`text-center border rounded-lg px-3 py-1.5 ${scoreBg}`}>
                             <p className={`text-lg font-bold leading-none ${scoreColor}`}>{lead.score}</p>
                             <p className="text-[9px] text-[#555] mt-0.5">AI score</p>
                           </div>
-                          <a href={`https://${lead.url}`} target="_blank" rel="noreferrer" className="text-[10px] text-[#555] hover:text-amber-400 flex items-center gap-1 transition-colors">
-                            <ExternalLink className="w-3 h-3" />View source
-                          </a>
                           <button
                             onClick={() => !added && addToPipeline(lead.id)}
                             className={`px-3 py-1.5 rounded-lg text-xs font-semibold transition-all flex items-center gap-1.5 ${added ? 'bg-emerald-500/10 border border-emerald-500/30 text-emerald-400' : 'bg-amber-500 hover:bg-amber-600 text-black'}`}
