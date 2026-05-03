@@ -72,6 +72,10 @@ export function Dashboard() {
         </div>
 
         <div className="p-3 border-t border-[#1f1f1f] space-y-1">
+          <div className="flex items-center gap-2 px-2 py-2 mb-1">
+            <img src="/__mockup/images/nori.jpg" alt="NORI" className="w-7 h-7 rounded-full object-cover flex-shrink-0" style={{ border: '1.5px solid #00B359', boxShadow: '0 0 6px rgba(0,179,89,0.5)' }} />
+            <span className="hidden lg:block text-[10px] font-bold tracking-widest" style={{ color: '#00B359', fontFamily: 'monospace' }}>Powered by N.O.R.I.</span>
+          </div>
           <NavItem icon={<Settings />} label="Settings" active={activeNav === 'settings'} onClick={() => setActiveNav('settings')} />
           <div className="mt-2 flex items-center gap-3 p-2 rounded-lg hover:bg-[#1a1a1a] cursor-pointer transition-colors">
             <div className="relative">

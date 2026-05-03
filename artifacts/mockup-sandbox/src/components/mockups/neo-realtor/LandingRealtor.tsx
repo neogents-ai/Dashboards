@@ -304,6 +304,10 @@ export function LandingRealtor() {
           </div>
 
           <div>© 2026 NEO Gents. All rights reserved.</div>
+          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '8px', marginTop: '16px', paddingTop: '16px', borderTop: '1px solid #e5e5e5' }}>
+            <img src="/__mockup/images/nori.jpg" alt="NORI mascot" style={{ width: 32, height: 32, borderRadius: '50%', objectFit: 'cover', border: '2px solid #00B359', boxShadow: '0 0 8px rgba(0,179,89,0.4)' }} />
+            <span style={{ color: '#00B359', fontSize: 12, fontWeight: 700, letterSpacing: '0.1em', fontFamily: 'monospace' }}>Powered by N.O.R.I.</span>
+          </div>
         </div>
       </footer>
 
