@@ -87,3 +87,14 @@
 .neo-btn-ghost:hover {
   background-color: rgba(255, 255, 255, 0.1);
 }
+
+@keyframes noriFloat {
+  0%   { transform: translateY(0px)   rotate(-4deg) scale(1);    filter: drop-shadow(0 0 4px rgba(0,179,89,0.3)); }
+  50%  { transform: translateY(-10px) rotate(0deg)  scale(1.07); filter: drop-shadow(0 0 10px rgba(0,179,89,0.7)); }
+  100% { transform: translateY(-5px)  rotate(4deg)  scale(1.04); filter: drop-shadow(0 0 6px rgba(0,179,89,0.5)); }
+}
+
+.nori-animated {
+  animation: noriFloat 2.4s ease-in-out infinite alternate;
+  transform-origin: center bottom;
+}
