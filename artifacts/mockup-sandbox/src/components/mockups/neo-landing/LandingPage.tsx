@@ -1,15 +1,18 @@
 import React, { useEffect, useRef, useState } from 'react';
+import { Camera, Calendar, Share2, ArrowRight } from 'lucide-react';
 import './_group.css';
 
-interface Card {
+interface PhotoCard {
   id: number;
   x: number;
   y: number;
+  z: number;
   vx: number;
   vy: number;
-  z: number; // 0 to 1
-  image: string;
+  vz: number;
   rotation: number;
+  image: string;
+  baseOpacity: number;
 }
 
 const IMAGES = [
@@ -25,151 +28,104 @@ const IMAGES = [
   "/__mockup/images/neo_10.png"
 ];
 
-function PhysicsGallery() {
+function DeepFieldGallery() {
   const containerRef = useRef<HTMLDivElement>(null);
-  const cardsRef = useRef<Card[]>([]);
+  const cardsRef = useRef<PhotoCard[]>([]);
   const requestRef = useRef<number>(0);
-  const mouseRef = useRef({ x: -1000, y: -1000 });
+  const [, setFrame] = useState(0);
 
   useEffect(() => {
-    if (!containerRef.current) return;
-    const { width, height } = containerRef.current.getBoundingClientRect();
-    
-    // Initialize cards
-    cardsRef.current = IMAGES.map((img, i) => {
-      const z = Math.random();
-      return {
-        id: i,
-        x: Math.random() * width,
-        y: Math.random() * height,
-        vx: (Math.random() - 0.5) * 0.5,
-        vy: (Math.random() - 0.5) * 0.5,
-        z,
-        image: img,
-        rotation: (Math.random() - 0.5) * 16 // -8 to 8
-      };
-    });
+    const numCards = 26;
+    const w = window.innerWidth;
+    const h = window.innerHeight;
+    const extW = w * 3;
+    const extH = h * 3;
+
+    cardsRef.current = Array.from({ length: numCards }).map((_, i) => ({
+      id: i,
+      x: (Math.random() - 0.5) * extW,
+      y: (Math.random() - 0.5) * extH,
+      z: Math.random(),
+      vx: (Math.random() - 0.5) * 0.3,
+      vy: (Math.random() - 0.5) * 0.3,
+      vz: (Math.random() - 0.5) * 0.0006,
+      rotation: (Math.random() - 0.5) * 24,
+      image: IMAGES[i % IMAGES.length],
+      baseOpacity: 1
+    }));
 
     const update = () => {
-      if (!containerRef.current) return;
-      const { width, height } = containerRef.current.getBoundingClientRect();
+      const w = window.innerWidth;
+      const h = window.innerHeight;
+      const extW = w * 3;
+      const extH = h * 3;
+      
       const cards = cardsRef.current;
-
       for (let i = 0; i < cards.length; i++) {
         let card = cards[i];
-
-        // Apply gentle boundary repulsion
-        const margin = 100;
-        if (card.x < -margin) card.vx += 0.01;
-        if (card.x > width + margin) card.vx -= 0.01;
-        if (card.y < -margin) card.vy += 0.01;
-        if (card.y > height + margin) card.vy -= 0.01;
-
-        // Apply mouse repulsion
-        const dxM = card.x + 90 - mouseRef.current.x; // center of card approx
-        const dyM = card.y + 120 - mouseRef.current.y;
-        const distM = Math.sqrt(dxM * dxM + dyM * dyM);
-        if (distM < 300) {
-          const force = (300 - distM) / 300;
-          card.vx += (dxM / distM) * force * 0.5;
-          card.vy += (dyM / distM) * force * 0.5;
-        }
-
-        // Apply card-to-card repulsion
-        for (let j = i + 1; j < cards.length; j++) {
-          const other = cards[j];
-          const dx = card.x - other.x;
-          const dy = card.y - other.y;
-          const dist = Math.sqrt(dx * dx + dy * dy);
-          if (dist < 250) {
-            const force = (250 - dist) / 250;
-            const fx = (dx / dist) * force * 0.05;
-            const fy = (dy / dist) * force * 0.05;
-            card.vx += fx;
-            card.vy += fy;
-            other.vx -= fx;
-            other.vy -= fy;
-          }
-        }
-
-        // Friction / dampening
-        card.vx *= 0.98;
-        card.vy *= 0.98;
-
-        // Minimum random drift to keep alive
-        card.vx += (Math.random() - 0.5) * 0.02;
-        card.vy += (Math.random() - 0.5) * 0.02;
-
+        
         card.x += card.vx;
         card.y += card.vy;
+        card.z += card.vz;
+
+        if (card.z < 0) card.z = 1.0;
+        else if (card.z > 1.1) card.z = 0.0;
+
+        let outOfBounds = false;
+        if (card.x < -extW / 2) { card.x = extW / 2; outOfBounds = true; }
+        if (card.x > extW / 2) { card.x = -extW / 2; outOfBounds = true; }
+        if (card.y < -extH / 2) { card.y = extH / 2; outOfBounds = true; }
+        if (card.y > extH / 2) { card.y = -extH / 2; outOfBounds = true; }
+
+        if (outOfBounds) {
+          card.baseOpacity = 0;
+        } else {
+          card.baseOpacity = Math.min(1, card.baseOpacity + 0.02);
+        }
       }
 
-      // Render update
-      cards.forEach(card => {
-        const el = document.getElementById(`neo-card-${card.id}`);
-        if (el) {
-          const scale = 0.8 + card.z * 0.35; // 0.8 to 1.15
-          el.style.transform = `translate(${card.x}px, ${card.y}px) scale(${scale}) rotate(${card.rotation}deg)`;
-        }
-      });
-
+      setFrame(f => f + 1);
       requestRef.current = requestAnimationFrame(update);
     };
 
     requestRef.current = requestAnimationFrame(update);
-
     return () => cancelAnimationFrame(requestRef.current);
   }, []);
 
-  const handleMouseMove = (e: React.MouseEvent) => {
-    if (containerRef.current) {
-      const rect = containerRef.current.getBoundingClientRect();
-      mouseRef.current = {
-        x: e.clientX - rect.left,
-        y: e.clientY - rect.top
-      };
-    }
-  };
-
-  const handleMouseLeave = () => {
-    mouseRef.current = { x: -1000, y: -1000 };
-  };
-
   return (
     <div 
-      ref={containerRef} 
-      className="neo-gallery-container relative w-full h-screen overflow-hidden"
-      onMouseMove={handleMouseMove}
-      onMouseLeave={handleMouseLeave}
+      className="absolute inset-0 bg-[#0c0c0c] overflow-hidden pointer-events-none z-0"
+      style={{ perspective: '1200px', perspectiveOrigin: '50% 40%' }}
     >
-      <div className="absolute inset-0 z-10 flex flex-col items-center justify-center pointer-events-none neo-glass bg-black/20">
-        <h1 className="neo-heading text-6xl md:text-8xl lg:text-9xl tracking-tighter text-[#F4F0EA] mb-6 drop-shadow-2xl text-center">
-          NEO Gents
-        </h1>
-        <p className="text-xl md:text-2xl text-[#C7BBA5] max-w-lg text-center font-light drop-shadow-md">
-          The operational standard for creative visionaries.
-        </p>
-      </div>
-
-      {cardsRef.current.map((card) => {
-        const blur = (1 - card.z) * 4; // up to 4px blur for far cards
-        const opacity = 0.6 + card.z * 0.4;
-        const zIndex = Math.floor(card.z * 100);
+      {cardsRef.current.map(card => {
+        const scale = 0.25 + card.z * 1.15;
+        const blur = Math.max(0, 12 - card.z * 17);
+        let depthOpacity = 1.0;
+        if (card.z < 0.2) depthOpacity = 0.25;
+        else if (card.z < 0.6) depthOpacity = 0.65;
+        
+        const opacity = depthOpacity * card.baseOpacity;
+        const zIndex = Math.round(card.z * 100);
 
         return (
-          <div
-            key={card.id}
-            id={`neo-card-${card.id}`}
-            className="neo-gallery-card absolute"
-            style={{
-              zIndex,
-              opacity,
-              filter: `blur(${blur}px)`,
-              // Initial transform to avoid flash of top-left corner
-              transform: `translate(${card.x}px, ${card.y}px) scale(${0.8 + card.z * 0.35}) rotate(${card.rotation}deg)`
-            }}
-          >
-            <img src={card.image} alt="Gallery item" />
+          <div key={card.id} style={{
+            position: 'absolute',
+            left: '50%',
+            top: '50%',
+            width: 170,
+            height: 230,
+            marginLeft: -85,
+            marginTop: -115,
+            transform: `translate3d(${card.x}px, ${card.y}px, 0) scale(${scale}) rotate(${card.rotation}deg)`,
+            filter: `blur(${blur}px)`,
+            opacity: opacity,
+            zIndex: zIndex,
+            borderRadius: 8,
+            overflow: 'hidden',
+            boxShadow: '0 8px 32px rgba(0,0,0,0.4)',
+            transition: 'none'
+          }}>
+            <img src={card.image} style={{ width: '100%', height: '100%', objectFit: 'cover' }} alt="" />
           </div>
         );
       })}
@@ -177,139 +133,158 @@ function PhysicsGallery() {
   );
 }
 
-function Section({ children, className = "" }: { children: React.ReactNode, className?: string }) {
-  const ref = useRef<HTMLDivElement>(null);
-
-  useEffect(() => {
-    const observer = new IntersectionObserver((entries) => {
-      entries.forEach(entry => {
-        if (entry.isIntersecting) {
-          entry.target.classList.add('is-visible');
-        }
-      });
-    }, { threshold: 0.1 });
-
-    if (ref.current) observer.observe(ref.current);
-    return () => observer.disconnect();
-  }, []);
-
-  return (
-    <div ref={ref} className={`neo-section ${className}`}>
-      {children}
-    </div>
-  );
-}
-
 export function LandingPage() {
   return (
-    <div className="neo-landing min-h-screen text-[#F4F0EA]">
-      <PhysicsGallery />
+    <div className="neo-font-sans w-full min-h-screen overflow-x-hidden bg-[#fafaf8]">
+      
+      {/* HERO SECTION */}
+      <section className="relative w-full h-screen overflow-hidden flex flex-col justify-end pb-16 md:pb-24">
+        <DeepFieldGallery />
+        
+        {/* NAV OVERLAY */}
+        <nav className="absolute top-0 left-0 w-full p-6 md:px-12 flex justify-between items-center z-20">
+          <div className="neo-font-sans font-bold tracking-widest text-white text-lg">NEO GENTS</div>
+          <div className="hidden md:flex items-center gap-6 text-white/80 text-sm">
+            <span>For Photographers · Aestheticians · Barbers · Realtors</span>
+            <button className="neo-btn-amber py-2 px-5 text-sm">Join the Waitlist <ArrowRight className="w-4 h-4 ml-1"/></button>
+          </div>
+        </nav>
 
-      <main className="bg-[#0A0A0A] relative z-20">
-        <Section className="text-center py-32">
-          <h2 className="neo-heading text-3xl md:text-5xl lg:text-6xl max-w-4xl mx-auto leading-tight text-[#EAE6DF]">
-            Not a SaaS tool.<br/>
-            <span className="text-[#C7BBA5] italic">An operating system for people who make art for a living.</span>
-          </h2>
-        </Section>
+        {/* HERO CONTENT */}
+        <div className="relative z-10 w-full max-w-4xl mx-auto px-4 flex flex-col items-center">
+          <div className="neo-glass-card rounded-2xl p-8 md:p-12 flex flex-col items-center text-center shadow-2xl">
+            <div className="neo-accent text-xs md:text-sm font-semibold tracking-[0.2em] mb-4">PHOTOGRAPHY</div>
+            <h1 className="neo-font-serif text-5xl md:text-7xl font-bold text-white leading-tight mb-6">
+              Your Studio.<br/>
+              Your Brand.<br/>
+              Your Empire.
+            </h1>
+            <p className="text-white/80 text-lg md:text-xl max-w-xl mx-auto mb-10 font-light leading-relaxed">
+              The operating system creative professionals actually want to open every morning.
+            </p>
+            <div className="flex flex-col sm:flex-row gap-4 w-full sm:w-auto">
+              <button className="neo-btn-amber">Get Early Access</button>
+              <button className="neo-btn-ghost">See How It Works</button>
+            </div>
+          </div>
+        </div>
+      </section>
 
-        <Section className="py-24">
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-12">
+      {/* SECTION 2 */}
+      <section className="py-24 md:py-32 px-6 md:px-12 max-w-7xl mx-auto neo-text-dark">
+        <div className="text-center max-w-3xl mx-auto mb-20">
+          <h2 className="neo-font-serif text-4xl md:text-5xl font-bold mb-6">Built for how you actually work</h2>
+          <p className="text-black/60 text-lg">Tools designed to get out of your way and let your art speak for itself.</p>
+        </div>
+
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-12 md:gap-8">
+          <div className="flex flex-col items-center text-center">
+            <div className="w-16 h-16 rounded-full bg-[#f59e0b]/10 flex items-center justify-center mb-6 text-[#f59e0b]">
+              <Camera className="w-8 h-8" />
+            </div>
+            <h3 className="text-xl font-bold mb-3 neo-font-serif">AI Gallery Sort</h3>
+            <p className="text-black/60 leading-relaxed">
+              Style-tag your entire shoot in seconds. Intelligent curation that feels like having an assistant.
+            </p>
+          </div>
+          
+          <div className="flex flex-col items-center text-center">
+            <div className="w-16 h-16 rounded-full bg-[#f59e0b]/10 flex items-center justify-center mb-6 text-[#f59e0b]">
+              <Calendar className="w-8 h-8" />
+            </div>
+            <h3 className="text-xl font-bold mb-3 neo-font-serif">Smart Booking</h3>
+            <p className="text-black/60 leading-relaxed">
+              Clients book, pay, and get reminders automatically. Zero friction, complete elegance.
+            </p>
+          </div>
+
+          <div className="flex flex-col items-center text-center">
+            <div className="w-16 h-16 rounded-full bg-[#f59e0b]/10 flex items-center justify-center mb-6 text-[#f59e0b]">
+              <Share2 className="w-8 h-8" />
+            </div>
+            <h3 className="text-xl font-bold mb-3 neo-font-serif">Social Engine</h3>
+            <p className="text-black/60 leading-relaxed">
+              From gallery to published post in one click. Turn your portfolio into a growth machine.
+            </p>
+          </div>
+        </div>
+      </section>
+
+      {/* SECTION 3 */}
+      <section className="py-24 bg-white px-6 md:px-12 neo-text-dark border-y border-black/5">
+        <div className="max-w-7xl mx-auto">
+          <h2 className="neo-font-serif text-4xl md:text-5xl font-bold mb-16 text-center">Industries we serve</h2>
+          
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
             {[
-              {
-                title: "Lead Capture",
-                desc: "Hushed, elegant intake forms that feel like a private consultation."
-              },
-              {
-                title: "Client CRM",
-                desc: "Every detail remembered. Every interaction cataloged in perfect order."
-              },
-              {
-                title: "Booking",
-                desc: "Seamless scheduling without the transactional friction."
-              },
-              {
-                title: "Content Pipeline",
-                desc: "Manage your editorial workflow from shoot to final delivery."
-              },
-              {
-                title: "Review Automation",
-                desc: "Collect and curate testimonials with quiet sophistication."
-              },
-              {
-                title: "Gallery Delivery",
-                desc: "Present your work in a digital foyer worthy of your art."
-              }
-            ].map((feature, idx) => (
-              <div key={idx} className="border-t border-[#1A1A1A] pt-6">
-                <h3 className="neo-heading text-2xl mb-4 text-[#EAE6DF]">{feature.title}</h3>
-                <p className="text-[#888] leading-relaxed font-light">{feature.desc}</p>
+              { title: "Photographers", desc: "Galleries, booking, and seamless client handoffs." },
+              { title: "Aestheticians & Barbers", desc: "Chair-side payments and recurring appointments." },
+              { title: "Popup Chefs", desc: "Event ticketing, menus, and guest management." },
+              { title: "Realtors", desc: "Listing showcases, showing schedules, and CRM." }
+            ].map((ind, i) => (
+              <div key={i} className="p-8 rounded-2xl bg-[#fafaf8] border border-black/5 hover:border-black/10 transition-colors flex flex-col items-start text-left">
+                <h3 className="text-lg font-bold mb-2 neo-font-serif">{ind.title}</h3>
+                <p className="text-black/60 text-sm mb-6 flex-grow">{ind.desc}</p>
+                <a href="#" className="neo-accent font-medium text-sm flex items-center hover:opacity-80 transition-opacity">
+                  Learn more <ArrowRight className="w-4 h-4 ml-1"/>
+                </a>
               </div>
             ))}
           </div>
-        </Section>
+        </div>
+      </section>
 
-        <Section className="py-32">
-          <div className="max-w-2xl mx-auto neo-glass p-12 md:p-16 rounded-sm">
-            <h2 className="neo-heading text-4xl mb-2 text-[#EAE6DF]">Request Access</h2>
-            <p className="text-[#888] mb-12 font-light">Join the waitlist for NEO Gents. Invitations are highly limited.</p>
-            
-            <form className="space-y-8" onSubmit={(e) => e.preventDefault()}>
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-                <div>
-                  <input type="text" placeholder="First Name" className="neo-input" />
-                </div>
-                <div>
-                  <input type="text" placeholder="Last Name" className="neo-input" />
-                </div>
-              </div>
-              
-              <div>
-                <input type="email" placeholder="Email Address" className="neo-input" />
-              </div>
-              
-              <div>
-                <select className="neo-input text-[#666] bg-transparent appearance-none rounded-none" defaultValue="">
-                  <option value="" disabled>Select Profession</option>
-                  <option value="photographer">Photographer</option>
-                  <option value="barber">Barber</option>
-                  <option value="aesthetician">Aesthetician</option>
-                  <option value="chef">Chef</option>
-                  <option value="realtor">Realtor</option>
-                  <option value="other">Other Creative</option>
-                </select>
-              </div>
+      {/* SECTION 4 */}
+      <section className="py-24 md:py-32 px-6 md:px-12 max-w-3xl mx-auto neo-text-dark">
+        <div className="text-center mb-12">
+          <h2 className="neo-font-serif text-4xl md:text-5xl font-bold mb-4">Be first when we launch.</h2>
+          <p className="text-black/60 text-lg">Join the waitlist. Invitations are highly limited.</p>
+        </div>
 
-              <div>
-                <textarea 
-                  placeholder="Tell us about your work" 
-                  className="neo-input resize-none h-24"
-                ></textarea>
-              </div>
-
-              <div className="pt-4">
-                <button type="submit" className="neo-btn w-full">
-                  Submit Inquiry
-                </button>
-              </div>
-            </form>
+        <form className="space-y-6" onSubmit={(e) => e.preventDefault()}>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <input type="text" placeholder="First Name" className="neo-input-light" />
+            <input type="text" placeholder="Last Name" className="neo-input-light" />
           </div>
-        </Section>
-      </main>
+          <input type="email" placeholder="Email Address" className="neo-input-light" />
+          
+          <select className="neo-input-light text-black/60" defaultValue="">
+            <option value="" disabled>Select Industry</option>
+            <option value="Photographer">Photographer</option>
+            <option value="Aesthetician">Aesthetician</option>
+            <option value="Barber">Barber</option>
+            <option value="Popup Chef">Popup Chef</option>
+            <option value="Realtor">Realtor</option>
+          </select>
 
-      <footer className="bg-[#050505] py-12 border-t border-[#111]">
-        <div className="max-w-1200 mx-auto px-8 flex flex-col md:flex-row justify-between items-center text-sm text-[#555]">
-          <div className="neo-heading text-xl text-[#888] mb-4 md:mb-0">NEO Gents</div>
-          <div className="flex space-x-8">
-            <a href="#" className="hover:text-[#C7BBA5] transition-colors">Instagram</a>
-            <a href="#" className="hover:text-[#C7BBA5] transition-colors">Twitter</a>
-            <a href="#" className="hover:text-[#C7BBA5] transition-colors">Journal</a>
+          <textarea placeholder="Message (optional)" rows={4} className="neo-input-light resize-none"></textarea>
+
+          <button className="neo-btn-amber w-full py-4 text-base font-bold shadow-lg">Join the Waitlist</button>
+          
+          <p className="text-center text-xs text-black/40 mt-4">
+            No spam. Early adopters get 3 months free.
+          </p>
+        </form>
+      </section>
+
+      {/* SECTION 5 */}
+      <footer className="py-12 px-6 md:px-12 border-t border-black/5 bg-white text-black/60 text-sm">
+        <div className="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-center gap-6">
+          <div className="flex flex-col items-center md:items-start">
+            <div className="font-bold tracking-widest text-black mb-1">NEO GENTS</div>
+            <div>The operating platform for creative professionals.</div>
           </div>
-          <div className="mt-4 md:mt-0 font-light">
-            &copy; {new Date().getFullYear()} NEO Gents. All rights reserved.
+          
+          <div className="flex items-center gap-6">
+            <a href="#" className="hover:text-black transition-colors">Privacy</a>
+            <a href="#" className="hover:text-black transition-colors">Terms</a>
+            <a href="#" className="hover:text-black transition-colors">Contact</a>
           </div>
+
+          <div>© 2026 NEO Gents. All rights reserved.</div>
         </div>
       </footer>
+
     </div>
   );
 }
