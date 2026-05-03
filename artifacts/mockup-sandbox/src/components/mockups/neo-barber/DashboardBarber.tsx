@@ -614,12 +614,135 @@ function LeadsTab() {
 }
 
 function SocialTab() {
+  const [caption, setCaption] = useState('');
+  const [selectedPlatforms, setSelectedPlatforms] = useState<string[]>(['Instagram', 'TikTok']);
+
+  const togglePlatform = (p: string) =>
+    setSelectedPlatforms(prev => prev.includes(p) ? prev.filter(x => x !== p) : [...prev, p]);
+
   return (
-    <div className="p-8 h-full flex items-center justify-center text-[#444]">
-      <div className="text-center">
-        <Share2 className="w-16 h-16 mx-auto mb-4 opacity-10" />
-        <h2 className="text-xl font-bold text-white mb-2">Social Media Studio</h2>
-        <p className="max-w-md">Connected to Instagram, TikTok, and YouTube. Generate cut reels and share portfolio highlights instantly.</p>
+    <div className="flex flex-col h-full bg-[#09090b]">
+      <div className="h-16 border-b border-[#1f1f1f] px-6 flex items-center justify-between flex-shrink-0">
+        <h2 className="text-lg font-semibold text-white flex items-center gap-2">
+          <Share2 className="w-5 h-5 text-blue-500" /> Social Media Studio
+        </h2>
+        <button className="bg-blue-500 hover:bg-blue-600 text-black px-4 py-1.5 rounded-lg text-sm font-bold transition-colors flex items-center gap-2">
+          <Plus className="w-4 h-4" /> New Post
+        </button>
+      </div>
+
+      <div className="flex-1 flex overflow-hidden">
+        {/* Left */}
+        <div className="w-[300px] border-r border-[#1f1f1f] bg-[#0a0a0c] p-6 flex flex-col gap-6 flex-shrink-0 overflow-y-auto custom-scrollbar">
+          <div>
+            <h3 className="text-xs font-bold text-[#555] uppercase tracking-wider mb-4">Connected Platforms</h3>
+            <div className="space-y-3">
+              {[
+                { name: 'Instagram', handle: '@marcus_cuts', followers: '24.1K', color: 'bg-gradient-to-tr from-yellow-500 via-pink-500 to-purple-600' },
+                { name: 'TikTok', handle: '@marcusking.barber', followers: '87.3K', color: 'bg-black border border-[#333]' },
+                { name: 'YouTube', handle: 'Marcus King Cuts', followers: '11.8K', color: 'bg-red-600' },
+              ].map(p => (
+                <div key={p.name} className="flex items-center justify-between group">
+                  <div className="flex items-center gap-3">
+                    <div className={`w-8 h-8 rounded-lg ${p.color} flex items-center justify-center text-white text-xs font-bold`}>{p.name[0]}</div>
+                    <div>
+                      <p className="text-sm font-medium text-white">{p.name}</p>
+                      <p className="text-[10px] text-[#555]">{p.handle}</p>
+                    </div>
+                  </div>
+                  <div className="text-right">
+                    <p className="text-xs font-bold text-white">{p.followers}</p>
+                    <div className="w-1.5 h-1.5 rounded-full bg-emerald-500 ml-auto mt-1"></div>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+
+          <div className="pt-4 border-t border-[#1f1f1f]">
+            <h3 className="text-xs font-bold text-[#555] uppercase tracking-wider mb-3">This Week</h3>
+            <div className="h-24 flex items-end justify-between gap-1.5">
+              {[40, 65, 55, 90, 100, 72, 45].map((h, i) => (
+                <div key={i} className="flex-1 rounded-t" style={{ height: `${h}%`, background: `rgba(59,130,246,${0.2 + h / 200})` }}></div>
+              ))}
+            </div>
+            <div className="flex justify-between text-[10px] text-[#555] mt-1">
+              {['M','T','W','T','F','S','S'].map(d => <span key={d}>{d}</span>)}
+            </div>
+          </div>
+
+          <div className="pt-4 border-t border-[#1f1f1f]">
+            <div className="bg-blue-500/5 border border-blue-500/20 rounded-xl p-4">
+              <p className="text-[10px] font-bold text-blue-500 uppercase tracking-wider mb-1 flex items-center gap-1.5"><Sparkles className="w-3 h-3" /> AI Content Idea</p>
+              <p className="text-xs text-[#888] leading-relaxed">"Time-lapse a signature fade from start to finish. TikTok fades perform 3× better than static cuts."</p>
+            </div>
+          </div>
+        </div>
+
+        {/* Right */}
+        <div className="flex-1 p-6 overflow-y-auto custom-scrollbar space-y-6">
+          {/* Scheduled Posts */}
+          <div>
+            <h3 className="text-sm font-medium text-white mb-3">Scheduled & Drafts</h3>
+            <div className="space-y-3">
+              {[
+                { time: 'Today 7PM', platform: 'TK', text: 'Before & after: the fade that went viral 🔥', status: 'Scheduled', thumb: 'bg-zinc-800' },
+                { time: 'Tomorrow 9AM', platform: 'IG', text: 'Sunday cuts are the best cuts. DM to book ✂️', status: 'Scheduled', thumb: 'bg-slate-800' },
+                { time: 'Thu 12PM', platform: 'YT', text: 'Full taper tutorial — mid skin fade breakdown', status: 'Draft', thumb: 'bg-stone-800' },
+                { time: 'Sat 3PM', platform: 'IG', text: '5 reasons your fade always grows out crooked', status: 'Draft', thumb: 'bg-zinc-700' },
+              ].map((post, i) => (
+                <div key={i} className="bg-[#111] border border-[#222] rounded-xl p-3 flex gap-4 hover:border-[#444] transition-colors group">
+                  <div className={`w-14 h-14 rounded-lg flex-shrink-0 ${post.thumb}`}></div>
+                  <div className="flex-1">
+                    <div className="flex justify-between items-start mb-1">
+                      <div className="flex items-center gap-2">
+                        <span className="text-[9px] font-bold px-1.5 py-0.5 rounded bg-blue-500 text-black">{post.platform}</span>
+                        <span className="text-xs font-medium text-[#aaa]">{post.time}</span>
+                      </div>
+                      <div className="flex gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
+                        <button className="text-[#666] hover:text-white"><Edit2 className="w-3.5 h-3.5" /></button>
+                        <button className="text-[#666] hover:text-red-500"><Trash2 className="w-3.5 h-3.5" /></button>
+                      </div>
+                    </div>
+                    <p className="text-sm text-white truncate">{post.text}</p>
+                    <span className={`text-[10px] font-medium px-2 py-0.5 rounded border mt-1.5 inline-block ${post.status === 'Scheduled' ? 'bg-emerald-500/10 text-emerald-500 border-emerald-500/20' : 'bg-[#222] text-[#888] border-[#333]'}`}>{post.status}</span>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+
+          {/* Quick Create */}
+          <div className="bg-[#111] border border-[#222] rounded-xl p-5">
+            <h3 className="text-sm font-medium text-white mb-4">Quick Create</h3>
+            <div className="space-y-4">
+              <div>
+                <label className="text-xs text-[#888] mb-2 block">Platforms</label>
+                <div className="flex gap-2">
+                  {['Instagram', 'TikTok', 'YouTube'].map(p => (
+                    <button key={p} onClick={() => togglePlatform(p)} className={`px-3 py-1.5 border rounded text-xs font-medium transition-colors ${selectedPlatforms.includes(p) ? 'bg-blue-500/10 border-blue-500/50 text-blue-400' : 'bg-[#222] border-[#333] text-white hover:border-blue-500/30'}`}>{p}</button>
+                  ))}
+                </div>
+              </div>
+              <div>
+                <label className="text-xs text-[#888] mb-2 block">Caption</label>
+                <textarea value={caption} onChange={e => setCaption(e.target.value)} rows={4} className="w-full bg-[#0a0a0c] border border-[#222] rounded-lg p-3 text-sm text-white focus:outline-none focus:border-blue-500 resize-none" placeholder="Write your caption..."></textarea>
+                <p className="text-[10px] text-[#555] mt-1 text-right">{caption.length} chars</p>
+              </div>
+              <div>
+                <label className="text-xs text-[#888] mb-2 block">Media</label>
+                <div className="w-full h-20 border-2 border-dashed border-[#333] hover:border-blue-500/50 rounded-lg flex flex-col items-center justify-center text-[#666] cursor-pointer transition-colors">
+                  <Upload className="w-4 h-4 mb-1" />
+                  <span className="text-xs">Upload video or photo</span>
+                </div>
+              </div>
+              <div className="flex gap-3 pt-2">
+                <button className="flex-1 border border-[#333] hover:bg-[#1a1a1a] text-white py-2.5 rounded-lg text-sm font-medium transition-colors">Save Draft</button>
+                <button className="flex-1 bg-blue-500 hover:bg-blue-600 text-black py-2.5 rounded-lg text-sm font-bold transition-colors">Schedule Post</button>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   );
@@ -639,36 +762,337 @@ function StaffTab() {
 }
 
 function ContentTab() {
+  const [activeType, setActiveType] = useState<'all' | 'reel' | 'caption' | 'email' | 'sms'>('all');
+  const items = [
+    { type: 'reel', title: 'Mid Skin Fade Tutorial', status: 'Draft', date: 'Today' },
+    { type: 'caption', title: 'Summer booking push — DM to lock in', status: 'Scheduled', date: 'Jun 1' },
+    { type: 'reel', title: 'Before & After: Taper Transformation', status: 'Published', date: 'May 28' },
+    { type: 'email', title: 'Loyalty reward — free shape-up this month', status: 'Published', date: 'May 20' },
+    { type: 'sms', title: 'Your appointment is tomorrow at 2PM', status: 'Scheduled', date: 'May 30' },
+    { type: 'caption', title: 'TikTok: 3 fades you need to try in 2026', status: 'Draft', date: 'May 18' },
+    { type: 'reel', title: 'Bald fade time-lapse — 60 sec reel', status: 'Draft', date: 'May 15' },
+    { type: 'email', title: 'New chair — now taking bookings Mon & Fri', status: 'Draft', date: 'May 10' },
+  ];
+  const filtered = activeType === 'all' ? items : items.filter(i => i.type === activeType);
+  const typeBadge: Record<string, string> = {
+    reel: 'bg-blue-500/10 text-blue-500 border-blue-500/20',
+    caption: 'bg-purple-500/10 text-purple-500 border-purple-500/20',
+    email: 'bg-amber-500/10 text-amber-500 border-amber-500/20',
+    sms: 'bg-emerald-500/10 text-emerald-500 border-emerald-500/20',
+  };
+  const statusColor: Record<string, string> = {
+    Draft: 'bg-[#222] text-[#888] border-[#333]',
+    Scheduled: 'bg-amber-500/10 text-amber-500 border-amber-500/20',
+    Published: 'bg-emerald-500/10 text-emerald-500 border-emerald-500/20',
+  };
+
   return (
-    <div className="p-8 h-full flex items-center justify-center text-[#444]">
-      <div className="text-center">
-        <Film className="w-16 h-16 mx-auto mb-4 opacity-10" />
-        <h2 className="text-xl font-bold text-white mb-2">Content Studio</h2>
-        <p>AI-powered cut reel generator and transformation templates.</p>
+    <div className="flex flex-col h-full bg-[#09090b]">
+      <div className="h-16 border-b border-[#1f1f1f] px-6 flex items-center justify-between flex-shrink-0">
+        <div className="flex items-center gap-4">
+          <h2 className="text-lg font-semibold text-white flex items-center gap-2">
+            <Film className="w-5 h-5 text-blue-500" /> Content Studio
+          </h2>
+          <div className="flex gap-1 bg-[#141414] border border-[#222] rounded-lg p-1">
+            {(['all', 'reel', 'caption', 'email', 'sms'] as const).map(t => (
+              <button key={t} onClick={() => setActiveType(t)} className={`px-3 py-1 text-xs font-medium rounded-md transition-colors capitalize ${activeType === t ? 'bg-blue-500 text-black' : 'text-[#888] hover:text-white'}`}>{t === 'all' ? 'All' : t === 'reel' ? 'Reels' : t === 'sms' ? 'SMS' : t.charAt(0).toUpperCase() + t.slice(1)}</button>
+            ))}
+          </div>
+        </div>
+        <button className="bg-blue-500 hover:bg-blue-600 text-black px-4 py-1.5 rounded-lg text-sm font-bold transition-colors flex items-center gap-2">
+          <Plus className="w-4 h-4" /> New Content
+        </button>
+      </div>
+
+      <div className="flex-1 flex overflow-hidden">
+        {/* List */}
+        <div className="w-[45%] border-r border-[#1f1f1f] bg-[#0a0a0c] overflow-y-auto custom-scrollbar">
+          <div className="divide-y divide-[#1f1f1f]">
+            {filtered.map((item, i) => (
+              <div key={i} className={`p-4 cursor-pointer flex items-center gap-4 transition-colors group ${i === 0 ? 'bg-[#141414]' : 'hover:bg-[#111]'}`}>
+                <div className="flex-1 min-w-0">
+                  <div className="flex items-center gap-2 mb-1.5">
+                    <span className={`text-[9px] font-bold px-1.5 py-0.5 rounded border uppercase tracking-wider ${typeBadge[item.type]}`}>{item.type}</span>
+                    <span className={`text-[9px] font-medium px-1.5 py-0.5 rounded border ${statusColor[item.status]}`}>{item.status}</span>
+                  </div>
+                  <h4 className={`text-sm font-medium truncate ${i === 0 ? 'text-blue-400' : 'text-white'}`}>{item.title}</h4>
+                  <p className="text-xs text-[#666] mt-1">{item.date}</p>
+                </div>
+                <div className="flex gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
+                  <button className="p-1.5 hover:bg-[#222] rounded text-[#888] hover:text-white"><Edit2 className="w-3.5 h-3.5" /></button>
+                  <button className="p-1.5 hover:bg-[#222] rounded text-[#888] hover:text-white"><Share2 className="w-3.5 h-3.5" /></button>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+
+        {/* Editor */}
+        <div className="flex-1 flex flex-col bg-[#09090b]">
+          <div className="h-14 border-b border-[#1f1f1f] px-6 flex items-center justify-between bg-[#0a0a0c]">
+            <div className="flex items-center gap-3">
+              <span className="bg-blue-500/10 text-blue-500 px-2 py-0.5 rounded text-[10px] font-bold uppercase tracking-wider border border-blue-500/20">Reel Script</span>
+              <span className="text-[#888] text-xs">Autosaved</span>
+            </div>
+            <div className="flex items-center gap-3">
+              <select className="bg-[#141414] border border-[#222] rounded-md px-2 py-1 text-xs text-white focus:outline-none focus:border-blue-500">
+                <option>AI Enhance...</option>
+                <option>Make it shorter</option>
+                <option>Add hashtags</option>
+                <option>Convert to Caption</option>
+                <option>Convert to Email</option>
+              </select>
+              <button className="bg-blue-500/10 hover:bg-blue-500/20 text-blue-500 border border-blue-500/20 px-3 py-1 rounded-md text-xs font-medium transition-colors flex items-center gap-1.5">
+                <Sparkles className="w-3.5 h-3.5" /> AI Enhance
+              </button>
+            </div>
+          </div>
+          <div className="flex-1 p-6 flex flex-col">
+            <input type="text" defaultValue="Mid Skin Fade Tutorial" className="text-2xl font-bold bg-transparent border-none text-white focus:outline-none mb-6 placeholder:text-[#444]" />
+            <textarea className="flex-1 bg-transparent border-none text-[#ccc] focus:outline-none resize-none leading-relaxed text-[15px]" defaultValue={`Hook (0–3s): Close-up of a messy hairline. Text overlay: "This fade was ROUGH." 🔥\n\nBody (3–45s): Time-lapse the full mid skin fade. Pause on detail shots — temple line, skin blend, and neckline.\n\nOutro (45–60s): Final reveal, client turns and reacts. Text overlay: "Book your transformation — link in bio." ✂️\n\n#barbertok #fadetutorial #skinfade #marcusking #barberlife #cuts`}></textarea>
+          </div>
+          <div className="h-14 border-t border-[#1f1f1f] px-6 flex items-center justify-between bg-[#0a0a0c]">
+            <span className="text-xs text-[#666]">Draft</span>
+            <div className="flex gap-2">
+              <button className="px-4 py-1.5 bg-[#141414] border border-[#222] hover:bg-[#1a1a1a] rounded text-sm text-white transition-colors flex items-center gap-2"><Eye className="w-4 h-4" /> Preview</button>
+              <button className="px-4 py-1.5 bg-blue-500 hover:bg-blue-600 text-black rounded text-sm font-bold transition-colors">Publish</button>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   );
 }
 
 function ReviewsTab() {
+  const reviews = [
+    { name: 'Darius Thompson', platform: 'Google', stars: 5, date: '2 days ago', text: 'Marcus is a legend with the clippers. My fade has never looked this clean. Already booked my next appointment before leaving the chair.' },
+    { name: 'Kevin Okonkwo', platform: 'Yelp', stars: 5, date: '5 days ago', text: 'Best barbershop in the city, period. The vibe, the music, the cuts — everything is elite. Leon got me right too.' },
+    { name: 'Jalen Brooks', platform: 'Booksy', stars: 5, date: '1 week ago', text: 'Came in for a shape-up, left looking like I was ready for a music video. No cap.' },
+    { name: 'Andre Williams', platform: 'Google', stars: 4, date: '2 weeks ago', text: 'Always solid work. Had to wait an extra 20 mins past my appointment but Marcus delivered as usual.' },
+    { name: 'Malik Reeves', platform: 'Google', stars: 5, date: '3 weeks ago', text: 'Drive 45 minutes just to get my cut here. Worth every mile.' },
+  ];
+
+  const platformBadge: Record<string, string> = {
+    Google: 'bg-blue-500 text-white',
+    Yelp: 'bg-red-600 text-white',
+    Booksy: 'bg-purple-600 text-white',
+  };
+
   return (
-    <div className="p-8 h-full flex items-center justify-center text-[#444]">
-      <div className="text-center">
-        <Star className="w-16 h-16 mx-auto mb-4 opacity-10" />
-        <h2 className="text-xl font-bold text-white mb-2">Reviews & Reputation</h2>
-        <p>Syncing with Google, Yelp, and Booksy.</p>
+    <div className="p-6 lg:p-8 max-w-5xl mx-auto space-y-8">
+      <div className="flex items-center justify-between">
+        <div>
+          <h2 className="text-xl font-semibold text-white flex items-center gap-2">
+            <Star className="w-5 h-5 text-blue-500 fill-blue-500" /> Reviews & Reputation
+          </h2>
+          <p className="text-sm text-[#888] mt-1">Google · Yelp · Booksy — all in one place</p>
+        </div>
+        <button className="bg-blue-500 hover:bg-blue-600 text-black px-4 py-2 rounded-lg text-sm font-bold transition-colors flex items-center gap-2">
+          <Send className="w-4 h-4" /> Request Reviews
+        </button>
+      </div>
+
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+        {[
+          { label: 'Average Rating', value: '4.9', icon: <Star className="w-6 h-6 text-blue-500 fill-blue-500" />, iconBg: 'bg-blue-500/10' },
+          { label: 'Total Reviews', value: '127', icon: <MessageCircle className="w-6 h-6 text-purple-500" />, iconBg: 'bg-purple-500/10' },
+          { label: 'Response Rate', value: '94%', icon: <CheckCircle2 className="w-6 h-6 text-emerald-500" />, iconBg: 'bg-emerald-500/10' },
+        ].map(s => (
+          <div key={s.label} className="bg-[#111] border border-[#1f1f1f] rounded-xl p-5 flex items-center justify-between">
+            <div>
+              <p className="text-xs text-[#888] font-medium uppercase tracking-wider mb-1">{s.label}</p>
+              <span className="text-3xl font-bold text-white">{s.value}</span>
+            </div>
+            <div className={`w-12 h-12 rounded-full ${s.iconBg} flex items-center justify-center`}>{s.icon}</div>
+          </div>
+        ))}
+      </div>
+
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+        <div className="lg:col-span-2 space-y-4">
+          <h3 className="text-sm font-medium text-white">Recent Reviews</h3>
+          {reviews.map((r, i) => (
+            <div key={i} className="bg-[#111] border border-[#222] rounded-xl p-5 flex flex-col gap-3 group hover:border-[#444] transition-colors">
+              <div className="flex justify-between items-start">
+                <div className="flex items-center gap-3">
+                  <div className="w-10 h-10 rounded-full bg-[#1a1a1a] flex items-center justify-center font-bold text-white text-sm">{r.name[0]}</div>
+                  <div>
+                    <h4 className="font-medium text-white text-sm">{r.name}</h4>
+                    <div className="flex items-center gap-2 mt-0.5">
+                      <span className={`text-[9px] font-bold px-1.5 py-0.5 rounded ${platformBadge[r.platform]}`}>{r.platform}</span>
+                      <span className="text-[10px] text-[#666]">{r.date}</span>
+                    </div>
+                  </div>
+                </div>
+                <div className="flex text-blue-500 text-sm">
+                  {Array.from({ length: 5 }).map((_, j) => <span key={j}>{j < r.stars ? '★' : <span className="text-[#333]">★</span>}</span>)}
+                </div>
+              </div>
+              <p className="text-sm text-[#aaa] leading-relaxed">"{r.text}"</p>
+              <div className="flex gap-3 opacity-0 group-hover:opacity-100 transition-opacity">
+                <button className="text-xs font-medium text-white hover:text-blue-500 transition-colors">Reply</button>
+                <button className="text-xs font-medium text-[#888] hover:text-white transition-colors">Share</button>
+              </div>
+            </div>
+          ))}
+        </div>
+
+        <div>
+          <h3 className="text-sm font-medium text-white mb-4">Pending Requests</h3>
+          <div className="bg-[#111] border border-[#222] rounded-xl overflow-hidden">
+            {['Marcus L.', 'DeShawn P.', 'Brandon T.', 'Isaiah R.'].map((name, i) => (
+              <div key={i} className="p-4 flex items-center justify-between border-b border-[#1f1f1f] last:border-0 hover:bg-[#141414] transition-colors">
+                <div>
+                  <h4 className="text-sm font-medium text-white">{name}</h4>
+                  <p className="text-xs text-[#888] mt-0.5">Sent {i + 1}d ago</p>
+                </div>
+                <button className="px-3 py-1.5 bg-[#1a1a1a] border border-[#333] hover:border-blue-500 text-xs font-medium text-white rounded transition-colors">Resend</button>
+              </div>
+            ))}
+          </div>
+        </div>
       </div>
     </div>
   );
 }
 
 function SettingsTab() {
+  const [activeSection, setActiveSection] = useState<'profile' | 'nori' | 'billing' | 'notifications'>('profile');
+  const [autoFollowUp, setAutoFollowUp] = useState(true);
+  const [appointmentReminders, setAppointmentReminders] = useState(true);
+  const [loyaltyTracking, setLoyaltyTracking] = useState(false);
+  const [reviewRequests, setReviewRequests] = useState(true);
+
   return (
-    <div className="p-8 h-full flex items-center justify-center text-[#444]">
-      <div className="text-center">
-        <Settings className="w-16 h-16 mx-auto mb-4 opacity-10" />
-        <h2 className="text-xl font-bold text-white mb-2">Settings</h2>
+    <div className="p-6 lg:p-8 max-w-4xl mx-auto">
+      <h2 className="text-2xl font-semibold text-white mb-6">Settings</h2>
+
+      <div className="flex gap-6 border-b border-[#1f1f1f] mb-8">
+        {([
+          { key: 'profile', label: 'Profile' },
+          { key: 'nori', label: 'NORI Engine' },
+          { key: 'billing', label: 'Billing' },
+          { key: 'notifications', label: 'Notifications' },
+        ] as const).map(s => (
+          <button key={s.key} onClick={() => setActiveSection(s.key)} className={`pb-3 border-b-2 text-sm font-medium transition-colors ${activeSection === s.key ? 'border-blue-500 text-blue-500' : 'border-transparent text-[#888] hover:text-white'}`}>{s.label}</button>
+        ))}
       </div>
+
+      {activeSection === 'profile' && (
+        <div className="space-y-8">
+          <div className="flex items-center gap-6">
+            <div className="w-24 h-24 rounded-full bg-gradient-to-tr from-blue-600 to-blue-400 flex items-center justify-center font-bold text-3xl text-black">MK</div>
+            <div>
+              <div className="flex gap-3 mb-2">
+                <button className="bg-[#1a1a1a] border border-[#333] hover:bg-[#222] text-white px-4 py-2 rounded-lg text-sm font-medium transition-colors flex items-center gap-2"><Upload className="w-4 h-4" /> Upload Photo</button>
+                <button className="text-red-500 hover:text-red-400 px-4 py-2 rounded-lg text-sm font-medium transition-colors">Remove</button>
+              </div>
+              <p className="text-xs text-[#666]">Square JPG or PNG. Max 2MB.</p>
+            </div>
+          </div>
+
+          <div className="h-px bg-[#1f1f1f]"></div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            {[
+              { label: 'Display Name', value: 'Marcus King', type: 'text' },
+              { label: 'Shop Name', value: "King's Barbershop", type: 'text' },
+              { label: 'Email Address', value: 'marcus@kingscuts.com', type: 'email' },
+              { label: 'Phone', value: '+1 (213) 555-0192', type: 'tel' },
+            ].map(f => (
+              <div key={f.label} className="space-y-2">
+                <label className="text-xs text-[#888] font-medium">{f.label}</label>
+                <input type={f.type} defaultValue={f.value} className="w-full bg-[#111] border border-[#222] rounded-lg px-4 py-2.5 text-sm text-white focus:outline-none focus:border-blue-500" />
+              </div>
+            ))}
+            <div className="col-span-1 md:col-span-2 space-y-2">
+              <label className="text-xs text-[#888] font-medium">Bio</label>
+              <textarea className="w-full bg-[#111] border border-[#222] rounded-lg px-4 py-3 text-sm text-white focus:outline-none focus:border-blue-500 min-h-[80px] resize-none" defaultValue="Master barber with 12 years of experience. Specializing in skin fades, tapers, and creative designs. Owner of King's Barbershop, Compton CA."></textarea>
+            </div>
+          </div>
+
+          <div className="pt-4 flex justify-end">
+            <button className="bg-blue-500 hover:bg-blue-600 text-black px-6 py-2.5 rounded-lg text-sm font-bold transition-colors">Save Changes</button>
+          </div>
+        </div>
+      )}
+
+      {activeSection === 'nori' && (
+        <div className="space-y-4 max-w-2xl">
+          <p className="text-sm text-[#888] mb-6">NORI automates client outreach and business intelligence behind the scenes.</p>
+          {[
+            { key: 'autoFollowUp', label: 'Auto Follow-Up Messages', desc: 'Send a check-in text 48h after every appointment', value: autoFollowUp, set: setAutoFollowUp },
+            { key: 'appointmentReminders', label: 'Appointment Reminders', desc: 'Auto-send SMS reminders 24h and 2h before cut', value: appointmentReminders, set: setAppointmentReminders },
+            { key: 'loyaltyTracking', label: 'Loyalty Tracking', desc: 'Track client visits and trigger rewards at milestones', value: loyaltyTracking, set: setLoyaltyTracking },
+            { key: 'reviewRequests', label: 'Auto Review Requests', desc: 'Text clients a Google/Booksy review link after each cut', value: reviewRequests, set: setReviewRequests },
+          ].map(item => (
+            <div key={item.key} className="flex items-center justify-between p-4 bg-[#141414] border border-[#222] rounded-xl">
+              <div>
+                <p className="text-sm font-bold text-white mb-1">{item.label}</p>
+                <p className="text-xs text-[#555]">{item.desc}</p>
+              </div>
+              <button onClick={() => item.set(v => !v)} className={`w-10 h-6 rounded-full relative p-1 cursor-pointer transition-colors ${item.value ? 'bg-blue-500' : 'bg-[#333]'}`}>
+                <div className={`w-4 h-4 bg-white rounded-full shadow transition-all ${item.value ? 'ml-auto' : 'ml-0'}`}></div>
+              </button>
+            </div>
+          ))}
+          <div className="pt-4 flex justify-end">
+            <button className="bg-blue-500 hover:bg-blue-600 text-black px-6 py-2.5 rounded-lg text-sm font-bold transition-colors">Save NORI Settings</button>
+          </div>
+        </div>
+      )}
+
+      {activeSection === 'billing' && (
+        <div className="space-y-6 max-w-2xl">
+          <div className="bg-blue-500/5 border border-blue-500/20 rounded-xl p-6">
+            <div className="flex items-center justify-between">
+              <div className="flex items-center gap-3">
+                <div className="w-10 h-10 rounded-xl bg-blue-500/10 flex items-center justify-center"><Scissors className="w-6 h-6 text-blue-500" /></div>
+                <div>
+                  <p className="text-sm font-bold text-white">Pro Barber Plan</p>
+                  <p className="text-xs text-[#555]">$49/month · Billed monthly · Next billing Jun 3</p>
+                </div>
+              </div>
+              <button className="text-xs text-[#555] font-bold hover:text-white transition-colors">MANAGE</button>
+            </div>
+          </div>
+          <div className="bg-[#111] border border-[#222] rounded-xl p-6">
+            <h3 className="text-sm font-bold text-white mb-4">Payment Method</h3>
+            <div className="flex items-center justify-between p-3 bg-[#141414] border border-[#222] rounded-lg">
+              <div className="flex items-center gap-3">
+                <CreditCard className="w-5 h-5 text-[#888]" />
+                <span className="text-sm text-white">•••• •••• •••• 4242</span>
+              </div>
+              <button className="text-xs text-blue-500 hover:text-blue-400 font-bold transition-colors">Update</button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {activeSection === 'notifications' && (
+        <div className="space-y-4 max-w-2xl">
+          {[
+            { label: 'New Booking Alerts', desc: 'Push notification when a client books online', on: true },
+            { label: 'New Lead Alerts', desc: 'Notify me when a Firecrawl scan finds new leads', on: true },
+            { label: 'Review Received', desc: 'Alert when a client leaves a Google or Yelp review', on: true },
+            { label: 'Weekly Performance Report', desc: 'Email summary every Monday morning', on: false },
+          ].map((n, i) => (
+            <div key={i} className="flex items-center justify-between p-4 bg-[#141414] border border-[#222] rounded-xl">
+              <div>
+                <p className="text-sm font-bold text-white mb-1">{n.label}</p>
+                <p className="text-xs text-[#555]">{n.desc}</p>
+              </div>
+              <div className={`w-10 h-6 rounded-full relative p-1 cursor-pointer ${n.on ? 'bg-blue-500' : 'bg-[#333]'}`}>
+                <div className={`w-4 h-4 bg-white rounded-full shadow ${n.on ? 'ml-auto' : 'ml-0'}`}></div>
+              </div>
+            </div>
+          ))}
+          <div className="pt-4 flex justify-end">
+            <button className="bg-blue-500 hover:bg-blue-600 text-black px-6 py-2.5 rounded-lg text-sm font-bold transition-colors">Save Preferences</button>
+          </div>
+        </div>
+      )}
     </div>
   );
 }

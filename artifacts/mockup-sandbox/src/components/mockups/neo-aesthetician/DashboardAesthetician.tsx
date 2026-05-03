@@ -996,13 +996,29 @@ function ReviewsTab() {
 }
 
 function SettingsTab() {
+  const [activeSection, setActiveSection] = useState<'profile' | 'nori' | 'billing' | 'notifications'>('profile');
+  const [autoFollowUp, setAutoFollowUp] = useState(true);
+  const [predictiveOrdering, setPredictiveOrdering] = useState(false);
+  const [rebookReminders, setRebookReminders] = useState(true);
+  const [reviewRequests, setReviewRequests] = useState(false);
+
   return (
-    <div className="p-8 max-w-2xl">
-      <h2 className="text-2xl font-bold text-white mb-8">Settings</h2>
-      
-      <div className="space-y-8">
-        <section className="space-y-4">
-          <h4 className="text-[10px] font-bold text-pink-500 uppercase tracking-[0.2em]">Profile</h4>
+    <div className="p-8 max-w-3xl">
+      <h2 className="text-2xl font-bold text-white mb-6">Settings</h2>
+
+      <div className="flex gap-6 border-b border-[#1f1f1f] mb-8">
+        {([
+          { key: 'profile', label: 'Profile' },
+          { key: 'nori', label: 'NORI Engine' },
+          { key: 'billing', label: 'Billing' },
+          { key: 'notifications', label: 'Notifications' },
+        ] as const).map(s => (
+          <button key={s.key} onClick={() => setActiveSection(s.key)} className={`pb-3 border-b-2 text-sm font-medium transition-colors ${activeSection === s.key ? 'border-pink-500 text-pink-500' : 'border-transparent text-[#888] hover:text-white'}`}>{s.label}</button>
+        ))}
+      </div>
+
+      {activeSection === 'profile' && (
+        <div className="space-y-6">
           <div className="grid grid-cols-1 gap-4">
             <div className="space-y-1.5">
               <label className="text-xs text-[#555]">Studio Name</label>
@@ -1012,35 +1028,90 @@ function SettingsTab() {
               <label className="text-xs text-[#555]">Email Address</label>
               <input type="email" defaultValue="zara@skinatelier.com" className="w-full bg-[#0d0d0d] border border-[#1f1f1f] rounded-lg p-3 text-sm text-white focus:outline-none focus:border-pink-500" />
             </div>
-          </div>
-        </section>
-
-        <section className="space-y-4 pt-4 border-t border-[#1f1f1f]">
-          <h4 className="text-[10px] font-bold text-pink-500 uppercase tracking-[0.2em]">NORI Engine</h4>
-          <div className="flex items-center justify-between p-4 bg-[#141414] border border-[#222] rounded-xl">
-            <div>
-              <p className="text-sm font-bold text-white mb-1">Auto-Suggest Client Follow-ups</p>
-              <p className="text-xs text-[#555]">NORI will analyze treatment types and suggest post-care reach out</p>
+            <div className="space-y-1.5">
+              <label className="text-xs text-[#555]">Phone</label>
+              <input type="tel" defaultValue="+1 (310) 555-0174" className="w-full bg-[#0d0d0d] border border-[#1f1f1f] rounded-lg p-3 text-sm text-white focus:outline-none focus:border-pink-500" />
             </div>
-            <div className="w-10 h-6 bg-pink-500 rounded-full relative p-1 cursor-pointer">
-              <div className="w-4 h-4 bg-white rounded-full ml-auto"></div>
+            <div className="space-y-1.5">
+              <label className="text-xs text-[#555]">Bio</label>
+              <textarea rows={3} defaultValue="Licensed aesthetician with 8 years of experience. Specializing in HydraFacial, chemical peels, and customized treatment plans for all skin types." className="w-full bg-[#0d0d0d] border border-[#1f1f1f] rounded-lg p-3 text-sm text-white focus:outline-none focus:border-pink-500 resize-none"></textarea>
             </div>
           </div>
-          <div className="flex items-center justify-between p-4 bg-[#141414] border border-[#222] rounded-xl">
-            <div>
-              <p className="text-sm font-bold text-white mb-1">AI Inventory Predictive Ordering</p>
-              <p className="text-xs text-[#555]">Automatically build supply carts based on upcoming bookings</p>
-            </div>
-            <div className="w-10 h-6 bg-[#222] rounded-full relative p-1 cursor-pointer">
-              <div className="w-4 h-4 bg-[#555] rounded-full"></div>
-            </div>
+          <div className="pt-4">
+            <button className="bg-pink-500 hover:bg-pink-600 text-white font-bold px-8 py-3 rounded-xl transition-colors">Save Changes</button>
           </div>
-        </section>
-
-        <div className="pt-8">
-          <button className="bg-pink-500 text-white font-bold px-8 py-3 rounded-xl">Save Changes</button>
         </div>
-      </div>
+      )}
+
+      {activeSection === 'nori' && (
+        <div className="space-y-4">
+          <p className="text-sm text-[#888] mb-6">NORI handles the follow-up and automation so you can focus on treatments.</p>
+          {[
+            { label: 'Auto-Suggest Client Follow-ups', desc: 'NORI will analyze treatment types and suggest post-care reach out', value: autoFollowUp, set: setAutoFollowUp },
+            { label: 'AI Inventory Predictive Ordering', desc: 'Automatically build supply carts based on upcoming bookings', value: predictiveOrdering, set: setPredictiveOrdering },
+            { label: 'Rebook Reminders', desc: 'Nudge clients when they\'re due for their next appointment', value: rebookReminders, set: setRebookReminders },
+            { label: 'Auto Review Requests', desc: 'Send a review link 24h after each completed appointment', value: reviewRequests, set: setReviewRequests },
+          ].map(item => (
+            <div key={item.label} className="flex items-center justify-between p-4 bg-[#141414] border border-[#222] rounded-xl">
+              <div>
+                <p className="text-sm font-bold text-white mb-1">{item.label}</p>
+                <p className="text-xs text-[#555]">{item.desc}</p>
+              </div>
+              <button onClick={() => item.set(v => !v)} className={`w-10 h-6 rounded-full relative p-1 cursor-pointer transition-colors flex-shrink-0 ${item.value ? 'bg-pink-500' : 'bg-[#333]'}`}>
+                <div className={`w-4 h-4 bg-white rounded-full shadow transition-all ${item.value ? 'ml-auto' : 'ml-0'}`}></div>
+              </button>
+            </div>
+          ))}
+          <div className="pt-4">
+            <button className="bg-pink-500 hover:bg-pink-600 text-white font-bold px-8 py-3 rounded-xl transition-colors">Save NORI Settings</button>
+          </div>
+        </div>
+      )}
+
+      {activeSection === 'billing' && (
+        <div className="space-y-6 max-w-2xl">
+          <div className="bg-pink-500/5 border border-pink-500/20 rounded-xl p-6">
+            <div className="flex items-center justify-between">
+              <div>
+                <p className="text-sm font-bold text-white">Pro Aesthetician Plan</p>
+                <p className="text-xs text-[#555]">$49/month · Next billing Jun 3, 2026</p>
+              </div>
+              <button className="text-xs text-[#555] font-bold hover:text-white transition-colors">MANAGE</button>
+            </div>
+          </div>
+          <div className="bg-[#0d0d0d] border border-[#1f1f1f] rounded-xl p-6">
+            <h3 className="text-sm font-bold text-white mb-4">Payment Method</h3>
+            <div className="flex items-center justify-between p-3 bg-[#141414] border border-[#222] rounded-lg">
+              <span className="text-sm text-white">•••• •••• •••• 4242</span>
+              <button className="text-xs text-pink-500 hover:text-pink-400 font-bold transition-colors">Update</button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {activeSection === 'notifications' && (
+        <div className="space-y-4 max-w-2xl">
+          {[
+            { label: 'New Booking Alerts', desc: 'Notify me when a client books online', on: true },
+            { label: 'New Lead Alerts', desc: 'Alert when Firecrawl scan finds new prospects', on: true },
+            { label: 'Low Inventory Warning', desc: 'Notify when a product stock drops below threshold', on: true },
+            { label: 'Weekly Revenue Report', desc: 'Email summary every Monday', on: false },
+          ].map((n, i) => (
+            <div key={i} className="flex items-center justify-between p-4 bg-[#141414] border border-[#222] rounded-xl">
+              <div>
+                <p className="text-sm font-bold text-white mb-1">{n.label}</p>
+                <p className="text-xs text-[#555]">{n.desc}</p>
+              </div>
+              <div className={`w-10 h-6 rounded-full relative p-1 cursor-pointer ${n.on ? 'bg-pink-500' : 'bg-[#333]'}`}>
+                <div className={`w-4 h-4 bg-white rounded-full shadow ${n.on ? 'ml-auto' : 'ml-0'}`}></div>
+              </div>
+            </div>
+          ))}
+          <div className="pt-4">
+            <button className="bg-pink-500 hover:bg-pink-600 text-white font-bold px-8 py-3 rounded-xl transition-colors">Save Preferences</button>
+          </div>
+        </div>
+      )}
     </div>
   );
 }

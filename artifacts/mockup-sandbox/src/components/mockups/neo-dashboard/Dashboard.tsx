@@ -1599,6 +1599,23 @@ function CourseCard({ title, lessons, enrolled, rating, desc, thumb }: { title: 
 }
 
 function ContentTab() {
+  const [activeFilter, setActiveFilter] = useState<'All' | 'Captions' | 'Emails' | 'SMS' | 'Scripts' | 'Blog'>('All');
+  const [activeIdx, setActiveIdx] = useState(0);
+
+  const allItems = [
+    { type: 'Caption', title: 'Wedding season booking push', status: 'Draft', date: 'Today' },
+    { type: 'Email', title: 'Post-shoot gallery delivery template', status: 'Published', date: 'May 1' },
+    { type: 'SMS', title: '24h shoot reminder', status: 'Scheduled', date: 'May 5' },
+    { type: 'Blog', title: 'Why film photography is back', status: 'Draft', date: 'Apr 28' },
+    { type: 'Script', title: 'Reel: What\'s in my camera bag', status: 'Draft', date: 'Apr 25' },
+    { type: 'Caption', title: 'NovaTech commercial behind the scenes', status: 'Scheduled', date: 'May 6' },
+    { type: 'Email', title: 'Spring mini-session announcement', status: 'Published', date: 'Mar 15' },
+    { type: 'SMS', title: 'Gallery expiring warning', status: 'Published', date: 'Feb 10' },
+  ];
+
+  const typeMap: Record<string, string> = { Captions: 'Caption', Emails: 'Email', SMS: 'SMS', Scripts: 'Script', Blog: 'Blog' };
+  const filtered = activeFilter === 'All' ? allItems : allItems.filter(i => i.type === typeMap[activeFilter]);
+
   return (
     <div className="flex flex-col h-full bg-[#09090b]">
       {/* Top bar */}
@@ -1610,8 +1627,8 @@ function ContentTab() {
           </h2>
           <div className="h-6 w-px bg-[#1f1f1f]"></div>
           <div className="flex gap-1 bg-[#141414] p-1 rounded-lg border border-[#222]">
-            {['All', 'Captions', 'Emails', 'SMS', 'Scripts', 'Blog'].map((tab, i) => (
-              <button key={tab} className={`px-3 py-1 text-xs font-medium rounded-md transition-colors ${i === 0 ? 'bg-[#2a2a2a] text-white shadow-sm' : 'text-[#888] hover:text-white'}`}>
+            {(['All', 'Captions', 'Emails', 'SMS', 'Scripts', 'Blog'] as const).map((tab) => (
+              <button key={tab} onClick={() => { setActiveFilter(tab); setActiveIdx(0); }} className={`px-3 py-1 text-xs font-medium rounded-md transition-colors ${activeFilter === tab ? 'bg-[#2a2a2a] text-white shadow-sm' : 'text-[#888] hover:text-white'}`}>
                 {tab}
               </button>
             ))}
@@ -1627,14 +1644,12 @@ function ContentTab() {
         <div className="w-[45%] border-r border-[#1f1f1f] bg-[#0a0a0c] flex flex-col flex-shrink-0">
           <div className="flex-1 overflow-y-auto custom-scrollbar">
             <div className="divide-y divide-[#1f1f1f]">
-              <ContentRow type="Caption" title="Wedding season booking push" status="Draft" date="Today" active />
-              <ContentRow type="Email" title="Post-shoot gallery delivery template" status="Published" date="May 1" />
-              <ContentRow type="SMS" title="24h shoot reminder" status="Scheduled" date="May 5" />
-              <ContentRow type="Blog" title="Why film photography is back" status="Draft" date="Apr 28" />
-              <ContentRow type="Script" title="Reel: What's in my camera bag" status="Draft" date="Apr 25" />
-              <ContentRow type="Caption" title="NovaTech commercial behind the scenes" status="Scheduled" date="May 6" />
-              <ContentRow type="Email" title="Spring mini-session announcement" status="Published" date="Mar 15" />
-              <ContentRow type="SMS" title="Gallery expiring warning" status="Published" date="Feb 10" />
+              {filtered.length === 0 && (
+                <div className="p-8 text-center text-[#444] text-sm">No {activeFilter.toLowerCase()} yet</div>
+              )}
+              {filtered.map((item, i) => (
+                <ContentRow key={i} type={item.type} title={item.title} status={item.status} date={item.date} active={i === activeIdx} onClick={() => setActiveIdx(i)} />
+              ))}
             </div>
           </div>
         </div>
@@ -1690,7 +1705,7 @@ function ContentTab() {
   );
 }
 
-function ContentRow({ type, title, status, date, active }: { type: string, title: string, status: string, date: string, active?: boolean }) {
+function ContentRow({ type, title, status, date, active, onClick }: { type: string, title: string, status: string, date: string, active?: boolean, onClick?: () => void }) {
   const getBadgeColor = (t: string) => {
     switch(t) {
       case 'Caption': return 'bg-purple-500/10 text-purple-500 border-purple-500/20';
@@ -1712,7 +1727,7 @@ function ContentRow({ type, title, status, date, active }: { type: string, title
   };
 
   return (
-    <div className={`p-4 cursor-pointer flex items-center gap-4 transition-colors group ${active ? 'bg-[#141414]' : 'hover:bg-[#111]'}`}>
+    <div onClick={onClick} className={`p-4 cursor-pointer flex items-center gap-4 transition-colors group ${active ? 'bg-[#141414]' : 'hover:bg-[#111]'}`}>
       <div className="flex-1 min-w-0">
         <div className="flex items-center gap-2 mb-1.5">
           <span className={`text-[9px] font-bold px-1.5 py-0.5 rounded border uppercase tracking-wider ${getBadgeColor(type)}`}>{type}</span>
@@ -1866,101 +1881,160 @@ function PendingReviewRow({ name, date }: { name: string, date: string }) {
 }
 
 function SettingsTab() {
+  const [activeSection, setActiveSection] = useState<'profile' | 'branding' | 'integrations' | 'billing' | 'notifications'>('profile');
+  const [autoGallery, setAutoGallery] = useState(true);
+  const [contractReminders, setContractReminders] = useState(true);
+  const [reviewAuto, setReviewAuto] = useState(false);
+  const [weeklyReport, setWeeklyReport] = useState(true);
+
   return (
     <div className="p-6 lg:p-8 max-w-4xl mx-auto">
       <h2 className="text-2xl font-semibold text-white mb-6">Settings</h2>
 
       <div className="flex gap-6 border-b border-[#1f1f1f] mb-8">
-        <button className="pb-3 border-b-2 border-amber-500 text-amber-500 text-sm font-medium">Profile</button>
-        <button className="pb-3 border-b-2 border-transparent text-[#888] hover:text-white text-sm font-medium transition-colors">Branding</button>
-        <button className="pb-3 border-b-2 border-transparent text-[#888] hover:text-white text-sm font-medium transition-colors">Integrations</button>
-        <button className="pb-3 border-b-2 border-transparent text-[#888] hover:text-white text-sm font-medium transition-colors">Billing</button>
-        <button className="pb-3 border-b-2 border-transparent text-[#888] hover:text-white text-sm font-medium transition-colors">Notifications</button>
+        {([
+          { key: 'profile', label: 'Profile' },
+          { key: 'branding', label: 'Branding' },
+          { key: 'integrations', label: 'Integrations' },
+          { key: 'billing', label: 'Billing' },
+          { key: 'notifications', label: 'Notifications' },
+        ] as const).map(s => (
+          <button key={s.key} onClick={() => setActiveSection(s.key)} className={`pb-3 border-b-2 text-sm font-medium transition-colors ${activeSection === s.key ? 'border-amber-500 text-amber-500' : 'border-transparent text-[#888] hover:text-white'}`}>{s.label}</button>
+        ))}
       </div>
 
-      <div className="space-y-8">
-        {/* Avatar Section */}
-        <div className="flex items-center gap-6">
-          <div className="w-24 h-24 rounded-full bg-gradient-to-tr from-amber-600 to-amber-400 flex items-center justify-center font-bold text-3xl text-black">
-            DR
+      {activeSection === 'profile' && (
+        <div className="space-y-8">
+          <div className="flex items-center gap-6">
+            <div className="w-24 h-24 rounded-full bg-gradient-to-tr from-amber-600 to-amber-400 flex items-center justify-center font-bold text-3xl text-black">DR</div>
+            <div>
+              <div className="flex gap-3 mb-2">
+                <button className="bg-[#1a1a1a] border border-[#333] hover:bg-[#222] text-white px-4 py-2 rounded-lg text-sm font-medium transition-colors flex items-center gap-2"><Upload className="w-4 h-4" /> Upload Photo</button>
+                <button className="text-red-500 hover:text-red-400 px-4 py-2 rounded-lg text-sm font-medium transition-colors">Remove</button>
+              </div>
+              <p className="text-xs text-[#666]">Recommended: Square JPG, PNG. Max 2MB.</p>
+            </div>
+          </div>
+          <div className="h-px bg-[#1f1f1f]"></div>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div className="space-y-2"><label className="text-xs text-[#888] font-medium">Display Name</label><input type="text" defaultValue="Drake Reynolds" className="w-full bg-[#111] border border-[#222] rounded-lg px-4 py-2.5 text-sm text-white focus:outline-none focus:border-amber-500" /></div>
+            <div className="space-y-2"><label className="text-xs text-[#888] font-medium">Studio Name</label><input type="text" defaultValue="Drake Reynolds Photography" className="w-full bg-[#111] border border-[#222] rounded-lg px-4 py-2.5 text-sm text-white focus:outline-none focus:border-amber-500" /></div>
+            <div className="space-y-2"><label className="text-xs text-[#888] font-medium">Email Address</label><input type="email" defaultValue="hello@drakereynolds.com" className="w-full bg-[#111] border border-[#222] rounded-lg px-4 py-2.5 text-sm text-white focus:outline-none focus:border-amber-500" /></div>
+            <div className="space-y-2"><label className="text-xs text-[#888] font-medium">Phone Number</label><input type="tel" defaultValue="+1 (555) 123-4567" className="w-full bg-[#111] border border-[#222] rounded-lg px-4 py-2.5 text-sm text-white focus:outline-none focus:border-amber-500" /></div>
+            <div className="col-span-1 md:col-span-2 space-y-2"><label className="text-xs text-[#888] font-medium">Website URL</label><input type="url" defaultValue="https://drakereynolds.com" className="w-full bg-[#111] border border-[#222] rounded-lg px-4 py-2.5 text-sm text-white focus:outline-none focus:border-amber-500" /></div>
+            <div className="col-span-1 md:col-span-2 space-y-2"><label className="text-xs text-[#888] font-medium">Bio</label><textarea className="w-full bg-[#111] border border-[#222] rounded-lg px-4 py-3 text-sm text-white focus:outline-none focus:border-amber-500 min-h-[100px] resize-none" defaultValue="Documentary-style wedding and commercial photographer based in Los Angeles. Specializing in film aesthetic and authentic moments."></textarea></div>
+          </div>
+          <div className="pt-2 flex justify-end"><button className="bg-amber-500 hover:bg-amber-600 text-black px-6 py-2.5 rounded-lg text-sm font-semibold transition-colors">Save Changes</button></div>
+        </div>
+      )}
+
+      {activeSection === 'branding' && (
+        <div className="space-y-8 max-w-2xl">
+          <div>
+            <label className="text-xs text-[#888] font-medium block mb-3">Brand Color</label>
+            <div className="flex items-center gap-4">
+              <div className="w-10 h-10 rounded bg-amber-500 border-2 border-white/20 shadow-lg"></div>
+              <div className="flex items-center gap-2">
+                <span className="text-sm font-mono text-[#aaa]">#f59e0b</span>
+                <button className="text-xs text-[#888] hover:text-white underline transition-colors">Change</button>
+              </div>
+            </div>
+          </div>
+          <div className="h-px bg-[#1f1f1f]"></div>
+          <div>
+            <label className="text-xs text-[#888] font-medium block mb-3">Client Gallery Logo</label>
+            <div className="w-full max-w-sm h-32 border-2 border-dashed border-[#333] bg-[#111] hover:border-amber-500/50 rounded-lg flex flex-col items-center justify-center text-[#666] cursor-pointer transition-colors">
+              <Upload className="w-6 h-6 mb-2" />
+              <span className="text-sm font-medium">Drop logo here</span>
+              <span className="text-xs mt-1">SVG or PNG (transparent bg)</span>
+            </div>
           </div>
           <div>
-            <div className="flex gap-3 mb-2">
-              <button className="bg-[#1a1a1a] border border-[#333] hover:bg-[#222] text-white px-4 py-2 rounded-lg text-sm font-medium transition-colors flex items-center gap-2">
-                <Upload className="w-4 h-4" /> Upload Photo
-              </button>
-              <button className="bg-transparent text-red-500 hover:text-red-400 px-4 py-2 rounded-lg text-sm font-medium transition-colors">
-                Remove
+            <label className="text-xs text-[#888] font-medium block mb-3">Gallery Watermark</label>
+            <div className="flex items-center gap-3 p-4 bg-[#141414] border border-[#222] rounded-xl">
+              <div className="flex-1">
+                <p className="text-sm text-white font-medium">Auto-watermark delivered galleries</p>
+                <p className="text-xs text-[#555] mt-0.5">Applies your logo to exported full-res images</p>
+              </div>
+              <div className="w-10 h-6 bg-amber-500 rounded-full relative p-1 cursor-pointer">
+                <div className="w-4 h-4 bg-white rounded-full ml-auto shadow"></div>
+              </div>
+            </div>
+          </div>
+          <div className="pt-2 flex justify-end"><button className="bg-amber-500 hover:bg-amber-600 text-black px-6 py-2.5 rounded-lg text-sm font-semibold transition-colors">Save Branding</button></div>
+        </div>
+      )}
+
+      {activeSection === 'integrations' && (
+        <div className="space-y-4 max-w-2xl">
+          {[
+            { name: 'HoneyBook', desc: 'Contracts, invoices, and client portal', connected: true },
+            { name: 'Google Calendar', desc: 'Sync shoots and client meetings', connected: true },
+            { name: 'Pixieset', desc: 'Gallery delivery and proofing', connected: false },
+            { name: 'Stripe', desc: 'Online payments and invoicing', connected: true },
+            { name: 'Zapier', desc: 'Connect with 3,000+ apps', connected: false },
+          ].map(int => (
+            <div key={int.name} className="flex items-center justify-between p-4 bg-[#141414] border border-[#222] rounded-xl">
+              <div>
+                <p className="text-sm font-bold text-white">{int.name}</p>
+                <p className="text-xs text-[#555]">{int.desc}</p>
+              </div>
+              <button className={`px-4 py-1.5 rounded-lg text-xs font-bold transition-colors ${int.connected ? 'bg-emerald-500/10 border border-emerald-500/30 text-emerald-400 hover:bg-emerald-500/20' : 'bg-[#222] border border-[#333] text-[#888] hover:text-white hover:border-amber-500/30'}`}>
+                {int.connected ? 'Connected' : 'Connect'}
               </button>
             </div>
-            <p className="text-xs text-[#666]">Recommended: Square JPG, PNG. Max 2MB.</p>
-          </div>
+          ))}
         </div>
+      )}
 
-        <div className="h-px bg-[#1f1f1f] w-full"></div>
-
-        {/* Form Fields */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-          <div className="space-y-2">
-            <label className="text-xs text-[#888] font-medium">Display Name</label>
-            <input type="text" defaultValue="Drake Reynolds" className="w-full bg-[#111] border border-[#222] rounded-lg px-4 py-2.5 text-sm text-white focus:outline-none focus:border-amber-500" />
-          </div>
-          <div className="space-y-2">
-            <label className="text-xs text-[#888] font-medium">Studio Name</label>
-            <input type="text" defaultValue="Drake Reynolds Photography" className="w-full bg-[#111] border border-[#222] rounded-lg px-4 py-2.5 text-sm text-white focus:outline-none focus:border-amber-500" />
-          </div>
-          <div className="space-y-2">
-            <label className="text-xs text-[#888] font-medium">Email Address</label>
-            <input type="email" defaultValue="hello@drakereynolds.com" className="w-full bg-[#111] border border-[#222] rounded-lg px-4 py-2.5 text-sm text-white focus:outline-none focus:border-amber-500" />
-          </div>
-          <div className="space-y-2">
-            <label className="text-xs text-[#888] font-medium">Phone Number</label>
-            <input type="tel" defaultValue="+1 (555) 123-4567" className="w-full bg-[#111] border border-[#222] rounded-lg px-4 py-2.5 text-sm text-white focus:outline-none focus:border-amber-500" />
-          </div>
-          <div className="col-span-1 md:col-span-2 space-y-2">
-            <label className="text-xs text-[#888] font-medium">Website URL</label>
-            <input type="url" defaultValue="https://drakereynolds.com" className="w-full bg-[#111] border border-[#222] rounded-lg px-4 py-2.5 text-sm text-white focus:outline-none focus:border-amber-500" />
-          </div>
-          <div className="col-span-1 md:col-span-2 space-y-2">
-            <label className="text-xs text-[#888] font-medium">Bio</label>
-            <textarea className="w-full bg-[#111] border border-[#222] rounded-lg px-4 py-3 text-sm text-white focus:outline-none focus:border-amber-500 min-h-[100px] resize-none" defaultValue="Documentary-style wedding and commercial photographer based in Los Angeles. Specializing in film aesthetic and authentic moments."></textarea>
-          </div>
-        </div>
-
-        <div className="h-px bg-[#1f1f1f] w-full"></div>
-
-        {/* Branding Section */}
-        <div>
-          <h3 className="text-base font-semibold text-white mb-4">Branding</h3>
-          <div className="space-y-6">
-            <div>
-              <label className="text-xs text-[#888] font-medium block mb-3">Brand Color</label>
-              <div className="flex items-center gap-4">
-                <div className="w-10 h-10 rounded bg-amber-500 border-2 border-white/20 shadow-lg"></div>
-                <div className="flex items-center gap-2">
-                  <span className="text-sm font-mono text-[#aaa]">#f59e0b</span>
-                  <button className="text-xs text-[#888] hover:text-white underline">Change</button>
+      {activeSection === 'billing' && (
+        <div className="space-y-6 max-w-2xl">
+          <div className="bg-amber-500/5 border border-amber-500/20 rounded-xl p-6">
+            <div className="flex items-center justify-between">
+              <div className="flex items-center gap-3">
+                <div className="w-10 h-10 rounded-xl bg-amber-500/10 flex items-center justify-center"><Camera className="w-6 h-6 text-amber-500" /></div>
+                <div>
+                  <p className="text-sm font-bold text-white">Pro Plan</p>
+                  <p className="text-xs text-[#555]">$49/month · Billed monthly · Next billing Jun 3</p>
                 </div>
               </div>
+              <button className="text-xs text-[#555] font-bold hover:text-white transition-colors">MANAGE</button>
             </div>
-            
-            <div>
-              <label className="text-xs text-[#888] font-medium block mb-3">Client Gallery Logo</label>
-              <div className="w-full max-w-sm h-32 border-2 border-dashed border-[#333] bg-[#111] hover:border-amber-500/50 rounded-lg flex flex-col items-center justify-center text-[#666] cursor-pointer transition-colors">
-                <Upload className="w-6 h-6 mb-2" />
-                <span className="text-sm font-medium">Drop logo here</span>
-                <span className="text-xs mt-1">SVG or PNG (transparent bg)</span>
+          </div>
+          <div className="bg-[#111] border border-[#222] rounded-xl p-6">
+            <h3 className="text-sm font-bold text-white mb-4">Payment Method</h3>
+            <div className="flex items-center justify-between p-3 bg-[#141414] border border-[#222] rounded-lg">
+              <div className="flex items-center gap-3">
+                <CreditCard className="w-5 h-5 text-[#888]" />
+                <span className="text-sm text-white">•••• •••• •••• 4242</span>
               </div>
+              <button className="text-xs text-amber-500 hover:text-amber-400 font-bold transition-colors">Update</button>
             </div>
           </div>
         </div>
+      )}
 
-        <div className="pt-6 flex justify-end">
-          <button className="bg-amber-500 hover:bg-amber-600 text-black px-6 py-2.5 rounded-lg text-sm font-semibold transition-colors">
-            Save Changes
-          </button>
+      {activeSection === 'notifications' && (
+        <div className="space-y-4 max-w-2xl">
+          {[
+            { label: 'New Inquiry Alert', desc: 'Notify me when a new lead contacts me', value: autoGallery, set: setAutoGallery },
+            { label: 'Contract Reminders', desc: 'Reminder when unsigned contracts are overdue', value: contractReminders, set: setContractReminders },
+            { label: 'Auto Review Requests', desc: 'Send Google review link after gallery delivery', value: reviewAuto, set: setReviewAuto },
+            { label: 'Weekly Report', desc: 'Email summary of bookings and revenue every Monday', value: weeklyReport, set: setWeeklyReport },
+          ].map(item => (
+            <div key={item.label} className="flex items-center justify-between p-4 bg-[#141414] border border-[#222] rounded-xl">
+              <div>
+                <p className="text-sm font-bold text-white mb-1">{item.label}</p>
+                <p className="text-xs text-[#555]">{item.desc}</p>
+              </div>
+              <button onClick={() => item.set(v => !v)} className={`w-10 h-6 rounded-full relative p-1 cursor-pointer transition-colors ${item.value ? 'bg-amber-500' : 'bg-[#333]'}`}>
+                <div className={`w-4 h-4 bg-white rounded-full shadow transition-all ${item.value ? 'ml-auto' : 'ml-0'}`}></div>
+              </button>
+            </div>
+          ))}
+          <div className="pt-4 flex justify-end"><button className="bg-amber-500 hover:bg-amber-600 text-black px-6 py-2.5 rounded-lg text-sm font-semibold transition-colors">Save Preferences</button></div>
         </div>
-      </div>
+      )}
     </div>
   );
 }
