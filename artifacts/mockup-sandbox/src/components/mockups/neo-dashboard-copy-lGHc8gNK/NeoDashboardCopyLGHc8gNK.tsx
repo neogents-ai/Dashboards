@@ -11,9 +11,10 @@ import {
   RefreshCw, AlertCircle, Database, ListFilter, SlidersHorizontal, X
 } from 'lucide-react';
 
-export function Dashboard() {
+export function NeoDashboardCopyLGHc8gNK() {
   const [activeNav, setActiveNav] = useState('dashboard');
   const [activePreset, setActivePreset] = useState('Film Noir');
+  const [showTour, setShowTour] = useState(true);
 
   const renderContent = () => {
     switch (activeNav) {
@@ -42,6 +43,7 @@ export function Dashboard() {
 
   return (
     <div className="neo-dashboard-container min-h-[100dvh] bg-[#09090b] text-white flex overflow-hidden">
+      {showTour && <IntroTour onClose={() => setShowTour(false)} setActiveNav={setActiveNav} />}
       
       {/* Left Sidebar */}
       <aside className="w-[72px] lg:w-[240px] flex-shrink-0 border-r border-[#1f1f1f] bg-[#0d0d0d] flex flex-col justify-between transition-all duration-300 z-10">
@@ -50,10 +52,10 @@ export function Dashboard() {
           <div className="h-20 flex items-center justify-center lg:justify-start lg:px-6 border-b border-[#1f1f1f]">
             <div className="flex items-center gap-3">
               <div className="w-10 h-10 rounded bg-gradient-to-tr from-amber-600 to-amber-400 flex items-center justify-center font-bold text-lg text-black">
-                DR
+                CR
               </div>
               <div className="hidden lg:block">
-                <h2 className="font-bold text-base leading-tight">Drake Reynolds</h2>
+                <h2 className="font-bold text-base leading-tight">Cal Ripken</h2>
                 <p className="text-[#888] text-[10px] uppercase tracking-wider">Photography Studio</p>
               </div>
             </div>
@@ -80,12 +82,12 @@ export function Dashboard() {
           <div className="mt-2 flex items-center gap-3 p-2 rounded-lg hover:bg-[#1a1a1a] cursor-pointer transition-colors">
             <div className="relative">
               <div className="w-9 h-9 rounded-full bg-gradient-to-tr from-amber-600 to-amber-400 flex items-center justify-center font-semibold text-xs flex-shrink-0 text-black">
-                DR
+                CR
               </div>
               <span className="absolute -top-1 -right-1 w-3 h-3 bg-red-500 rounded-full border-2 border-[#0d0d0d]"></span>
             </div>
             <div className="hidden lg:block overflow-hidden">
-              <p className="text-sm font-medium text-white truncate">Drake Reynolds</p>
+              <p className="text-sm font-medium text-white truncate">Cal Ripken</p>
               <p className="text-xs text-amber-500 font-medium truncate">Pro Plan</p>
             </div>
           </div>
@@ -98,7 +100,7 @@ export function Dashboard() {
         {/* Topbar */}
         <header className="h-20 flex-shrink-0 flex items-center justify-between px-6 lg:px-8 border-b border-[#1f1f1f] z-20">
           <div className="flex flex-col">
-            <h1 className="text-xl font-semibold text-white">Good morning, Drake</h1>
+            <h1 className="text-xl font-semibold text-white">Good morning, Cal</h1>
             <p className="text-[#888] text-sm">May 3, 2026</p>
           </div>
           
@@ -115,7 +117,7 @@ export function Dashboard() {
               <span className="absolute -top-0.5 -right-0.5 w-2.5 h-2.5 bg-amber-500 rounded-full border-2 border-[#09090b]"></span>
             </button>
             <div className="w-8 h-8 rounded-full bg-gradient-to-tr from-amber-600 to-amber-400 flex items-center justify-center text-xs font-bold text-black cursor-pointer">
-              DR
+              CR
             </div>
           </div>
         </header>
@@ -169,12 +171,11 @@ function DashboardTab({ activePreset, setActivePreset }: { activePreset: string,
           <Widget title="AI Image Sort" icon={<Sparkles className="w-4 h-4 text-amber-500" />} badge="BETA">
             <div className="flex flex-col h-full">
               <div className="grid grid-cols-3 gap-2 mb-4">
-                <div className="aspect-square bg-amber-900/40 rounded border border-amber-800/30"></div>
-                <div className="aspect-square bg-orange-900/40 rounded border border-orange-800/30"></div>
-                <div className="aspect-square bg-blue-900/40 rounded border border-blue-800/30"></div>
-                <div className="aspect-square bg-stone-800/40 rounded border border-stone-700/30"></div>
-                <div className="aspect-square bg-rose-900/40 rounded border border-rose-800/30"></div>
-                <div className="aspect-square bg-emerald-900/40 rounded border border-emerald-800/30"></div>
+                {[1,2,3,4,5,6].map(n => (
+                  <div key={n} className="aspect-square rounded border border-[#1f1f1f] overflow-hidden">
+                    <img src={`/images/cal/cal${n}.jpg`} alt={`cal${n}`} className="w-full h-full object-cover" />
+                  </div>
+                ))}
               </div>
               <div className="space-y-3 mb-4">
                 <p className="text-xs text-[#888] uppercase tracking-wider font-medium">Style Preset</p>
@@ -202,7 +203,7 @@ function DashboardTab({ activePreset, setActivePreset }: { activePreset: string,
                   Auto-Tag All
                 </button>
                 <p className="text-center text-xs text-[#666] pt-1">
-                  47 untagged photos · AI analyzed 312 this week
+                  6 photos · 1 untagged · AI analyzed 6 this week
                 </p>
               </div>
             </div>
@@ -259,10 +260,10 @@ function DashboardTab({ activePreset, setActivePreset }: { activePreset: string,
           <Widget title="Social Media" icon={<Share2 className="w-4 h-4 text-[#888]" />}>
             <div className="space-y-5">
               <div className="space-y-2">
-                <SocialStatus platform="Instagram" handle="@drakeRphoto" stats="12.4K followers" />
-                <SocialStatus platform="Facebook" handle="Drake Reynolds Photography" stats="3.2K likes" />
-                <SocialStatus platform="TikTok" handle="@drakevisuals" stats="8.1K followers" />
-                <SocialStatus platform="LinkedIn" handle="Drake Reynolds" stats="892 connections" />
+                <SocialStatus platform="Instagram" handle="@calripkenxp" stats="12.4K followers" />
+                <SocialStatus platform="Facebook" handle="CalRipken Experience" stats="3.2K likes" />
+                <SocialStatus platform="TikTok" handle="@calripken.visuals" stats="8.1K followers" />
+                <SocialStatus platform="LinkedIn" handle="Cal Ripken" stats="892 connections" />
               </div>
               <div className="pt-4 border-t border-[#1f1f1f]">
                 <div className="flex items-center justify-between mb-3">
@@ -334,31 +335,14 @@ function GalleryTab({ activePreset, setActivePreset }: { activePreset: string, s
     { name: 'Documentary', desc: 'Candid, real' },
   ];
 
-  // Placeholder photos
-  const photos = Array.from({ length: 24 }).map((_, i) => {
-    const isUntagged = i === 3 || i === 7 || i === 12;
-    const hasTag = i === 1 || i === 5 || i === 8 || i === 15 || i === 18 || i === 21;
-    let tag = '';
-    let tagColor = '';
-    if (hasTag) {
-      if (i % 3 === 0) { tag = 'Film Noir'; tagColor = 'text-amber-500 bg-amber-500/10 border-amber-500/20'; }
-      else if (i % 2 === 0) { tag = 'Golden Hour'; tagColor = 'text-purple-500 bg-purple-500/10 border-purple-500/20'; }
-      else { tag = 'Clean & Bright'; tagColor = 'text-blue-500 bg-blue-500/10 border-blue-500/20'; }
-    }
-
-    const colors = [
-      'bg-orange-900/30', 'bg-slate-800/40', 'bg-amber-900/40', 
-      'bg-neutral-800/50', 'bg-stone-800/40', 'bg-rose-900/20'
-    ];
-
-    return {
-      id: i,
-      color: colors[i % colors.length],
-      isUntagged,
-      tag,
-      tagColor
-    };
-  });
+  const photos = [
+    { id: 0, src: '/images/cal/cal1.jpg', label: 'Portrait Session',  isUntagged: false, tag: 'Clean & Bright', tagColor: 'text-blue-500 bg-blue-500/10 border-blue-500/20' },
+    { id: 1, src: '/images/cal/cal2.jpg', label: 'Artistic Nude',     isUntagged: false, tag: 'Film Noir',       tagColor: 'text-amber-500 bg-amber-500/10 border-amber-500/20' },
+    { id: 2, src: '/images/cal/cal3.jpg', label: 'Boudoir Session',   isUntagged: false, tag: 'Moody Editorial', tagColor: 'text-purple-500 bg-purple-500/10 border-purple-500/20' },
+    { id: 3, src: '/images/cal/cal4.jpg', label: 'Street Editorial',  isUntagged: true,  tag: '',               tagColor: '' },
+    { id: 4, src: '/images/cal/cal5.jpg', label: 'Fashion Shoot',     isUntagged: false, tag: 'High Fashion',   tagColor: 'text-rose-500 bg-rose-500/10 border-rose-500/20' },
+    { id: 5, src: '/images/cal/cal6.jpg', label: 'Magazine Cover',    isUntagged: false, tag: 'Golden Hour',    tagColor: 'text-orange-500 bg-orange-500/10 border-orange-500/20' },
+  ];
 
   return (
     <div className="flex h-full">
@@ -403,7 +387,7 @@ function GalleryTab({ activePreset, setActivePreset }: { activePreset: string, s
         </div>
 
         <div className="text-xs text-[#666] mb-6">
-          312 photos analyzed &middot; 47 untagged &middot; 6 shoots
+          6 photos &middot; 1 untagged &middot; 4 shoots
         </div>
 
         <div className="h-px bg-[#1f1f1f] w-full mb-6"></div>
@@ -414,9 +398,11 @@ function GalleryTab({ activePreset, setActivePreset }: { activePreset: string, s
           <div className="space-y-1.5">
             <label className="text-xs text-[#888]">Shoot</label>
             <select className="w-full bg-[#141414] border border-[#222] rounded-lg p-2.5 text-sm text-white focus:outline-none focus:border-amber-500">
-              <option>Emma & Jake Wedding</option>
-              <option>NovaTech Brand Shoot</option>
-              <option>Marcus Lee Headshots</option>
+              <option>All Shoots</option>
+              <option>Portrait Session</option>
+              <option>Boudoir Session</option>
+              <option>Fashion Shoot</option>
+              <option>Street Editorial</option>
             </select>
           </div>
 
@@ -445,8 +431,8 @@ function GalleryTab({ activePreset, setActivePreset }: { activePreset: string, s
         {/* Topbar */}
         <div className="h-16 border-b border-[#1f1f1f] px-6 flex items-center justify-between flex-shrink-0">
           <div className="flex items-center gap-3">
-            <h2 className="text-sm font-medium text-white">Emma & Jake Wedding &mdash; Jun 2026</h2>
-            <span className="text-xs text-[#888] px-2 py-1 bg-[#141414] rounded-md border border-[#222]">128 photos</span>
+            <h2 className="text-sm font-medium text-white">Cal Ripken Portfolio &mdash; 2026</h2>
+            <span className="text-xs text-[#888] px-2 py-1 bg-[#141414] rounded-md border border-[#222]">6 photos</span>
           </div>
           <div className="flex items-center gap-3">
             <button className="text-[#888] hover:text-white p-2 rounded-md hover:bg-[#141414] transition-colors"><Filter className="w-4 h-4" /></button>
@@ -461,24 +447,39 @@ function GalleryTab({ activePreset, setActivePreset }: { activePreset: string, s
             {photos.map(photo => (
               <div 
                 key={photo.id} 
-                className={`relative aspect-[3/2] rounded-lg border border-[#1f1f1f] group cursor-pointer transition-all hover:border-amber-500 overflow-hidden ${photo.color}`}
+                className="relative aspect-[3/2] rounded-lg border border-[#1f1f1f] group cursor-pointer transition-all hover:border-amber-500 overflow-hidden bg-[#111] flex flex-col"
               >
-                {/* Hover Checkmark */}
-                <div className="absolute top-2 left-2 w-5 h-5 rounded-full border border-white/20 bg-black/40 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
-                  <Check className="w-3 h-3 text-white" />
+                <div className="flex-1 relative overflow-hidden">
+                  <img src={photo.src} alt={photo.label} className="w-full h-full object-cover" />
+                  {/* Hover Checkmark */}
+                  <div className="absolute top-2 left-2 w-5 h-5 rounded-full border border-white/20 bg-black/40 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
+                    <Check className="w-3 h-3 text-white" />
+                  </div>
+                  {/* Hover overlay with tag buttons */}
+                  <div className="absolute inset-0 bg-black/50 backdrop-blur-[1px] opacity-0 group-hover:opacity-100 transition-opacity flex flex-col items-center justify-center gap-1.5 px-2">
+                    <p className="text-[9px] text-[#aaa] uppercase tracking-widest font-medium mb-0.5">Tag Style</p>
+                    {['Clean & Bright', 'Film Noir', 'Golden Hour'].map(t => (
+                      <button key={t} className="w-full text-[9px] font-medium bg-[#141414]/90 border border-[#333] hover:border-amber-500 hover:text-amber-400 text-white px-2 py-1 rounded transition-colors truncate">
+                        {t}
+                      </button>
+                    ))}
+                  </div>
+                  {/* Style tag badge */}
+                  {photo.isUntagged && (
+                    <div className="absolute bottom-2 left-2 px-2 py-1 rounded text-[10px] font-medium bg-[#141414]/80 backdrop-blur-sm text-[#888] border border-[#222] group-hover:opacity-0 transition-opacity">
+                      Untagged
+                    </div>
+                  )}
+                  {photo.tag && (
+                    <div className={`absolute bottom-2 left-2 px-2 py-1 rounded text-[10px] font-medium backdrop-blur-sm border group-hover:opacity-0 transition-opacity ${photo.tagColor}`}>
+                      {photo.tag}
+                    </div>
+                  )}
                 </div>
-
-                {/* Tags */}
-                {photo.isUntagged && (
-                  <div className="absolute bottom-2 left-2 px-2 py-1 rounded text-[10px] font-medium bg-[#141414]/80 backdrop-blur-sm text-[#888] border border-[#222]">
-                    Untagged
-                  </div>
-                )}
-                {photo.tag && (
-                  <div className={`absolute bottom-2 left-2 px-2 py-1 rounded text-[10px] font-medium backdrop-blur-sm border ${photo.tagColor}`}>
-                    {photo.tag}
-                  </div>
-                )}
+                {/* Photo label */}
+                <div className="px-2 py-1 bg-[#0d0d0d] border-t border-[#1f1f1f] flex-shrink-0">
+                  <p className="text-[10px] text-[#aaa] truncate font-medium">{photo.label}</p>
+                </div>
               </div>
             ))}
           </div>
@@ -1269,11 +1270,11 @@ function SocialTab() {
           <h3 className="text-sm font-medium text-white mb-4">Connected Platforms</h3>
           
           <div className="space-y-4 mb-8">
-            <PlatformRow name="Instagram" handle="@drakeRphoto" count="12,400 followers" color="bg-pink-600" />
-            <PlatformRow name="Facebook" handle="Drake Reynolds Photography" count="3,200 likes" color="bg-blue-600" />
-            <PlatformRow name="TikTok" handle="@drakevisuals" count="8,100 followers" color="bg-stone-800" />
-            <PlatformRow name="LinkedIn" handle="Drake Reynolds" count="892 connections" color="bg-blue-700" />
-            <PlatformRow name="Pinterest" handle="drakeRphoto" count="2,100 views/mo" color="bg-red-600" />
+            <PlatformRow name="Instagram" handle="@calripkenxp" count="12,400 followers" color="bg-pink-600" />
+            <PlatformRow name="Facebook" handle="CalRipken Experience" count="3,200 likes" color="bg-blue-600" />
+            <PlatformRow name="TikTok" handle="@calripken.visuals" count="8,100 followers" color="bg-stone-800" />
+            <PlatformRow name="LinkedIn" handle="Cal Ripken" count="892 connections" color="bg-blue-700" />
+            <PlatformRow name="Pinterest" handle="calripkenxp" count="2,100 views/mo" color="bg-red-600" />
           </div>
 
           <div className="pt-6 border-t border-[#1f1f1f]">
@@ -1801,9 +1802,9 @@ function ReviewsTab() {
         <div className="lg:col-span-2 space-y-4">
           <h3 className="text-sm font-medium text-white mb-2">Recent Reviews</h3>
           
-          <ReviewCard name="Emma Rodriguez" platform="Google" stars={5} date="2 days ago" text="Drake captured our wedding day more beautifully than we could have imagined. He made everyone feel so comfortable, and the final gallery looks like it belongs in a magazine." />
+          <ReviewCard name="Emma Rodriguez" platform="Google" stars={5} date="2 days ago" text="Cal captured our wedding day more beautifully than we could have imagined. He made everyone feel so comfortable, and the final gallery looks like it belongs in a magazine." />
           <ReviewCard name="NovaTech Corp" platform="Facebook" stars={5} date="1 week ago" text="Professional, creative, and delivered on time. The new brand photos have completely elevated our website. Highly recommend for corporate work." />
-          <ReviewCard name="Asha Patel" platform="Google" stars={5} date="2 weeks ago" text="Absolutely stunning brand photos! Drake understood exactly what vibe I was going for and nailed it." />
+          <ReviewCard name="Asha Patel" platform="Google" stars={5} date="2 weeks ago" text="Absolutely stunning brand photos! Cal understood exactly what vibe I was going for and nailed it." />
           <ReviewCard name="Marcus Lee" platform="Instagram" stars={4} date="3 weeks ago" text="Great session, very professional. Took a bit longer to get the edits back than expected, but the quality was superb." />
           <ReviewCard name="Priya & Raj" platform="Google" stars={5} date="1 month ago" text="Exceeded every expectation. We will cherish these photos forever." />
           <ReviewCard name="Fernanda Cruz" platform="Google" stars={5} date="1 month ago" text="Worth every penny. The lighting in the shots is just magical." />
@@ -1906,7 +1907,7 @@ function SettingsTab() {
       {activeSection === 'profile' && (
         <div className="space-y-8">
           <div className="flex items-center gap-6">
-            <div className="w-24 h-24 rounded-full bg-gradient-to-tr from-amber-600 to-amber-400 flex items-center justify-center font-bold text-3xl text-black">DR</div>
+            <div className="w-24 h-24 rounded-full bg-gradient-to-tr from-amber-600 to-amber-400 flex items-center justify-center font-bold text-3xl text-black">CR</div>
             <div>
               <div className="flex gap-3 mb-2">
                 <button className="bg-[#1a1a1a] border border-[#333] hover:bg-[#222] text-white px-4 py-2 rounded-lg text-sm font-medium transition-colors flex items-center gap-2"><Upload className="w-4 h-4" /> Upload Photo</button>
@@ -1917,12 +1918,12 @@ function SettingsTab() {
           </div>
           <div className="h-px bg-[#1f1f1f]"></div>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            <div className="space-y-2"><label className="text-xs text-[#888] font-medium">Display Name</label><input type="text" defaultValue="Drake Reynolds" className="w-full bg-[#111] border border-[#222] rounded-lg px-4 py-2.5 text-sm text-white focus:outline-none focus:border-amber-500" /></div>
-            <div className="space-y-2"><label className="text-xs text-[#888] font-medium">Studio Name</label><input type="text" defaultValue="Drake Reynolds Photography" className="w-full bg-[#111] border border-[#222] rounded-lg px-4 py-2.5 text-sm text-white focus:outline-none focus:border-amber-500" /></div>
-            <div className="space-y-2"><label className="text-xs text-[#888] font-medium">Email Address</label><input type="email" defaultValue="hello@drakereynolds.com" className="w-full bg-[#111] border border-[#222] rounded-lg px-4 py-2.5 text-sm text-white focus:outline-none focus:border-amber-500" /></div>
-            <div className="space-y-2"><label className="text-xs text-[#888] font-medium">Phone Number</label><input type="tel" defaultValue="+1 (555) 123-4567" className="w-full bg-[#111] border border-[#222] rounded-lg px-4 py-2.5 text-sm text-white focus:outline-none focus:border-amber-500" /></div>
-            <div className="col-span-1 md:col-span-2 space-y-2"><label className="text-xs text-[#888] font-medium">Website URL</label><input type="url" defaultValue="https://drakereynolds.com" className="w-full bg-[#111] border border-[#222] rounded-lg px-4 py-2.5 text-sm text-white focus:outline-none focus:border-amber-500" /></div>
-            <div className="col-span-1 md:col-span-2 space-y-2"><label className="text-xs text-[#888] font-medium">Bio</label><textarea className="w-full bg-[#111] border border-[#222] rounded-lg px-4 py-3 text-sm text-white focus:outline-none focus:border-amber-500 min-h-[100px] resize-none" defaultValue="Documentary-style wedding and commercial photographer based in Los Angeles. Specializing in film aesthetic and authentic moments."></textarea></div>
+            <div className="space-y-2"><label className="text-xs text-[#888] font-medium">Display Name</label><input type="text" defaultValue="Cal Ripken" className="w-full bg-[#111] border border-[#222] rounded-lg px-4 py-2.5 text-sm text-white focus:outline-none focus:border-amber-500" /></div>
+            <div className="space-y-2"><label className="text-xs text-[#888] font-medium">Studio Name</label><input type="text" defaultValue="CalRipken Experience" className="w-full bg-[#111] border border-[#222] rounded-lg px-4 py-2.5 text-sm text-white focus:outline-none focus:border-amber-500" /></div>
+            <div className="space-y-2"><label className="text-xs text-[#888] font-medium">Email Address</label><input type="email" defaultValue="hello@calripkenxp.com" className="w-full bg-[#111] border border-[#222] rounded-lg px-4 py-2.5 text-sm text-white focus:outline-none focus:border-amber-500" /></div>
+            <div className="space-y-2"><label className="text-xs text-[#888] font-medium">Phone Number</label><input type="tel" defaultValue="+1 (410) 867-5309" className="w-full bg-[#111] border border-[#222] rounded-lg px-4 py-2.5 text-sm text-white focus:outline-none focus:border-amber-500" /></div>
+            <div className="col-span-1 md:col-span-2 space-y-2"><label className="text-xs text-[#888] font-medium">Website URL</label><input type="url" defaultValue="https://calripkenxp.com" className="w-full bg-[#111] border border-[#222] rounded-lg px-4 py-2.5 text-sm text-white focus:outline-none focus:border-amber-500" /></div>
+            <div className="col-span-1 md:col-span-2 space-y-2"><label className="text-xs text-[#888] font-medium">Bio</label><textarea className="w-full bg-[#111] border border-[#222] rounded-lg px-4 py-3 text-sm text-white focus:outline-none focus:border-amber-500 min-h-[100px] resize-none" defaultValue="Editorial photographer specializing in portraits, boudoir, and high-fashion. Based in Baltimore, MD. Published in VOGUE."></textarea></div>
           </div>
           <div className="pt-2 flex justify-end"><button className="bg-amber-500 hover:bg-amber-600 text-black px-6 py-2.5 rounded-lg text-sm font-semibold transition-colors">Save Changes</button></div>
         </div>
@@ -2343,5 +2344,140 @@ function BriefcaseIcon(props: any) {
       <rect width="20" height="14" x="2" y="7" rx="2" ry="2" />
       <path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16" />
     </svg>
+  );
+}
+
+const TOUR_STEPS: Array<{ nav: string; icon: React.ReactNode; title: string; body: string }> = [
+  {
+    nav: 'dashboard',
+    icon: <Sparkles className="w-6 h-6 text-amber-500" />,
+    title: 'Welcome, Cal.',
+    body: 'Your studio command center is ready. This quick tour covers everything — takes 60 seconds.',
+  },
+  {
+    nav: 'dashboard',
+    icon: <LayoutDashboard className="w-6 h-6 text-amber-500" />,
+    title: 'Dashboard',
+    body: 'Live KPIs, today\'s schedule, AI suggestions, and your lead pipeline — all at a glance.',
+  },
+  {
+    nav: 'gallery',
+    icon: <ImageIcon className="w-6 h-6 text-amber-500" />,
+    title: 'Gallery & AI Sort',
+    body: 'Upload a shoot and N.O.R.I. sorts it by aesthetic style in seconds. Your 6 photos are already loaded.',
+  },
+  {
+    nav: 'bookings',
+    icon: <Calendar className="w-6 h-6 text-amber-500" />,
+    title: 'Bookings',
+    body: 'Clients book, pay, and get reminders automatically. Your calendar syncs in real-time.',
+  },
+  {
+    nav: 'leads',
+    icon: <Users className="w-6 h-6 text-amber-500" />,
+    title: 'Leads & CRM',
+    body: 'N.O.R.I. scrapes directories and agencies hunting for photographers. Leads flow straight into your pipeline.',
+  },
+  {
+    nav: 'social',
+    icon: <Share2 className="w-6 h-6 text-amber-500" />,
+    title: 'Social Engine',
+    body: 'Schedule posts across Instagram, Facebook, TikTok, and LinkedIn from one hub.',
+  },
+  {
+    nav: 'model',
+    icon: <GraduationCap className="w-6 h-6 text-amber-500" />,
+    title: 'Model Dev Studio',
+    body: 'Build your talent roster, track test shoots, and manage agency submissions.',
+  },
+];
+
+function IntroTour({ onClose, setActiveNav }: { onClose: () => void, setActiveNav: (nav: string) => void }) {
+  const [step, setStep] = useState(0);
+  const current = TOUR_STEPS[step];
+  const isLast = step === TOUR_STEPS.length - 1;
+  const total = TOUR_STEPS.length;
+
+  const handleClose = () => {
+    setActiveNav('dashboard');
+    onClose();
+  };
+
+  const goNext = () => {
+    if (isLast) {
+      handleClose();
+    } else {
+      const next = step + 1;
+      setStep(next);
+      setActiveNav(TOUR_STEPS[next].nav);
+    }
+  };
+
+  const goPrev = () => {
+    if (step > 0) {
+      const prev = step - 1;
+      setStep(prev);
+      setActiveNav(TOUR_STEPS[prev].nav);
+    }
+  };
+
+  useEffect(() => {
+    setActiveNav(current.nav);
+  }, [step]);
+
+  return (
+    <div className="fixed inset-0 bg-black/80 backdrop-blur-sm z-[100] flex items-center justify-center px-4">
+      <div className="relative w-full max-w-lg bg-[#111] border border-[#2a2a2a] rounded-2xl p-10">
+        
+        {/* Skip Tour */}
+        <button
+          onClick={handleClose}
+          className="absolute top-4 right-4 text-xs text-[#555] hover:text-white transition-colors"
+        >
+          Skip Tour
+        </button>
+
+        {/* Step counter */}
+        <p className="text-xs text-[#555] font-medium mb-6">{step + 1} of {total}</p>
+
+        {/* Icon in amber circle */}
+        <div className="w-12 h-12 rounded-full bg-amber-500/10 border border-amber-500/20 flex items-center justify-center mb-6">
+          {current.icon}
+        </div>
+
+        {/* Text */}
+        <h2 className="text-2xl font-bold text-white">{current.title}</h2>
+        <p className="text-[#888] text-sm leading-relaxed mt-2 mb-8">{current.body}</p>
+
+        {/* Progress dots */}
+        <div className="flex items-center gap-2 mb-8">
+          {TOUR_STEPS.map((_, i) => (
+            <button
+              key={i}
+              onClick={() => { setStep(i); setActiveNav(TOUR_STEPS[i].nav); }}
+              className={`h-2 rounded-full transition-all ${i <= step ? 'bg-amber-500' : 'bg-[#2a2a2a]'} ${i === step ? 'w-5' : 'w-2'}`}
+            />
+          ))}
+        </div>
+
+        {/* Buttons */}
+        <div className="flex items-center gap-3">
+          {step > 0 && (
+            <button
+              onClick={goPrev}
+              className="px-5 py-2.5 rounded-lg text-sm font-medium text-white border border-[#2a2a2a] hover:border-[#444] transition-colors"
+            >
+              ← Previous
+            </button>
+          )}
+          <button
+            onClick={goNext}
+            className="px-6 py-2.5 rounded-lg text-sm font-semibold bg-amber-500 hover:bg-amber-600 text-black transition-colors"
+          >
+            {isLast ? 'Get Started →' : 'Next →'}
+          </button>
+        </div>
+      </div>
+    </div>
   );
 }

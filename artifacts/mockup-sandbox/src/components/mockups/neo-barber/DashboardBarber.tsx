@@ -73,7 +73,7 @@ export function DashboardBarber() {
 
         <div className="p-3 border-t border-[#1f1f1f] space-y-1">
           <div className="flex items-center gap-2 px-2 py-2 mb-1">
-            <img src="/__mockup/images/nori_nobg.png" alt="NORI" className="nori-animated object-contain flex-shrink-0" style={{ width: 36, height: 36 }} />
+            <img src="/images/nori_nobg.png" alt="NORI" className="nori-animated object-contain flex-shrink-0" style={{ width: 36, height: 36 }} />
             <span className="hidden lg:block text-[10px] font-bold tracking-widest" style={{ color: '#00B359', fontFamily: 'monospace' }}>Powered by N.O.R.I.</span>
           </div>
           <NavItem icon={<Settings className="w-5 h-5" />} label="Settings" active={activeNav === 'settings'} onClick={() => setActiveNav('settings')} />

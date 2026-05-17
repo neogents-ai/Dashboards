@@ -1,0 +1,24 @@
+# Dependencies
+node_modules/
+
+# Build output
+dist/
+artifacts/mockup-sandbox/dist/
+server/dist/
+
+# Local env and secrets
+.env
+.env.*
+!.env.example
+
+# Replit/local machine state
+.config/
+.local/
+.cache/
+*.log
+
+# OS/editor
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/

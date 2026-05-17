@@ -102,7 +102,7 @@ function DeepFieldGallery() {
   );
 }
 
-export function LandingPage() {
+export function NeoLandingCopyJcC_vBQK() {
   return (
     <div className="neo-font-sans w-full min-h-screen overflow-x-hidden bg-[#fafaf8]">
       

@@ -16,16 +16,16 @@ interface PhotoCard {
 }
 
 const IMAGES = [
-  "/__mockup/images/neo_1.png",
-  "/__mockup/images/neo_2.png",
-  "/__mockup/images/neo_3.png",
-  "/__mockup/images/neo_4.png",
-  "/__mockup/images/neo_5.png",
-  "/__mockup/images/neo_6.png",
-  "/__mockup/images/neo_7.png",
-  "/__mockup/images/neo_8.png",
-  "/__mockup/images/neo_9.png",
-  "/__mockup/images/neo_10.png"
+  "/images/neo_1.png",
+  "/images/neo_2.png",
+  "/images/neo_3.png",
+  "/images/neo_4.png",
+  "/images/neo_5.png",
+  "/images/neo_6.png",
+  "/images/neo_7.png",
+  "/images/neo_8.png",
+  "/images/neo_9.png",
+  "/images/neo_10.png"
 ];
 
 function DeepFieldGallery() {
@@ -359,7 +359,7 @@ export function LandingRealtor() {
 
           <div>© 2026 NEO Gents. All rights reserved.</div>
           <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '8px', marginTop: '16px', paddingTop: '16px', borderTop: '1px solid #e5e5e5' }}>
-            <img src="/__mockup/images/nori_nobg.png" alt="NORI mascot" className="nori-animated" style={{ width: 48, height: 48, objectFit: 'contain' }} />
+            <img src="/images/nori_nobg.png" alt="NORI mascot" className="nori-animated" style={{ width: 48, height: 48, objectFit: 'contain' }} />
             <span style={{ color: '#00B359', fontSize: 12, fontWeight: 700, letterSpacing: '0.1em', fontFamily: 'monospace' }}>Powered by N.O.R.I.</span>
           </div>
         </div>

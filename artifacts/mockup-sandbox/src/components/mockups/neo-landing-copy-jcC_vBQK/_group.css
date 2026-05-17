@@ -1,0 +1,113 @@
+@import url('https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,100..1000;1,9..40,100..1000&family=Playfair+Display:ital,wght@0,400..900;1,400..900&display=swap');
+
+.neo-font-sans {
+  font-family: 'DM Sans', sans-serif;
+}
+
+.neo-font-serif {
+  font-family: 'Playfair Display', serif;
+}
+
+.neo-bg-dark {
+  background-color: #0c0c0c;
+}
+
+.neo-bg-light {
+  background-color: #fafaf8;
+}
+
+.neo-text-dark {
+  color: #0c0c0c;
+}
+
+.neo-text-light {
+  color: #ffffff;
+}
+
+.neo-accent {
+  color: #f59e0b;
+}
+
+.neo-bg-accent {
+  background-color: #f59e0b;
+}
+
+.neo-glass-card {
+  background: rgba(255, 255, 255, 0.05);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.neo-input-light {
+  background: #ffffff;
+  border: 1.5px solid #d1d5db;
+  color: #0c0c0c;
+  padding: 0.85rem 1.1rem;
+  border-radius: 10px;
+  width: 100%;
+  font-family: 'DM Sans', sans-serif;
+  font-size: 0.9375rem;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+  appearance: none;
+  -webkit-appearance: none;
+}
+
+.neo-input-light::placeholder {
+  color: #9ca3af;
+  font-weight: 400;
+}
+
+.neo-input-light:hover {
+  border-color: #9ca3af;
+}
+
+.neo-input-light:focus {
+  outline: none;
+  border-color: #f59e0b;
+  box-shadow: 0 0 0 3px rgba(245, 158, 11, 0.12);
+}
+
+.neo-btn-amber {
+  background-color: #f59e0b;
+  color: #ffffff;
+  padding: 0.75rem 1.5rem;
+  border-radius: 9999px;
+  font-weight: 500;
+  transition: background-color 0.2s, transform 0.2s;
+  border: none;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+}
+.neo-btn-amber:hover {
+  background-color: #d97706;
+  transform: translateY(-1px);
+}
+
+.neo-btn-ghost {
+  background-color: transparent;
+  color: #ffffff;
+  padding: 0.75rem 1.5rem;
+  border-radius: 9999px;
+  font-weight: 500;
+  transition: background-color 0.2s;
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  cursor: pointer;
+}
+.neo-btn-ghost:hover {
+  background-color: rgba(255, 255, 255, 0.1);
+}
+
+@keyframes noriFloat {
+  0%   { transform: translateY(0px)   rotate(-4deg) scale(1);    filter: drop-shadow(0 0 4px rgba(0,179,89,0.3)); }
+  50%  { transform: translateY(-10px) rotate(0deg)  scale(1.07); filter: drop-shadow(0 0 10px rgba(0,179,89,0.7)); }
+  100% { transform: translateY(-5px)  rotate(4deg)  scale(1.04); filter: drop-shadow(0 0 6px rgba(0,179,89,0.5)); }
+}
+
+.nori-animated {
+  animation: noriFloat 2.4s ease-in-out infinite alternate;
+  transform-origin: center bottom;
+}
