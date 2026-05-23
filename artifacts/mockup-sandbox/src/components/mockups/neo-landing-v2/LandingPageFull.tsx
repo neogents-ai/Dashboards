@@ -100,7 +100,7 @@ const FEATURES: Array<{ Icon: React.ElementType; title: string; desc: string; wi
 const INDUSTRIES = [
   { label: 'Photography', Icon: Camera, color: '#f59e0b', features: ['AI Gallery Sort & Culling', 'Wedding Lead Scraper', 'Smart Booking & Contracts', 'Model Dev Studio', 'Content Studio'] },
   { label: 'Aesthetician', Icon: Sparkles, color: '#EC4899', features: ['Skin Tracker Timeline', 'Beauty Lead Scraper', 'Appointment Scheduling', 'Product Inventory', 'Review Automation'] },
-  { label: 'Barber', Icon: Scissors, color: '#3B82F6', features: ['Cut Library & Portfolio', 'Booksy Lead Sync', 'Chair-Side Payments', 'Staff & Chairs Mgmt', 'Social Scheduler'] },
+  { label: 'Barber / Stylist', Icon: Scissors, color: '#3B82F6', features: ['Cut & Color Library', 'Booksy + IG Lead Sync', 'Chair-Side Payments', 'Staff & Chairs Mgmt', 'Social Scheduler'] },
   { label: 'Popup Chef', Icon: ChefHat, color: '#F97316', features: ['Menu Drop Engine', 'Event Lead Scraper', 'Ticket Management', 'Ingredient Costing', 'Guest Management'] },
   { label: 'Realtor', Icon: Home, color: '#6366F1', features: ['Neighborhood Intel', 'FSBO & Expired Leads', 'Listing Showcase', 'Showing Scheduler', 'Transaction Tracker'] },
 ];
@@ -260,7 +260,7 @@ export function LandingPageFull() {
               <button className="neo-btn-amber text-base px-8 py-3" onClick={() => scrollTo('waitlist')}>
                 Get Early Access
               </button>
-              <button className="neo-btn-ghost text-base px-8 py-3 flex items-center gap-2" onClick={() => setModalOpen(true)}>
+              <button className="neo-btn-ghost text-base px-8 py-3 flex items-center gap-2" onClick={() => scrollTo('industries')}>
                 <Play className="w-4 h-4" /> See How It Works
               </button>
             </div>
@@ -366,8 +366,14 @@ export function LandingPageFull() {
               className="mt-8 w-full sm:w-auto px-8 py-3 rounded-full font-bold text-sm transition-all hover:opacity-90"
               style={{ background: ind.color, color: '#000' }}
               onClick={() => {
-                const slug = ind.label === 'Popup Chef' ? 'chef' : ind.label.toLowerCase();
-                window.location.href = `/dashboard/${slug}`;
+                const routeByLabel: Record<string, string> = {
+                  'Photography': '/photography',
+                  'Aesthetician': '/aesthetician',
+                  'Barber / Stylist': '/barber',
+                  'Popup Chef': '/chef',
+                  'Realtor': '/realtor',
+                };
+                window.location.href = routeByLabel[ind.label] ?? '/';
               }}
             >
               View {ind.label} Demo <ArrowRight className="w-4 h-4 inline ml-1" />
@@ -571,7 +577,7 @@ export function LandingPageFull() {
                 <option value="" disabled>Select Your Industry</option>
                 <option value="Photographer">Photographer</option>
                 <option value="Aesthetician">Aesthetician</option>
-                <option value="Barber">Barber</option>
+                <option value="Barber">Barber / Stylist</option>
                 <option value="Popup Chef">Popup Chef</option>
                 <option value="Realtor">Realtor</option>
               </select>

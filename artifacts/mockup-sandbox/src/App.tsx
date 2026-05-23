@@ -5,8 +5,8 @@ import { Dashboard as PhotographyDashboard } from "./components/mockups/neo-dash
 import { DashboardAesthetician } from "./components/mockups/neo-aesthetician/DashboardAesthetician";
 import { DashboardChef } from "./components/mockups/neo-chef/DashboardChef";
 import { DashboardRealtor } from "./components/mockups/neo-realtor/DashboardRealtor";
-import { LandingPageFull } from "./components/mockups/neo-landing-v2/LandingPageFull";
 import { BarberHairstylistPage } from "./components/mockups/neo-barber/BarberHairstylistPage";
+import { LandingPageV3DeepMind } from "./components/mockups/neo-landing-v3-deepmind-glass/LandingPageV3";
 
 type ModuleMap = Record<string, () => Promise<Record<string, unknown>>>;
 
@@ -153,7 +153,7 @@ function App() {
   if (route === "/chef") return <DashboardChef />;
   if (route === "/realtor") return <DashboardRealtor />;
 
-  return <LandingPageFull />;
+  return <LandingPageV3DeepMind />;
 }
 
 export default App;
