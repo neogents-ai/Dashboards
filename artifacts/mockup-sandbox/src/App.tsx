@@ -3,10 +3,10 @@ import { useEffect, useState, type ComponentType } from "react";
 import { modules as discoveredModules } from "./.generated/mockup-components";
 import { Dashboard as PhotographyDashboard } from "./components/mockups/neo-dashboard/Dashboard";
 import { DashboardAesthetician } from "./components/mockups/neo-aesthetician/DashboardAesthetician";
-import { DashboardBarber } from "./components/mockups/neo-barber/DashboardBarber";
 import { DashboardChef } from "./components/mockups/neo-chef/DashboardChef";
 import { DashboardRealtor } from "./components/mockups/neo-realtor/DashboardRealtor";
 import { LandingPageFull } from "./components/mockups/neo-landing-v2/LandingPageFull";
+import { BarberHairstylistPage } from "./components/mockups/neo-barber/BarberHairstylistPage";
 
 type ModuleMap = Record<string, () => Promise<Record<string, unknown>>>;
 
@@ -147,11 +147,11 @@ function App() {
     );
   }
 
-  if (route === "/dashboard/photography") return <PhotographyDashboard />;
-  if (route === "/dashboard/aesthetician") return <DashboardAesthetician />;
-  if (route === "/dashboard/barber") return <DashboardBarber />;
-  if (route === "/dashboard/chef") return <DashboardChef />;
-  if (route === "/dashboard/realtor") return <DashboardRealtor />;
+  if (route === "/photography") return <PhotographyDashboard />;
+  if (route === "/aesthetician") return <DashboardAesthetician />;
+  if (route === "/barber" || route === "/hairstylist") return <BarberHairstylistPage initialVariant={route === "/hairstylist" ? "hairstylist" : "barber"} />;
+  if (route === "/chef") return <DashboardChef />;
+  if (route === "/realtor") return <DashboardRealtor />;
 
   return <LandingPageFull />;
 }

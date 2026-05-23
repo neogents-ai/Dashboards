@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef, createContext, useContext } from 'react';
 import './_group.css';
 import { 
   Camera, Users, Calendar, MessageSquare, Star, TrendingUp, Settings,
@@ -12,8 +12,61 @@ import {
   Scissors, User, History, Droplets, Info, DollarSign, Briefcase, Award
 } from 'lucide-react';
 
-export function DashboardBarber() {
+export type BarberVariant = 'barber' | 'hairstylist';
+
+const VARIANT_LABELS = {
+  barber: {
+    role: 'Barber',
+    shopName: "King's Barbershop",
+    signatureTab: 'Cut Library',
+    signatureWidget: 'Cut Library Quick Recall',
+    leadsBusinessDefault: 'Local Barber',
+    leadsPlaceholder: 'e.g. Best fades, Barbershops',
+    leadsQueryDefault: 'Best fades, Barbershops West LA',
+    masterRole: 'Master Barber / Owner',
+    seniorRole: 'Senior Barber',
+    juniorRole: 'Barber',
+    planName: 'Pro Barber Plan',
+  },
+  hairstylist: {
+    role: 'Hairstylist',
+    shopName: "Rose & Shears Salon",
+    signatureTab: 'Style Library',
+    signatureWidget: 'Style Library Quick Recall',
+    leadsBusinessDefault: 'Local Hairstylist',
+    leadsPlaceholder: 'e.g. Best balayage, Hair Salons',
+    leadsQueryDefault: 'Best balayage, Hair Salons West LA',
+    masterRole: 'Master Stylist / Owner',
+    seniorRole: 'Senior Stylist',
+    juniorRole: 'Hairstylist',
+    planName: 'Pro Stylist Plan',
+  },
+} as const;
+
+const VariantContext = createContext<typeof VARIANT_LABELS['barber']>(VARIANT_LABELS.barber);
+const useVariantLabels = () => useContext(VariantContext);
+
+export function DashboardBarber({ variant = 'barber' }: { variant?: BarberVariant } = {}) {
   const [activeNav, setActiveNav] = useState('dashboard');
+  const labels = VARIANT_LABELS[variant];
+  return (
+    <VariantContext.Provider value={labels}>
+      <DashboardBarberInner variant={variant} labels={labels} activeNav={activeNav} setActiveNav={setActiveNav} />
+    </VariantContext.Provider>
+  );
+}
+
+function DashboardBarberInner({
+  variant,
+  labels,
+  activeNav,
+  setActiveNav,
+}: {
+  variant: BarberVariant;
+  labels: typeof VARIANT_LABELS['barber'];
+  activeNav: string;
+  setActiveNav: (n: string) => void;
+}) {
 
   const renderContent = () => {
     switch (activeNav) {
@@ -41,7 +94,7 @@ export function DashboardBarber() {
   };
 
   return (
-    <div className="neo-barber-dashboard-container min-h-[100dvh] bg-[#09090b] text-white flex overflow-hidden">
+    <div className={`neo-barber-dashboard-container ${variant === 'hairstylist' ? 'theme-hairstylist' : ''} min-h-[100dvh] bg-[#09090b] text-white flex overflow-hidden`}>
       
       {/* Left Sidebar */}
       <aside className="w-[72px] lg:w-[240px] flex-shrink-0 border-r border-[#1f1f1f] bg-[#0d0d0d] flex flex-col justify-between transition-all duration-300 z-10">
@@ -61,7 +114,7 @@ export function DashboardBarber() {
           
           <nav className="p-3 space-y-1 mt-4">
             <NavItem icon={<LayoutDashboard className="w-5 h-5" />} label="Dashboard" active={activeNav === 'dashboard'} onClick={() => setActiveNav('dashboard')} />
-            <NavItem icon={<Scissors className="w-5 h-5" />} label="Cut Library" active={activeNav === 'cut-library'} onClick={() => setActiveNav('cut-library')} />
+            <NavItem icon={<Scissors className="w-5 h-5" />} label={labels.signatureTab} active={activeNav === 'cut-library'} onClick={() => setActiveNav('cut-library')} />
             <NavItem icon={<Calendar className="w-5 h-5" />} label="Bookings" active={activeNav === 'bookings'} onClick={() => setActiveNav('bookings')} />
             <NavItem icon={<Users className="w-5 h-5" />} label="Leads & CRM" active={activeNav === 'leads'} onClick={() => setActiveNav('leads')} />
             <NavItem icon={<Share2 className="w-5 h-5" />} label="Social Media" active={activeNav === 'social'} onClick={() => setActiveNav('social')} />
@@ -132,6 +185,7 @@ export function DashboardBarber() {
 // ---- TAB COMPONENTS ----
 
 function DashboardTab() {
+  const labels = useVariantLabels();
   return (
     <div className="p-6 lg:p-8 max-w-[1600px] mx-auto space-y-6">
       {/* ROW 1: KPI Strip */}
@@ -166,7 +220,7 @@ function DashboardTab() {
       {/* ROW 2: 3 Columns */}
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
         <div className="lg:col-span-4 flex flex-col">
-          <Widget title="Cut Library Quick Recall" icon={<Scissors className="w-4 h-4 text-blue-500" />}>
+          <Widget title={labels.signatureWidget} icon={<Scissors className="w-4 h-4 text-blue-500" />}>
             <div className="flex flex-col h-full">
               <div className="space-y-3 mb-4">
                 <p className="text-xs text-[#888] uppercase tracking-wider font-medium">Next Up: David Chen</p>
