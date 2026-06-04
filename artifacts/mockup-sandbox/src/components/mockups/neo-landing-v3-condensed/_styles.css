@@ -1,0 +1,105 @@
+/* Mockup C — Condensed Display (Replit / Framer direction)
+   Tokens: Space Grotesk + Oxanium display, DM Sans body, Geist Mono numbers.
+   Soft gray + deep indigo + electric violet/green accents.
+*/
+.cd-root {
+  --ash:     #f1f0ec;
+  --paper:   #fafaf6;
+  --ink:     #0c0a1f;
+  --indigo:  #1e1b4b;
+  --line:    #0c0a1f14;
+  --line-2:  #0c0a1f24;
+  --muted:   #5a586f;
+  --violet:  #7c3aed;
+  --neon:    #b8ff3a;
+
+  background: var(--ash);
+  color: var(--ink);
+  font-family: 'DM Sans', sans-serif;
+}
+.cd-display  { font-family: 'Space Grotesk', sans-serif; font-weight: 700; letter-spacing: -0.045em; }
+.cd-condense { font-family: 'Oxanium', 'Space Grotesk', sans-serif; font-weight: 700; font-stretch: 75%; letter-spacing: -0.02em; }
+.cd-mono     { font-family: 'Geist Mono', 'JetBrains Mono', monospace; font-feature-settings: 'tnum'; }
+
+.cd-card {
+  background: #fff;
+  border: 1px solid var(--line);
+  border-radius: 16px;
+  padding: 1.5rem;
+  transition: transform .25s cubic-bezier(.2,.7,.2,1), border-color .2s, box-shadow .25s;
+  position: relative;
+  overflow: hidden;
+}
+.cd-card:hover {
+  transform: translateY(-3px);
+  border-color: var(--violet);
+  box-shadow: 0 18px 48px -22px rgba(124,58,237,0.35);
+}
+.cd-card .cd-num-target { transition: color .25s, transform .35s; }
+.cd-card:hover .cd-num-target { color: var(--violet); transform: scale(1.04); transform-origin: left; }
+
+.cd-bento {
+  background: #fff;
+  border: 1px solid var(--line);
+  border-radius: 28px;
+  padding: 2rem;
+  position: relative;
+  overflow: hidden;
+  transition: border-color .25s;
+}
+.cd-bento:hover { border-color: var(--violet); }
+
+.cd-btn {
+  background: var(--ink); color: #fff;
+  padding: .8rem 1.4rem; border-radius: 6px;
+  font-weight: 600; font-size: .9rem;
+  display: inline-flex; align-items: center; gap: .5rem;
+  border: none; cursor: pointer;
+  transition: background .2s, transform .15s;
+}
+.cd-btn:hover { background: var(--violet); transform: translateY(-1px); }
+
+.cd-btn-neon {
+  background: var(--neon); color: var(--ink);
+  padding: .8rem 1.4rem; border-radius: 6px;
+  font-weight: 700; font-size: .9rem;
+  display: inline-flex; align-items: center; gap: .5rem;
+  border: none; cursor: pointer;
+  transition: background .2s, transform .15s, box-shadow .2s;
+  box-shadow: 0 0 0 0 rgba(184,255,58,0);
+}
+.cd-btn-neon:hover { transform: translateY(-1px); box-shadow: 0 8px 28px -6px rgba(184,255,58,0.5); }
+
+.cd-pill {
+  display: inline-flex; align-items: center; gap: .4rem;
+  padding: .3rem .75rem; border-radius: 999px;
+  font-family: 'Geist Mono', monospace; font-size: .68rem;
+  letter-spacing: .14em; text-transform: uppercase;
+  background: #fff; border: 1px solid var(--line-2); color: var(--muted);
+}
+.cd-pill-live::before {
+  content: ''; width: 6px; height: 6px; border-radius: 50%;
+  background: var(--neon); box-shadow: 0 0 0 3px #b8ff3a30; margin-right: .3rem;
+  animation: cd-pulse 1.4s infinite;
+}
+@keyframes cd-pulse { 0%,100% { opacity: 1; } 50% { opacity: 0.4; } }
+
+.cd-marquee {
+  display: flex; gap: 2.5rem; white-space: nowrap;
+  animation: cd-march 28s linear infinite;
+  font-family: 'Oxanium', sans-serif; font-weight: 600;
+  font-size: 4rem; letter-spacing: -0.02em;
+  font-stretch: 75%;
+}
+@keyframes cd-march { from { transform: translateX(0); } to { transform: translateX(-50%); } }
+
+.cd-num { font-family: 'Geist Mono', monospace; font-feature-settings: 'tnum','zero'; letter-spacing: -0.04em; }
+
+.cd-activity-row {
+  display: flex; align-items: center; gap: .75rem;
+  padding: .75rem 0;
+  border-bottom: 1px dashed var(--line-2);
+  font-size: .8125rem;
+}
+.cd-activity-row:last-child { border: none; }
+.cd-activity-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--violet); flex-shrink: 0; }

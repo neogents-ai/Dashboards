@@ -1,7 +1,7 @@
 import type { ElementType } from 'react';
 import {
   Camera, Calendar, Share2, Zap, Users, TrendingUp,
-  Scissors, ChefHat, Home, Sparkles, Mic,
+  Scissors, ChefHat, Home, Sparkles, Mic, Clapperboard,
 } from 'lucide-react';
 
 export const HERO_IMAGES = Array.from({ length: 10 }, (_, i) => `/images/neo_${i + 1}.png`);
@@ -38,6 +38,7 @@ export const INDUSTRIES: Industry[] = [
   { label: 'Barber / Stylist',Icon: Scissors, color: '#3B82F6', features: ['Cut & Color Library', 'Booksy + IG Lead Sync', 'Chair-Side Payments', 'Staff & Chairs Mgmt', 'Social Scheduler'], route: '/barber' },
   { label: 'Popup Chef',      Icon: ChefHat,  color: '#F97316', features: ['Menu Drop Engine', 'Event Lead Scraper', 'Ticket Management', 'Ingredient Costing', 'Guest Management'], route: '/chef' },
   { label: 'Realtor',         Icon: Home,     color: '#6366F1', features: ['Neighborhood Intel', 'FSBO & Expired Leads', 'Listing Showcase', 'Showing Scheduler', 'Transaction Tracker'], route: '/realtor' },
+  { label: 'Creators',        Icon: Clapperboard, color: '#818CF8', features: ['Trinity Content Engine — 12 posts/mo', 'Video Production AI — cinematic short-form', 'Audience Intelligence — niche trend monitoring', 'Monetization Layer — sponsors to products', 'Go Live — multi-platform streaming studio'], route: '/creators' },
 ];
 
 export const STATS = [
@@ -52,5 +53,5 @@ export const PRICING = [
   { tier: 'Pro',     price: 49, popular: true, blurb: 'Everything you need to run and grow your business.',
     feats: ['Unlimited AI lead scraping', 'Full 9-tab dashboard', 'Unlimited CRM contacts', 'Content Studio (all formats)', 'Signature industry feature', 'Social media scheduler', 'Review automation', 'Email support'], cta: 'Start Pro' },
   { tier: 'Agency',  price: 97, blurb: 'Run multiple verticals. Build a team.',
-    feats: ['Everything in Pro', 'All 5 industry verticals', '3 team seats included', 'White-label branding', 'Advanced analytics', 'Priority support', 'Early access'], cta: 'Contact Sales' },
+    feats: ['Everything in Pro', 'All 6 industry verticals', '3 team seats included', 'White-label branding', 'Advanced analytics', 'Priority support', 'Early access'], cta: 'Contact Sales' },
 ];

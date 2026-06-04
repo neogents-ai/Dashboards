@@ -1,0 +1,28 @@
+/* Realtor vertical — Linear / Arc: indigo + deep blue canvas */
+/* Scoped to .realtor-canvas — overrides glass-tokens.css :root values */
+
+.realtor-canvas {
+  /* Canvas — deep blue */
+  --canvas-base: #080b14;
+  --canvas-gradient: #0d1120;
+  --canvas-surface: #0d1120;
+  --canvas-surface-raised: #131825;
+  --canvas-border: #1e2540;
+  --canvas-border-hover: #2a3460;
+
+  /* Accent — remap rose tokens to indigo */
+  --accent-rose: #6366f1;
+  --accent-rose-400: #818cf8;
+  --accent-rose-500: #6366f1;
+  --accent-rose-600: #4f46e5;
+  --accent-rose-300: #a5b4fc;
+  --accent-rose-10: rgba(99, 102, 241, 0.10);
+  --accent-rose-20: rgba(99, 102, 241, 0.20);
+  --accent-rose-30: rgba(99, 102, 241, 0.30);
+  --accent-rose-50: rgba(99, 102, 241, 0.50);
+
+  /* Indigo depth glow */
+  --warm-pink-tint:
+    radial-gradient(ellipse at 20% 10%, rgba(99, 102, 241, 0.08) 0%, transparent 55%),
+    radial-gradient(ellipse at 80% 90%, rgba(79, 70, 229, 0.05) 0%, transparent 50%);
+}

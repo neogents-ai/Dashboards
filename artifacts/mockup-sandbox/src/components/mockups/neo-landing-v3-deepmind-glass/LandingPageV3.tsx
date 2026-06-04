@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
 import type { CSSProperties, MouseEvent } from 'react';
-import { ArrowRight, Check, Sparkles, Home, Camera, Scissors, ChefHat, Compass, Settings2 } from 'lucide-react';
+import { ArrowRight, Check, Sparkles, Home, Camera, Scissors, ChefHat, Compass, Settings2, Clapperboard, Lock, Unlock, Play } from 'lucide-react';
 import { DeepFieldGallery } from '../../shared/DeepFieldGallery';
 import { useCountUp } from '../../../hooks/useCountUp';
 import { FEATURES, INDUSTRIES, TESTIMONIALS, STATS, PRICING } from '../../../data/landing';
@@ -23,15 +23,61 @@ function GlassPanel({ children, dark = false, className = '', style = {} }:
   );
 }
 
+/** Splash timer progress indicator */
+function SplashProgress({ duration, active }: { duration: number; active: boolean }) {
+  const [progress, setProgress] = useState(0);
+  useEffect(() => {
+    if (!active) { setProgress(0); return; }
+    setProgress(0);
+    const start = Date.now();
+    const interval = setInterval(() => {
+      const elapsed = Date.now() - start;
+      const pct = Math.min((elapsed / duration) * 100, 100);
+      setProgress(pct);
+      if (pct >= 100) clearInterval(interval);
+    }, 50);
+    return () => clearInterval(interval);
+  }, [duration, active]);
+
+  return (
+    <div className="w-full h-0.5 bg-white/20 rounded-full overflow-hidden mt-4">
+      <div className="h-full bg-white/80 rounded-full transition-all duration-75 ease-linear" style={{ width: `${progress}%` }} />
+    </div>
+  );
+}
+
 export function LandingPageV3DeepMind() {
   const [industryIdx, setIndustryIdx] = useState(0);
+  const [lockedVertical, setLockedVertical] = useState<number | null>(null);
   const [statsVisible, setStatsVisible] = useState(false);
   const statsRef = useRef<HTMLDivElement>(null);
+  const timerRef = useRef<ReturnType<typeof setInterval> | null>(null);
 
   const clients = useCountUp(STATS[0].val, statsVisible, 1800);
   const leads   = useCountUp(STATS[1].val, statsVisible, 2200);
   const rating  = useCountUp(STATS[2].val, statsVisible, 1200);
   const live    = useCountUp(247, true, 2400);
+
+  const activeIndex = lockedVertical !== null ? lockedVertical : industryIdx;
+  const ind = INDUSTRIES[activeIndex];
+
+  // Splash timer — cycle every 4s unless locked
+  useEffect(() => {
+    if (lockedVertical !== null) return;
+    timerRef.current = setInterval(() => {
+      setIndustryIdx((prev) => (prev + 1) % INDUSTRIES.length);
+    }, 4000);
+    return () => { if (timerRef.current) clearInterval(timerRef.current); };
+  }, [lockedVertical]);
+
+  const lockVertical = (idx: number) => {
+    setLockedVertical(idx);
+    setIndustryIdx(idx);
+  };
+
+  const unlockVertical = () => {
+    setLockedVertical(null);
+  };
 
   useEffect(() => {
     const el = statsRef.current; if (!el) return;
@@ -39,13 +85,25 @@ export function LandingPageV3DeepMind() {
     obs.observe(el); return () => obs.disconnect();
   }, []);
 
-  const ind = INDUSTRIES[industryIdx];
+  // Dock items with Creators added
+  const dockItems = [
+    { idx: 4, icon: <Home className="w-4 h-4" />, label: "Realtor" },
+    { idx: 0, icon: <Camera className="w-4 h-4" />, label: "Photo" },
+    { idx: 1, icon: <Sparkles className="w-4 h-4" />, label: "Aesthetician" },
+    { idx: 2, icon: <Scissors className="w-4 h-4" />, label: "Barber" },
+    { idx: 3, icon: <ChefHat className="w-4 h-4" />, label: "Chef" },
+    { idx: 5, icon: <Clapperboard className="w-4 h-4" />, label: "Creators" },
+  ];
 
   return (
-    <div className="dm-root w-full overflow-x-hidden">
-
-      {/* aurora background blobs */}
-      <div className="dm-aurora" />
+    <div className="dm-root w-full overflow-x-hidden" style={{
+      background: `
+        radial-gradient(1200px 800px at 10% -10%, ${ind.color}15 0%, transparent 60%),
+        radial-gradient(1000px 700px at 100% 20%, var(--pearl-3) 0%, transparent 60%),
+        radial-gradient(900px 600px at 50% 110%, var(--pearl-4) 0%, transparent 60%),
+        var(--pearl-1)
+      `
+    }}>
 
       {/* ── NAV (floating glass) ── */}
       <header className="fixed top-4 inset-x-0 z-40 flex justify-center px-4">
@@ -61,51 +119,139 @@ export function LandingPageV3DeepMind() {
       </header>
 
       {/* ── HERO ── */}
-      <section className="relative w-full min-h-screen overflow-hidden flex items-center pt-28 pb-20 px-6 md:px-10">
-        <div className="relative z-10 max-w-6xl mx-auto w-full grid grid-cols-12 gap-8 items-center">
-          <div className="col-span-12 md:col-span-7">
-            <div className="dm-glass-strip mb-6">
+      <section className="relative w-full min-h-screen overflow-hidden flex items-center pt-28 pb-12 px-6 md:px-10">
+        <div className="relative z-10 max-w-6xl mx-auto w-full">
+          {/* PAS Copy Framework */}
+          <div className="text-center mb-10">
+            <div className="dm-glass-strip mb-6 mx-auto">
               <span className="dm-thinking-dot" /><span className="dm-thinking-dot" /><span className="dm-thinking-dot" />
               <span className="text-[var(--muted)]">N.O.R.I. is thinking — 47 languages online</span>
             </div>
-            <h1 className="dm-display-th text-[3.25rem] md:text-[5.5rem] leading-[1] mb-6">
-              <span>The intelligence layer for </span>
-              <span className="dm-grad-text dm-display">creative professionals</span>
+            <h1 className="dm-display-th text-[3rem] md:text-[5rem] leading-[1.05] mb-5 max-w-4xl mx-auto">
+              <span>Stop posting into the void. </span>
+              <span className="dm-grad-text dm-display">Clone yourself at scale</span>
               <span>.</span>
             </h1>
-            <p className="text-[var(--muted)] text-lg md:text-xl max-w-xl mb-8 leading-relaxed">
-              A unified operating system — Lead Radar, Agentic CRM, Content Engine — animated by NORI, the multilingual intelligence that opens with your morning coffee.
+            <p className="text-[var(--muted)] text-lg md:text-xl max-w-2xl mx-auto mb-6 leading-relaxed">
+              The intelligence layer for creative professionals — Lead Radar, Agentic CRM, Content Engine, and AI Avatar Cloning. Animated by NORI, the multilingual intelligence that opens with your morning coffee.
             </p>
-            <div className="flex gap-3 flex-wrap">
+            <div className="flex gap-3 justify-center flex-wrap">
               <a href="#waitlist" className="dm-btn">Try the preview <ArrowRight className="w-4 h-4" /></a>
               <a href="#features" className="dm-btn-glass">Explore capabilities</a>
             </div>
           </div>
 
-          {/* Glass hero panel with gallery + orb */}
-          <div className="col-span-12 md:col-span-5">
-            <GlassPanel className="p-6">
-              <div className="relative h-[360px] rounded-2xl overflow-hidden mb-4" style={{ background: '#0b1020' }}>
-                <DeepFieldGallery bg="#0b1020" radius={14} cardW={130} cardH={170} />
-                {/* The orb */}
-                <div className="absolute inset-0 z-[6] grid place-items-center pointer-events-none">
-                  <div className="dm-orb" style={{ width: 180, height: 180 }} />
-                </div>
-                <div className="absolute bottom-3 left-3 z-[7] dm-glass-strip" style={{ background: 'rgba(255,255,255,0.85)' }}>
-                  <span className="dm-thinking-dot" /><span className="dm-thinking-dot" /><span className="dm-thinking-dot" />
-                  <span className="font-medium">Analyzing 10,247 leads</span>
-                </div>
-              </div>
-              <div className="grid grid-cols-3 gap-2 text-center">
-                {[{ k: 'EN', n: '24.1k' }, { k: 'YO', n: '892' }, { k: 'KO', n: '1.4k' }].map((c, i) => (
-                  <div key={i} className="dm-glass-strip flex-col py-2" style={{ borderRadius: 14 }}>
-                    <span className="dm-mono text-[10px] tracking-widest">{c.k}</span>
-                    <span className="font-semibold">{c.n}</span>
+          {/* ── SPLASH TIMER: Industries ── */}
+          <div id="industries" className="mb-8">
+            <div className="text-center mb-4">
+              <div className="dm-pill inline-flex mb-3"><Settings2 className="w-3 h-3" /> verticals</div>
+              <h2 className="dm-display-th text-2xl md:text-3xl">Tuned for your craft.</h2>
+            </div>
+
+            {/* Splash Card */}
+            <GlassPanel className="p-6 md:p-8 max-w-3xl mx-auto relative overflow-hidden">
+              {/* Subtle accent bleed */}
+              <div className="absolute inset-0 opacity-10 pointer-events-none" style={{
+                background: `radial-gradient(ellipse at 50% 50%, ${ind.color} 0%, transparent 70%)`
+              }} />
+
+              <div className="relative z-10">
+                <div className="flex items-start justify-between mb-4">
+                  <div className="flex items-center gap-4">
+                    <div className="w-16 h-16 rounded-2xl grid place-items-center flex-shrink-0" style={{ background: ind.color + '20', color: ind.color, boxShadow: `0 8px 28px -8px ${ind.color}60` }}>
+                      <ind.Icon className="w-8 h-8" />
+                    </div>
+                    <div>
+                      <h3 className="dm-display text-2xl md:text-3xl mb-1">{ind.label}</h3>
+                      <p className="text-sm text-[var(--muted)]">Industry-specific intelligence tuned to your exact workflow</p>
+                    </div>
                   </div>
-                ))}
+                  {lockedVertical !== null && (
+                    <button onClick={unlockVertical} className="p-2 rounded-full bg-white/40 hover:bg-white/60 transition-colors" title="Unlock rotation">
+                      <Unlock className="w-4 h-4" />
+                    </button>
+                  )}
+                </div>
+
+                {/* Key Stats */}
+                <div className="grid grid-cols-3 gap-3 mb-5">
+                  {[
+                    { label: 'Active Users', value: `${(1200 + activeIndex * 340).toLocaleString()}+` },
+                    { label: 'Leads/Month', value: `${(800 + activeIndex * 120).toLocaleString()}+` },
+                    { label: 'Avg ROI', value: `${(240 + activeIndex * 35)}%` },
+                  ].map((stat, i) => (
+                    <div key={i} className="dm-glass-strip flex-col py-3" style={{ borderRadius: 14, background: 'rgba(255,255,255,0.35)' }}>
+                      <span className="dm-mono text-[10px] tracking-widest text-[var(--muted)]">{stat.label}</span>
+                      <span className="font-semibold text-lg">{stat.value}</span>
+                    </div>
+                  ))}
+                </div>
+
+                {/* CTA */}
+                <div className="flex items-center gap-3 flex-wrap">
+                  {lockedVertical !== null ? (
+                    <a href={ind.route} className="dm-btn" style={{ background: `linear-gradient(180deg, ${ind.color} 0%, ${ind.color}cc 100%)`, borderColor: 'rgba(255,255,255,0.2)' }}>
+                      Explore Dashboard <ArrowRight className="w-4 h-4" />
+                    </a>
+                  ) : (
+                    <button onClick={() => lockVertical(activeIndex)} className="dm-btn" style={{ background: `linear-gradient(180deg, ${ind.color} 0%, ${ind.color}cc 100%)`, borderColor: 'rgba(255,255,255,0.2)' }}>
+                      Select This Vertical <ArrowRight className="w-4 h-4" />
+                    </button>
+                  )}
+                  <span className="dm-pill" style={{ borderColor: ind.color + '40', color: ind.color }}>
+                    {ind.features.length} features
+                  </span>
+                </div>
+
+                {/* Progress bar */}
+                {lockedVertical === null && <SplashProgress duration={4000} active={true} />}
+                {lockedVertical !== null && (
+                  <div className="flex items-center gap-2 mt-4">
+                    <Lock className="w-3 h-3 text-[var(--muted)]" />
+                    <span className="text-xs text-[var(--muted)]">Rotation paused — click unlock to resume</span>
+                  </div>
+                )}
               </div>
             </GlassPanel>
+
+            {/* Dot indicators */}
+            <div className="flex justify-center gap-2 mt-4">
+              {INDUSTRIES.map((_, i) => (
+                <button
+                  key={i}
+                  onClick={() => lockVertical(i)}
+                  className="transition-all duration-300 rounded-full"
+                  style={{
+                    width: activeIndex === i ? 24 : 8,
+                    height: 8,
+                    background: activeIndex === i ? ind.color : 'rgba(11,16,32,0.2)',
+                  }}
+                  aria-label={`Select ${INDUSTRIES[i].label}`}
+                />
+              ))}
+            </div>
           </div>
+
+          {/* Feature Preview Card (when locked) */}
+          {lockedVertical !== null && (
+            <div className="max-w-3xl mx-auto mb-12 animate-fade-in">
+              <GlassPanel className="p-6">
+                <h4 className="text-sm font-semibold mb-3 flex items-center gap-2" style={{ color: ind.color }}>
+                  <Play className="w-4 h-4" /> Feature Preview
+                </h4>
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                  {ind.features.slice(0, 4).map((f, i) => (
+                    <div key={i} className="flex items-center gap-3 p-3 rounded-2xl" style={{ background: 'rgba(255,255,255,0.45)', border: '1px solid rgba(255,255,255,0.7)' }}>
+                      <div className="w-7 h-7 rounded-full grid place-items-center flex-shrink-0" style={{ background: ind.color + '20', color: ind.color }}>
+                        <Check className="w-4 h-4" />
+                      </div>
+                      <span className="text-sm">{f}</span>
+                    </div>
+                  ))}
+                </div>
+              </GlassPanel>
+            </div>
+          )}
         </div>
       </section>
 
@@ -138,9 +284,13 @@ export function LandingPageV3DeepMind() {
         <div className="max-w-6xl mx-auto">
           <div className="text-center mb-14">
             <div className="dm-pill inline-flex mb-5"><Compass className="w-3 h-3" /> capabilities</div>
+            {/* AIDA: Attention → Interest → Desire → Action */}
             <h2 className="dm-display-th text-4xl md:text-6xl leading-[1] max-w-3xl mx-auto">
               Built like an <span className="dm-grad-text dm-display">intelligence</span>, not a dashboard.
             </h2>
+            <p className="text-[var(--muted)] mt-4 max-w-xl mx-auto">
+              Every feature is designed to remove friction and multiply your output — from lead discovery to content publishing to revenue tracking.
+            </p>
           </div>
 
           <div className="grid grid-cols-12 gap-4">
@@ -168,48 +318,26 @@ export function LandingPageV3DeepMind() {
         </div>
       </section>
 
-      {/* ── INDUSTRIES ── */}
-      <section id="industries" className="relative py-24 px-6 md:px-10">
-        <div className="max-w-6xl mx-auto">
+      {/* ── HOW IT WORKS ── */}
+      <section className="relative py-20 px-6 md:px-10">
+        <div className="max-w-4xl mx-auto">
           <div className="text-center mb-12">
-            <div className="dm-pill inline-flex mb-4"><Settings2 className="w-3 h-3" /> verticals</div>
-            <h2 className="dm-display-th text-4xl md:text-5xl">Tuned for your craft.</h2>
+            <div className="dm-pill inline-flex mb-4">how it works</div>
+            <h2 className="dm-display-th text-3xl md:text-4xl">Three steps to intelligence.</h2>
           </div>
-
-          <div className="flex flex-wrap justify-center gap-2 mb-8">
-            {INDUSTRIES.map(({ label, Icon, color }, i) => (
-              <button key={label} onClick={() => setIndustryIdx(i)}
-                className="dm-glass-strip transition-all"
-                style={industryIdx === i
-                  ? { background: 'rgba(11,16,32,0.92)', color: '#fff', borderColor: color, boxShadow: `0 8px 28px -8px ${color}80` }
-                  : {}}>
-                <Icon className="w-3.5 h-3.5" style={industryIdx === i ? { color } : {}} /> {label}
-              </button>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+            {[
+              { n: '01', title: 'Connect Your Profiles', desc: 'Link your social media, booking platforms, and portfolio sites. NEO Gents pulls everything into one unified dashboard in seconds.' },
+              { n: '02', title: 'AI Finds Your Leads', desc: 'N.O.R.I. Agent scrapes the web for warm, qualified leads in your area and industry. Wake up to a fresh pipeline every morning.' },
+              { n: '03', title: 'Book, Create & Grow', desc: 'Manage bookings, publish content, and track your revenue — all from one beautiful, industry-tailored workspace.' },
+            ].map((step, i) => (
+              <GlassPanel key={i} className="p-6 text-center">
+                <span className="dm-display-th text-5xl text-[var(--muted)] opacity-30">{step.n}</span>
+                <h3 className="dm-display text-lg mt-3 mb-2">{step.title}</h3>
+                <p className="text-sm text-[var(--muted)] leading-relaxed">{step.desc}</p>
+              </GlassPanel>
             ))}
           </div>
-
-          <GlassPanel className="p-8">
-            <div className="grid grid-cols-12 gap-6">
-              <div className="col-span-12 md:col-span-4">
-                <div className="w-14 h-14 rounded-2xl grid place-items-center mb-4" style={{ background: ind.color + '20', color: ind.color }}>
-                  <ind.Icon className="w-7 h-7" />
-                </div>
-                <h3 className="dm-display text-3xl mb-2">{ind.label}</h3>
-                <p className="text-sm text-[var(--muted)] mb-5">Industry-specific intelligence tuned to your exact workflow — pre-trained on the patterns of top performers.</p>
-                <a href={ind.route} className="dm-btn" style={{ background: `linear-gradient(180deg, ${ind.color} 0%, ${ind.color}cc 100%)`, borderColor: 'rgba(255,255,255,0.2)' }}>Open dashboard <ArrowRight className="w-4 h-4" /></a>
-              </div>
-              <div className="col-span-12 md:col-span-8 grid grid-cols-1 sm:grid-cols-2 gap-3">
-                {ind.features.map((f, i) => (
-                  <div key={i} className="flex items-center gap-3 p-3 rounded-2xl" style={{ background: 'rgba(255,255,255,0.45)', border: '1px solid rgba(255,255,255,0.7)' }}>
-                    <div className="w-7 h-7 rounded-full grid place-items-center flex-shrink-0" style={{ background: ind.color + '20', color: ind.color }}>
-                      <Check className="w-4 h-4" />
-                    </div>
-                    <span className="text-sm">{f}</span>
-                  </div>
-                ))}
-              </div>
-            </div>
-          </GlassPanel>
         </div>
       </section>
 
@@ -224,6 +352,16 @@ export function LandingPageV3DeepMind() {
             <div className="w-7 h-7 rounded-full grid place-items-center text-xs font-bold" style={{ background: 'linear-gradient(135deg, #3b6bff, #8a5cf6)', color: '#fff' }}>{TESTIMONIALS[0].name[0]}</div>
             <span>{TESTIMONIALS[0].name}</span>
             <span className="text-[var(--muted)]">{TESTIMONIALS[0].role}</span>
+          </div>
+          {/* Trust signals */}
+          <div className="flex justify-center gap-6 mt-8">
+            {TESTIMONIALS.slice(1).map((t, i) => (
+              <div key={i} className="text-center">
+                <div className="w-8 h-8 rounded-full grid place-items-center text-xs font-bold mx-auto mb-1" style={{ background: 'linear-gradient(135deg, #8a5cf6, #ec4899)', color: '#fff' }}>{t.name[0]}</div>
+                <p className="text-[10px] text-[var(--muted)]">{t.name}</p>
+                <p className="text-[10px] text-[var(--muted)]">{t.role}</p>
+              </div>
+            ))}
           </div>
         </div>
       </section>
@@ -278,6 +416,8 @@ export function LandingPageV3DeepMind() {
                      style={{ borderColor: 'rgba(255,255,255,0.85)', backdropFilter: 'blur(8px)' }} />
               <button className="dm-btn" type="submit">Request invite <ArrowRight className="w-4 h-4" /></button>
             </form>
+            {/* Trust signal */}
+            <p className="text-[10px] text-[var(--muted)] mt-4">🔒 2,400+ creators joined. Unsubscribe anytime.</p>
           </GlassPanel>
         </div>
       </section>
@@ -292,11 +432,25 @@ export function LandingPageV3DeepMind() {
 
       {/* ── FLOATING GLASS DOCK ── */}
       <div className="dm-dock hidden md:flex">
-        <button title="Home"><Sparkles className="w-4 h-4" /></button>
-        <button title="Photo"><Camera className="w-4 h-4" /></button>
-        <button title="Realtor"><Home className="w-4 h-4" /></button>
-        <button title="Barber"><Scissors className="w-4 h-4" /></button>
-        <button title="Chef"><ChefHat className="w-4 h-4" /></button>
+        {dockItems.map((item) => {
+          const isActive = activeIndex === item.idx;
+          return (
+            <button
+              key={item.label}
+              title={item.label}
+              onClick={() => lockVertical(item.idx)}
+              className="relative"
+              style={isActive ? {
+                boxShadow: `0 0 0 2px ${INDUSTRIES[item.idx].color}`,
+                borderRadius: '50%',
+              } : undefined}
+            >
+              <span style={{ color: isActive ? INDUSTRIES[item.idx].color : undefined }}>
+                {item.icon}
+              </span>
+            </button>
+          );
+        })}
         <div style={{ width: 1, height: 22, background: 'rgba(11,16,32,0.12)' }} />
         <a href="#waitlist" className="dm-btn" style={{ padding: '.4rem 1rem', fontSize: '.78rem' }}>Join <ArrowRight className="w-3 h-3" /></a>
       </div>

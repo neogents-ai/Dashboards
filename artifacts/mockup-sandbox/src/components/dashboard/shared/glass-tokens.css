@@ -1,0 +1,177 @@
+@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700&family=DM+Sans:wght@300;400;500;600;700&display=swap');
+
+/* ──────────────────────────────────────────────────────────
+   Glass UI Token System
+   ────────────────────────────────────────────────────────── */
+
+:root {
+  /* Material tokens */
+  --glass-blur: 20px;
+  --glass-saturate: 180%;
+  --glass-bg-dark: rgba(20, 22, 28, 0.55);
+  --glass-bg-light: rgba(255, 255, 255, 0.62);
+  --glass-border: rgba(255, 255, 255, 0.08);
+  --glass-highlight: rgba(255, 255, 255, 0.12);
+  --glass-shadow: 0 20px 60px -20px rgba(0, 0, 0, 0.45);
+  --glass-radius: 16px;
+
+  /* Material thickness variants */
+  --glass-ultra-blur: 12px;
+  --glass-ultra-saturate: 160%;
+  --glass-ultra-bg: rgba(20, 22, 28, 0.35);
+
+  --glass-thin-blur: 18px;
+  --glass-thin-saturate: 170%;
+  --glass-thin-bg: rgba(20, 22, 28, 0.45);
+
+  --glass-regular-blur: 24px;
+  --glass-regular-saturate: 180%;
+  --glass-regular-bg: rgba(20, 22, 28, 0.55);
+
+  --glass-thick-blur: 32px;
+  --glass-thick-saturate: 190%;
+  --glass-thick-bg: rgba(20, 22, 28, 0.70);
+
+  /* Canvas backgrounds */
+  --canvas-base: #0d0f14;
+  --canvas-gradient: #14171f;
+  --canvas-surface: #141414;
+  --canvas-surface-raised: #1a1a1a;
+  --canvas-border: #1f1f1f;
+  --canvas-border-hover: #333;
+
+  /* Typography */
+  --font-display: 'Plus Jakarta Sans', sans-serif;
+  --font-body: 'DM Sans', sans-serif;
+
+  /* Hairdresser / Hairstylist vertical tokens (rose / warm pink) */
+  --accent-rose: #f43f5e;
+  --accent-rose-500: #EC4899;
+  --accent-rose-400: #F472B6;
+  --accent-rose-300: #F9A8D4;
+  --accent-rose-600: #DB2777;
+  --accent-rose-10: rgba(236, 72, 153, 0.1);
+  --accent-rose-20: rgba(236, 72, 153, 0.2);
+  --accent-rose-30: rgba(236, 72, 153, 0.3);
+  --accent-rose-50: rgba(236, 72, 153, 0.5);
+
+  /* Warm pink canvas tint */
+  --warm-pink-tint: radial-gradient(ellipse at 30% 20%, rgba(244, 63, 94, 0.08) 0%, transparent 60%),
+                    radial-gradient(ellipse at 70% 80%, rgba(236, 72, 153, 0.05) 0%, transparent 60%);
+}
+
+/* ──────────────────────────────────────────────────────────
+   Glass material utilities
+   ────────────────────────────────────────────────────────── */
+
+.glass-panel {
+  background: var(--glass-bg-dark);
+  backdrop-filter: blur(var(--glass-blur)) saturate(var(--glass-saturate));
+  -webkit-backdrop-filter: blur(var(--glass-blur)) saturate(var(--glass-saturate));
+  border: 1px solid var(--glass-border);
+  border-radius: var(--glass-radius);
+  box-shadow:
+    var(--glass-shadow),
+    inset 0 1px 0 var(--glass-highlight);
+}
+
+.glass-ultra {
+  background: var(--glass-ultra-bg);
+  backdrop-filter: blur(var(--glass-ultra-blur)) saturate(var(--glass-ultra-saturate));
+  -webkit-backdrop-filter: blur(var(--glass-ultra-blur)) saturate(var(--glass-ultra-saturate));
+  border: 1px solid var(--glass-border);
+  border-radius: var(--glass-radius);
+  box-shadow: inset 0 1px 0 var(--glass-highlight);
+}
+
+.glass-thin {
+  background: var(--glass-thin-bg);
+  backdrop-filter: blur(var(--glass-thin-blur)) saturate(var(--glass-thin-saturate));
+  -webkit-backdrop-filter: blur(var(--glass-thin-blur)) saturate(var(--glass-thin-saturate));
+  border: 1px solid var(--glass-border);
+  border-radius: var(--glass-radius);
+  box-shadow: inset 0 1px 0 var(--glass-highlight);
+}
+
+.glass-regular {
+  background: var(--glass-regular-bg);
+  backdrop-filter: blur(var(--glass-regular-blur)) saturate(var(--glass-regular-saturate));
+  -webkit-backdrop-filter: blur(var(--glass-regular-blur)) saturate(var(--glass-regular-saturate));
+  border: 1px solid var(--glass-border);
+  border-radius: var(--glass-radius);
+  box-shadow:
+    var(--glass-shadow),
+    inset 0 1px 0 var(--glass-highlight);
+}
+
+.glass-thick {
+  background: var(--glass-thick-bg);
+  backdrop-filter: blur(var(--glass-thick-blur)) saturate(var(--glass-thick-saturate));
+  -webkit-backdrop-filter: blur(var(--glass-thick-blur)) saturate(var(--glass-thick-saturate));
+  border: 1px solid var(--glass-border);
+  border-radius: var(--glass-radius);
+  box-shadow:
+    var(--glass-shadow),
+    inset 0 1px 0 var(--glass-highlight);
+}
+
+/* Fallback for browsers without backdrop-filter support */
+@supports not (backdrop-filter: blur(1px)) {
+  .glass-panel, .glass-ultra, .glass-thin, .glass-regular, .glass-thick {
+    background: rgba(20, 22, 28, 0.92);
+  }
+}
+
+/* ──────────────────────────────────────────────────────────
+   Canvas & scrollbar
+   ────────────────────────────────────────────────────────── */
+
+.dashboard-canvas {
+  background-color: var(--canvas-base);
+  background-image: var(--warm-pink-tint);
+  font-family: var(--font-body);
+}
+
+.custom-scrollbar::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+.custom-scrollbar::-webkit-scrollbar-track {
+  background: transparent;
+}
+.custom-scrollbar::-webkit-scrollbar-thumb {
+  background: #333;
+  border-radius: 4px;
+}
+.custom-scrollbar::-webkit-scrollbar-thumb:hover {
+  background: #555;
+}
+
+.neo-kanban-col {
+  min-width: 280px;
+}
+
+/* ──────────────────────────────────────────────────────────
+   Focus rings (accessibility)
+   ────────────────────────────────────────────────────────── */
+
+.focus-ring:focus-visible {
+  outline: none;
+  box-shadow: 0 0 0 2px var(--accent-rose-500);
+}
+
+/* ──────────────────────────────────────────────────────────
+   Reduced motion
+   ────────────────────────────────────────────────────────── */
+
+@media (prefers-reduced-motion: reduce) {
+  .glass-panel, .glass-ultra, .glass-thin, .glass-regular, .glass-thick {
+    transition: none !important;
+  }
+}
+
+@media (prefers-reduced-transparency: reduce) {
+  .glass-panel, .glass-ultra, .glass-thin, .glass-regular, .glass-thick {
+    background: rgba(20, 22, 28, 0.92);
+  }
+}

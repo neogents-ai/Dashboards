@@ -1,0 +1,19 @@
+/* ──────────────────────────────────────────────────────────
+   Creators vertical tokens — Indigo / Lavender
+   ────────────────────────────────────────────────────────── */
+
+.creators-canvas {
+  --accent-rose: #818CF8;
+  --accent-rose-500: #818CF8;
+  --accent-rose-400: #A5B4FC;
+  --accent-rose-300: #C7D2FE;
+  --accent-rose-600: #6366F1;
+  --accent-rose-10: rgba(129, 140, 248, 0.10);
+  --accent-rose-20: rgba(129, 140, 248, 0.20);
+  --accent-rose-30: rgba(129, 140, 248, 0.30);
+  --accent-rose-50: rgba(129, 140, 248, 0.50);
+
+  /* Indigo/violet canvas tint */
+  --warm-pink-tint: radial-gradient(ellipse at 30% 20%, rgba(129, 140, 248, 0.10) 0%, transparent 60%),
+                    radial-gradient(ellipse at 70% 80%, rgba(167, 139, 250, 0.06) 0%, transparent 60%);
+}

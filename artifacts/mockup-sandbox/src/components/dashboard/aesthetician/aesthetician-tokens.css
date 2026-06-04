@@ -1,0 +1,28 @@
+/* Aesthetician vertical — Vision OS Materials: sage + cream */
+/* Scoped to .aesthetician-canvas — overrides glass-tokens.css :root values */
+
+.aesthetician-canvas {
+  /* Canvas */
+  --canvas-base: #0c0d0c;
+  --canvas-gradient: #111411;
+  --canvas-surface: #111411;
+  --canvas-surface-raised: #181a18;
+  --canvas-border: #222820;
+  --canvas-border-hover: #2e3828;
+
+  /* Accent — remap rose tokens to sage green */
+  --accent-rose: #84a98c;
+  --accent-rose-400: #a3c4a8;
+  --accent-rose-500: #84a98c;
+  --accent-rose-600: #6b9672;
+  --accent-rose-300: #c1d9c4;
+  --accent-rose-10: rgba(132, 169, 140, 0.10);
+  --accent-rose-20: rgba(132, 169, 140, 0.20);
+  --accent-rose-30: rgba(132, 169, 140, 0.30);
+  --accent-rose-50: rgba(132, 169, 140, 0.50);
+
+  /* Spa-soft sage + warm cream gradient */
+  --warm-pink-tint:
+    radial-gradient(ellipse at 30% 20%, rgba(132, 169, 140, 0.07) 0%, transparent 55%),
+    radial-gradient(ellipse at 75% 80%, rgba(212, 196, 168, 0.04) 0%, transparent 50%);
+}

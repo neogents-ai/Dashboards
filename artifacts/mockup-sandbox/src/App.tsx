@@ -1,11 +1,13 @@
 import { useEffect, useState, type ComponentType } from "react";
 
 import { modules as discoveredModules } from "./.generated/mockup-components";
-import { Dashboard as PhotographyDashboard } from "./components/mockups/neo-dashboard/Dashboard";
-import { DashboardAesthetician } from "./components/mockups/neo-aesthetician/DashboardAesthetician";
+import { DashboardPhotography } from "./components/dashboard/photography/DashboardPhotography";
+import { DashboardAesthetician2 } from "./components/dashboard/aesthetician/DashboardAesthetician2";
+import { DashboardBarber2 } from "./components/dashboard/barber/DashboardBarber2";
+import { DashboardRealtor2 } from "./components/dashboard/realtor/DashboardRealtor2";
 import { DashboardChef } from "./components/mockups/neo-chef/DashboardChef";
-import { DashboardRealtor } from "./components/mockups/neo-realtor/DashboardRealtor";
-import { BarberHairstylistPage } from "./components/mockups/neo-barber/BarberHairstylistPage";
+import { DashboardHairstylist } from "./components/dashboard/hairstylist/DashboardHairstylist";
+import { DashboardCreators } from "./components/dashboard/creators/DashboardCreators";
 import { LandingPageV3DeepMind } from "./components/mockups/neo-landing-v3-deepmind-glass/LandingPageV3";
 
 type ModuleMap = Record<string, () => Promise<Record<string, unknown>>>;
@@ -147,11 +149,13 @@ function App() {
     );
   }
 
-  if (route === "/photography") return <PhotographyDashboard />;
-  if (route === "/aesthetician") return <DashboardAesthetician />;
-  if (route === "/barber" || route === "/hairstylist") return <BarberHairstylistPage initialVariant={route === "/hairstylist" ? "hairstylist" : "barber"} />;
+  if (route === "/photography") return <DashboardPhotography />;
+  if (route === "/aesthetician") return <DashboardAesthetician2 />;
+  if (route === "/barber") return <DashboardBarber2 />;
+  if (route === "/hairstylist") return <DashboardHairstylist />;
   if (route === "/chef") return <DashboardChef />;
-  if (route === "/realtor") return <DashboardRealtor />;
+  if (route === "/realtor") return <DashboardRealtor2 />;
+  if (route === "/creators") return <DashboardCreators />;
 
   return <LandingPageV3DeepMind />;
 }

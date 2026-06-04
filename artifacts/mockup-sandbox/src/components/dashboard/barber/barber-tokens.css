@@ -1,0 +1,28 @@
+/* Barber vertical — Notion Calendar: warm amber + brown canvas */
+/* Scoped to .barber-canvas — overrides glass-tokens.css :root values */
+
+.barber-canvas {
+  /* Canvas — warm brown undertone */
+  --canvas-base: #0f0c08;
+  --canvas-gradient: #151009;
+  --canvas-surface: #151009;
+  --canvas-surface-raised: #1c1508;
+  --canvas-border: #2a2010;
+  --canvas-border-hover: #3a3018;
+
+  /* Accent — remap rose tokens to warm amber */
+  --accent-rose: #f59e0b;
+  --accent-rose-400: #fbbf24;
+  --accent-rose-500: #f59e0b;
+  --accent-rose-600: #d97706;
+  --accent-rose-300: #fcd34d;
+  --accent-rose-10: rgba(245, 158, 11, 0.10);
+  --accent-rose-20: rgba(245, 158, 11, 0.20);
+  --accent-rose-30: rgba(245, 158, 11, 0.30);
+  --accent-rose-50: rgba(245, 158, 11, 0.50);
+
+  /* Warm brown-amber glow */
+  --warm-pink-tint:
+    radial-gradient(ellipse at 25% 15%, rgba(245, 158, 11, 0.08) 0%, transparent 55%),
+    radial-gradient(ellipse at 70% 85%, rgba(180, 83, 9, 0.05) 0%, transparent 50%);
+}
