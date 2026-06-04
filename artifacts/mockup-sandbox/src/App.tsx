@@ -155,7 +155,7 @@ function App() {
   if (route === "/hairstylist") return <DashboardHairstylist />;
   if (route === "/chef") return <DashboardChef />;
   if (route === "/realtor") return <DashboardRealtor2 />;
-  if (route === "/creators") return <DashboardCreators />;
+  if (route === "/business" || route === "/creators") return <DashboardCreators />;
 
   return <LandingPageV3DeepMind />;
 }

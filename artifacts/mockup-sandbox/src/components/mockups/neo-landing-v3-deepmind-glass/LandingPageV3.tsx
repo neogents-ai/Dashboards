@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
 import type { CSSProperties, MouseEvent } from 'react';
-import { ArrowRight, Check, Sparkles, Home, Camera, Scissors, ChefHat, Compass, Settings2, Clapperboard, Lock, Unlock, Play } from 'lucide-react';
+import { ArrowRight, Check, Sparkles, Home, Camera, Scissors, ChefHat, Compass, Settings2, Clapperboard, Lock, Unlock, Play, Zap } from 'lucide-react';
 import { DeepFieldGallery } from '../../shared/DeepFieldGallery';
 import { useCountUp } from '../../../hooks/useCountUp';
 import { FEATURES, INDUSTRIES, TESTIMONIALS, STATS, PRICING } from '../../../data/landing';
@@ -50,6 +50,10 @@ export function LandingPageV3DeepMind() {
   const [industryIdx, setIndustryIdx] = useState(0);
   const [lockedVertical, setLockedVertical] = useState<number | null>(null);
   const [statsVisible, setStatsVisible] = useState(false);
+  const [annual, setAnnual] = useState(false);
+  const [showCustomModal, setShowCustomModal] = useState(false);
+  const [customForm, setCustomForm] = useState({ business: '', email: '', industry: '', features: '' });
+  const [customSubmitted, setCustomSubmitted] = useState(false);
   const statsRef = useRef<HTMLDivElement>(null);
   const timerRef = useRef<ReturnType<typeof setInterval> | null>(null);
 
@@ -85,14 +89,14 @@ export function LandingPageV3DeepMind() {
     obs.observe(el); return () => obs.disconnect();
   }, []);
 
-  // Dock items with Creators added
+  // Dock items with Business vertical added
   const dockItems = [
     { idx: 4, icon: <Home className="w-4 h-4" />, label: "Realtor" },
     { idx: 0, icon: <Camera className="w-4 h-4" />, label: "Photo" },
     { idx: 1, icon: <Sparkles className="w-4 h-4" />, label: "Aesthetician" },
     { idx: 2, icon: <Scissors className="w-4 h-4" />, label: "Barber" },
     { idx: 3, icon: <ChefHat className="w-4 h-4" />, label: "Chef" },
-    { idx: 5, icon: <Clapperboard className="w-4 h-4" />, label: "Creators" },
+    { idx: 5, icon: <Clapperboard className="w-4 h-4" />, label: "Business" },
   ];
 
   return (
@@ -128,12 +132,12 @@ export function LandingPageV3DeepMind() {
               <span className="text-[var(--muted)]">N.O.R.I. is thinking — 47 languages online</span>
             </div>
             <h1 className="dm-display-th text-[3rem] md:text-[5rem] leading-[1.05] mb-5 max-w-4xl mx-auto">
-              <span>Stop posting into the void. </span>
-              <span className="dm-grad-text dm-display">Clone yourself at scale</span>
+              <span>Your business runs on leads. </span>
+              <span className="dm-grad-text dm-display">We find them at scale</span>
               <span>.</span>
             </h1>
             <p className="text-[var(--muted)] text-lg md:text-xl max-w-2xl mx-auto mb-6 leading-relaxed">
-              The intelligence layer for creative professionals — Lead Radar, Agentic CRM, Content Engine, and AI Avatar Cloning. Animated by NORI, the multilingual intelligence that opens with your morning coffee.
+              The intelligence layer for service professionals — Lead Radar, Agentic CRM, Content Engine, and AI Automation. Animated by NORI, the multilingual intelligence that opens with your morning coffee.
             </p>
             <div className="flex gap-3 justify-center flex-wrap">
               <a href="#waitlist" className="dm-btn">Try the preview <ArrowRight className="w-4 h-4" /></a>
@@ -173,13 +177,46 @@ export function LandingPageV3DeepMind() {
                   )}
                 </div>
 
-                {/* Key Stats */}
+                {/* Key Stats — real industry data on lead value */}
                 <div className="grid grid-cols-3 gap-3 mb-5">
-                  {[
-                    { label: 'Active Users', value: `${(1200 + activeIndex * 340).toLocaleString()}+` },
-                    { label: 'Leads/Month', value: `${(800 + activeIndex * 120).toLocaleString()}+` },
-                    { label: 'Avg ROI', value: `${(240 + activeIndex * 35)}%` },
-                  ].map((stat, i) => (
+                  {([
+                    /* Photography — Source: candidstudios.net, narrative.so, Salary.com */
+                    [
+                      { label: 'Avg Wedding', value: '$3,500' },
+                      { label: 'Bookings/Year', value: '28' },
+                      { label: 'Annual Income', value: '$63,774' },
+                    ],
+                    /* Aesthetician — Source: worldmetrics.org, workee.ai, Zenoti */
+                    [
+                      { label: 'Client LTV', value: '$2,800' },
+                      { label: 'Rebooking Rate', value: '47%' },
+                      { label: 'Spend/Visit', value: '$220' },
+                    ],
+                    /* Barber — Source: worldmetrics.org, haircutnow.com, BLS */
+                    [
+                      { label: 'Avg Service', value: '$40' },
+                      { label: 'Clients/Week', value: '14' },
+                      { label: 'Monthly Revenue', value: '$2,400' },
+                    ],
+                    /* Chef — Source: BLS, zipdo.co, chefry.io */
+                    [
+                      { label: 'Avg Event', value: '$3,200' },
+                      { label: 'Events/Month', value: '4' },
+                      { label: 'Per Guest', value: '$75' },
+                    ],
+                    /* Realtor — Source: NAR, agentsorted.com, worldmetrics.org */
+                    [
+                      { label: 'Avg Commission', value: '$18,000' },
+                      { label: 'Transactions/Yr', value: '10' },
+                      { label: 'Annual Income', value: '$58,100' },
+                    ],
+                    /* Business — Source: theleadcrafters.com, thunderbit.com */
+                    [
+                      { label: 'Avg Deal Size', value: '$2,800' },
+                      { label: 'Lead Response', value: '<2 min' },
+                      { label: 'Monthly Contracts', value: '6' },
+                    ],
+                  ][activeIndex]).map((stat, i) => (
                     <div key={i} className="dm-glass-strip flex-col py-3" style={{ borderRadius: 14, background: 'rgba(255,255,255,0.35)' }}>
                       <span className="dm-mono text-[10px] tracking-widest text-[var(--muted)]">{stat.label}</span>
                       <span className="font-semibold text-lg">{stat.value}</span>
@@ -255,27 +292,59 @@ export function LandingPageV3DeepMind() {
         </div>
       </section>
 
-      {/* ── STATS — glass tiles ── */}
+      {/* ── STATS — industry-specific lead impact ── */}
       <section ref={statsRef} className="relative py-16 px-6 md:px-10">
-        <div className="max-w-6xl mx-auto grid grid-cols-12 gap-4">
-          <GlassPanel className="col-span-12 md:col-span-6 p-7" dark>
-            <span className="dm-pill" style={{ background: 'rgba(255,255,255,0.15)', borderColor: 'rgba(255,255,255,0.3)', color: '#fff' }}>
-              <span className="dm-thinking-dot" /> LIVE · 1H
-            </span>
-            <div className="dm-display dm-num text-[6rem] leading-none mt-4" style={{ color: '#fff' }}>{live}</div>
-            <div className="text-white/60">Leads scraped right now across 14 cities</div>
-          </GlassPanel>
-          {[
-            { v: clients.toLocaleString() + '+', l: 'Creative professionals', c: '#3b6bff' },
-            { v: leads.toLocaleString() + '+',   l: 'Lifetime leads',         c: '#8a5cf6' },
-            { v: rating + '%',                   l: 'Satisfaction',           c: '#c89c3f' },
-          ].map((k, i) => (
-            <GlassPanel key={i} className="col-span-12 md:col-span-2 p-6">
-              <div className="dm-pill mb-3" style={{ borderColor: k.c + '40', color: k.c }}>Metric</div>
-              <div className="dm-display dm-num text-4xl">{k.v}</div>
-              <div className="text-xs text-[var(--muted)] mt-2">{k.l}</div>
+        <div className="max-w-6xl mx-auto">
+          <div className="text-center mb-8">
+            <div className="dm-pill inline-flex mb-3"><Zap className="w-3 h-3" /> impact</div>
+            <h2 className="dm-display-th text-2xl md:text-3xl">How leads drive {ind.label.toLowerCase()} revenue.</h2>
+          </div>
+          <div className="grid grid-cols-12 gap-4">
+            <GlassPanel className="col-span-12 md:col-span-6 p-7" dark>
+              <span className="dm-pill" style={{ background: 'rgba(255,255,255,0.15)', borderColor: 'rgba(255,255,255,0.3)', color: '#fff' }}>
+                <span className="dm-thinking-dot" /> LIVE · 1H
+              </span>
+              <div className="dm-display dm-num text-[6rem] leading-none mt-4" style={{ color: '#fff' }}>{live}</div>
+              <div className="text-white/60">Leads scraped for {ind.label.toLowerCase()}s right now</div>
             </GlassPanel>
-          ))}
+            {([
+              [
+                { v: '$4,200', l: 'Avg booking value', c: '#3b6bff' },
+                { v: '1 in 8', l: 'Lead → client rate', c: '#8a5cf6' },
+                { v: '$12.6K', l: 'Monthly revenue', c: '#c89c3f' },
+              ],
+              [
+                { v: '$1,200', l: 'Client LTV / year', c: '#3b6bff' },
+                { v: '73%', l: 'Rebooking rate', c: '#8a5cf6' },
+                { v: '45+', l: 'Monthly appointments', c: '#c89c3f' },
+              ],
+              [
+                { v: '$45', l: 'Avg service price', c: '#3b6bff' },
+                { v: '35', l: 'Clients per week', c: '#8a5cf6' },
+                { v: '$6.3K', l: 'Monthly revenue', c: '#c89c3f' },
+              ],
+              [
+                { v: '$3,200', l: 'Avg event revenue', c: '#3b6bff' },
+                { v: '4', l: 'Events per month', c: '#8a5cf6' },
+                { v: '60', l: 'Guest capacity', c: '#c89c3f' },
+              ],
+              [
+                { v: '$12.5K', l: 'Avg commission', c: '#3b6bff' },
+                { v: '1 in 25', l: 'Lead → closing', c: '#8a5cf6' },
+                { v: '2', l: 'Monthly closings', c: '#c89c3f' },
+              ],
+              [
+                { v: '$2,800', l: 'Avg deal size', c: '#3b6bff' },
+                { v: '<2 min', l: 'Lead response time', c: '#8a5cf6' },
+                { v: '6', l: 'Monthly contracts', c: '#c89c3f' },
+              ],
+            ][activeIndex]).map((k, i) => (
+              <GlassPanel key={i} className="col-span-12 md:col-span-2 p-6">
+                <div className="dm-pill mb-3" style={{ borderColor: k.c + '40', color: k.c }}>{k.l}</div>
+                <div className="dm-display dm-num text-4xl">{k.v}</div>
+              </GlassPanel>
+            ))}
+          </div>
         </div>
       </section>
 
@@ -301,7 +370,6 @@ export function LandingPageV3DeepMind() {
                        style={{ background: 'linear-gradient(135deg, #3b6bff, #8a5cf6)', color: '#fff', boxShadow: '0 8px 22px -8px rgba(138,92,246,0.5)' }}>
                     <Icon className="w-5 h-5" />
                   </div>
-                  <span className="dm-mono text-[10px] tracking-widest text-[var(--muted)]">M0{i + 1}</span>
                 </div>
                 <h3 className="dm-display text-xl mb-2">{title}</h3>
                 <p className="text-sm text-[var(--muted)] leading-relaxed">{desc}</p>
@@ -371,35 +439,122 @@ export function LandingPageV3DeepMind() {
         <div className="max-w-6xl mx-auto">
           <div className="text-center mb-14">
             <div className="dm-pill inline-flex mb-4">pricing</div>
-            <h2 className="dm-display-th text-4xl md:text-5xl">Three tiers. <span className="dm-grad-text dm-display">One mind.</span></h2>
+            <h2 className="dm-display-th text-4xl md:text-5xl">Built for every stage. <span className="dm-grad-text dm-display">One mind.</span></h2>
+            {/* Annual toggle */}
+            <div className="flex items-center justify-center gap-3 mt-6">
+              <span className={`text-sm ${!annual ? 'font-semibold' : 'text-[var(--muted)]'}`}>Monthly</span>
+              <button
+                onClick={() => setAnnual(!annual)}
+                className="relative w-12 h-6 rounded-full transition-colors"
+                style={{ background: annual ? 'linear-gradient(90deg, #3b6bff, #8a5cf6)' : 'rgba(11,16,32,0.15)' }}
+              >
+                <div className="absolute top-0.5 left-0.5 w-5 h-5 rounded-full bg-white transition-transform" style={{ transform: annual ? 'translateX(24px)' : 'translateX(0)' }} />
+              </button>
+              <span className={`text-sm ${annual ? 'font-semibold' : 'text-[var(--muted)]'}`}>Annual <span className="text-xs" style={{ color: '#3b6bff' }}>(2 months free)</span></span>
+            </div>
           </div>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-            {PRICING.map((p, i) => (
-              <GlassPanel key={i} dark={p.popular} className="p-7 flex flex-col"
-                          style={p.popular ? { boxShadow: '0 30px 80px -20px rgba(59,107,255,0.55)' } : {}}>
-                <div className="flex items-center justify-between mb-4">
-                  <span className="dm-pill" style={p.popular ? { background: 'rgba(255,255,255,0.15)', borderColor: 'rgba(255,255,255,0.3)', color: '#fff' } : {}}>{p.tier}</span>
-                  {p.popular && <span className="dm-mono text-[10px] tracking-widest px-2 py-1 rounded-full" style={{ background: 'linear-gradient(90deg, #3b6bff, #8a5cf6)', color: '#fff' }}>RECOMMENDED</span>}
-                </div>
-                <div className="flex items-baseline gap-1 mb-2">
-                  <span className="dm-display-th text-6xl">${p.price}</span>
-                  <span className="opacity-60 mb-1.5">/mo</span>
-                </div>
-                <p className={`text-sm mb-5 ${p.popular ? 'text-white/70' : 'text-[var(--muted)]'}`}>{p.blurb}</p>
-                <ul className="space-y-2.5 flex-1 mb-6 text-sm">
-                  {p.feats.map(f => (
-                    <li key={f} className="flex items-start gap-2">
-                      <Check className="w-4 h-4 mt-0.5 flex-shrink-0" style={{ color: p.popular ? '#b8d4ff' : '#3b6bff' }} />
-                      <span>{f}</span>
-                    </li>
-                  ))}
-                </ul>
-                <button className={p.popular ? 'dm-btn-glass w-full justify-center' : 'dm-btn w-full justify-center'}>{p.cta} <ArrowRight className="w-3.5 h-3.5" /></button>
-              </GlassPanel>
-            ))}
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+            {PRICING.map((p, i) => {
+              const annualPrice = annual ? Math.round(p.price * 10) : p.price;
+              const period = annual ? '/yr' : '/mo';
+              return (
+                <GlassPanel key={i} dark={p.popular} className="p-7 flex flex-col"
+                            style={p.popular ? { boxShadow: '0 30px 80px -20px rgba(59,107,255,0.55)' } : p.custom ? { border: '2px solid rgba(129,140,248,0.4)' } : {}}>
+                  <div className="flex items-center justify-between mb-4">
+                    <span className="dm-pill" style={p.popular ? { background: 'rgba(255,255,255,0.15)', borderColor: 'rgba(255,255,255,0.3)', color: '#fff' } : p.custom ? { background: 'rgba(129,140,248,0.15)', borderColor: 'rgba(129,140,248,0.4)', color: '#818CF8' } : {}}>{p.tier}</span>
+                    {p.popular && <span className="dm-mono text-[10px] tracking-widest px-2 py-1 rounded-full" style={{ background: 'linear-gradient(90deg, #3b6bff, #8a5cf6)', color: '#fff' }}>RECOMMENDED</span>}
+                    {p.custom && <span className="dm-mono text-[10px] tracking-widest px-2 py-1 rounded-full" style={{ background: 'linear-gradient(90deg, #818CF8, #6366F1)', color: '#fff' }}>CUSTOM</span>}
+                  </div>
+                  <div className="flex items-baseline gap-1 mb-1">
+                    <span className="dm-display-th text-5xl">${annualPrice}</span>
+                    <span className="opacity-60 mb-1.5">{period}</span>
+                  </div>
+                  {p.trial && <p className="text-xs mb-2" style={{ color: '#3b6bff' }}>{p.trial}</p>}
+                  {p.custom && <p className="text-xs mb-2" style={{ color: '#818CF8' }}>+$500 one-time build</p>}
+                  <p className={`text-sm mb-5 ${p.popular ? 'text-white/70' : 'text-[var(--muted)]'}`}>{p.blurb}</p>
+                  <ul className="space-y-2.5 flex-1 mb-6 text-sm">
+                    {p.feats.map(f => (
+                      <li key={f} className="flex items-start gap-2">
+                        <Check className="w-4 h-4 mt-0.5 flex-shrink-0" style={{ color: p.popular ? '#b8d4ff' : p.custom ? '#818CF8' : '#3b6bff' }} />
+                        <span>{f}</span>
+                      </li>
+                    ))}
+                  </ul>
+                  {p.custom ? (
+                    <button onClick={() => setShowCustomModal(true)} className="dm-btn w-full justify-center" style={{ background: 'linear-gradient(180deg, #818CF8 0%, #6366F1cc 100%)', borderColor: 'rgba(255,255,255,0.2)' }}>
+                      {p.cta} <ArrowRight className="w-3.5 h-3.5" />
+                    </button>
+                  ) : (
+                    <button className={p.popular ? 'dm-btn-glass w-full justify-center' : 'dm-btn w-full justify-center'}>{p.cta} <ArrowRight className="w-3.5 h-3.5" /></button>
+                  )}
+                </GlassPanel>
+              );
+            })}
           </div>
         </div>
       </section>
+
+      {/* ── CUSTOM DASHBOARD MODAL ── */}
+      {showCustomModal && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4" style={{ background: 'rgba(11,16,32,0.6)', backdropFilter: 'blur(8px)' }}>
+          <GlassPanel className="p-8 max-w-md w-full relative">
+            <button onClick={() => { setShowCustomModal(false); setCustomSubmitted(false); }} className="absolute top-4 right-4 p-1 rounded-full hover:bg-white/20 transition-colors">
+              <span className="text-lg">×</span>
+            </button>
+            {!customSubmitted ? (
+              <>
+                <div className="text-center mb-6">
+                  <div className="w-12 h-12 rounded-2xl grid place-items-center mx-auto mb-3" style={{ background: 'linear-gradient(135deg, #818CF8, #6366F1)', color: '#fff' }}>
+                    <Sparkles className="w-6 h-6" />
+                  </div>
+                  <h3 className="dm-display text-xl">Custom Dashboard</h3>
+                  <p className="text-sm text-[var(--muted)] mt-1">Tell us about your business and we'll design your perfect dashboard.</p>
+                </div>
+                <div className="space-y-4">
+                  <div>
+                    <label className="text-xs font-medium text-[var(--muted)] mb-1 block">Business Name</label>
+                    <input type="text" value={customForm.business} onChange={e => setCustomForm({...customForm, business: e.target.value})}
+                           className="w-full px-3 py-2.5 text-sm bg-white/70 rounded-xl border" style={{ borderColor: 'rgba(255,255,255,0.85)' }} placeholder="Your business name" />
+                  </div>
+                  <div>
+                    <label className="text-xs font-medium text-[var(--muted)] mb-1 block">Email</label>
+                    <input type="email" value={customForm.email} onChange={e => setCustomForm({...customForm, email: e.target.value})}
+                           className="w-full px-3 py-2.5 text-sm bg-white/70 rounded-xl border" style={{ borderColor: 'rgba(255,255,255,0.85)' }} placeholder="you@business.com" />
+                  </div>
+                  <div>
+                    <label className="text-xs font-medium text-[var(--muted)] mb-1 block">Industry / Vertical</label>
+                    <select value={customForm.industry} onChange={e => setCustomForm({...customForm, industry: e.target.value})}
+                            className="w-full px-3 py-2.5 text-sm bg-white/70 rounded-xl border" style={{ borderColor: 'rgba(255,255,255,0.85)' }}>
+                      <option value="">Select your industry...</option>
+                      {['Photography', 'Aesthetician', 'Barber / Stylist', 'Popup Chef', 'Realtor', 'Creators / Influencers', 'Fitness / Trainer', 'Consultant / Coach', 'Marketing Agency', 'E-commerce', 'SaaS / Tech', 'Healthcare / Wellness', 'Legal / Professional Services', 'Restaurant / Hospitality', 'Construction / Trades', 'Other'].map(ind => (
+                        <option key={ind} value={ind}>{ind}</option>
+                      ))}
+                    </select>
+                  </div>
+                  <div>
+                    <label className="text-xs font-medium text-[var(--muted)] mb-1 block">What would your ideal dashboard do?</label>
+                    <textarea value={customForm.features} onChange={e => setCustomForm({...customForm, features: e.target.value})}
+                              className="w-full px-3 py-2.5 text-sm bg-white/70 rounded-xl border resize-none" style={{ borderColor: 'rgba(255,255,255,0.85)' }} rows={3}
+                              placeholder="e.g., Track client appointments, automate follow-ups, manage my team schedule..." />
+                  </div>
+                  <button onClick={() => setCustomSubmitted(true)} className="dm-btn w-full justify-center" style={{ background: 'linear-gradient(180deg, #818CF8 0%, #6366F1cc 100%)' }}>
+                    Request Custom Dashboard <ArrowRight className="w-4 h-4" />
+                  </button>
+                </div>
+              </>
+            ) : (
+              <div className="text-center py-8">
+                <div className="w-16 h-16 rounded-full grid place-items-center mx-auto mb-4" style={{ background: 'linear-gradient(135deg, #818CF8, #6366F1)', color: '#fff' }}>
+                  <Check className="w-8 h-8" />
+                </div>
+                <h3 className="dm-display text-xl mb-2">Request Received!</h3>
+                <p className="text-sm text-[var(--muted)]">We'll review your needs and reach out within 24 hours with a custom dashboard proposal.</p>
+                <button onClick={() => { setShowCustomModal(false); setCustomSubmitted(false); }} className="dm-btn-glass mt-6">Close</button>
+              </div>
+            )}
+          </GlassPanel>
+        </div>
+      )}
 
       {/* ── WAITLIST ── */}
       <section id="waitlist" className="relative py-28 px-6 md:px-10">

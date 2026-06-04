@@ -2,11 +2,11 @@
 type ModuleMap = Record<string, () => Promise<Record<string, unknown>>>;
 export const modules: ModuleMap = {
   "./components/mockups/cal-ripken/CalRipkenLanding.tsx": () => import("../components/mockups/cal-ripken/CalRipkenLanding.tsx"),
-  "./components/mockups/neo-aesthetician/DashboardAesthetician.tsx": () => import("../components/mockups/neo-aesthetician/DashboardAesthetician.tsx"),
-  "./components/mockups/neo-aesthetician/LandingAesthetician.tsx": () => import("../components/mockups/neo-aesthetician/LandingAesthetician.tsx"),
   "./components/mockups/neo-barber/BarberHairstylistPage.tsx": () => import("../components/mockups/neo-barber/BarberHairstylistPage.tsx"),
   "./components/mockups/neo-barber/DashboardBarber.tsx": () => import("../components/mockups/neo-barber/DashboardBarber.tsx"),
   "./components/mockups/neo-barber/LandingBarber.tsx": () => import("../components/mockups/neo-barber/LandingBarber.tsx"),
+  "./components/mockups/neo-aesthetician/DashboardAesthetician.tsx": () => import("../components/mockups/neo-aesthetician/DashboardAesthetician.tsx"),
+  "./components/mockups/neo-aesthetician/LandingAesthetician.tsx": () => import("../components/mockups/neo-aesthetician/LandingAesthetician.tsx"),
   "./components/mockups/neo-chef/DashboardChef.tsx": () => import("../components/mockups/neo-chef/DashboardChef.tsx"),
   "./components/mockups/neo-chef/LandingChef.tsx": () => import("../components/mockups/neo-chef/LandingChef.tsx"),
   "./components/mockups/neo-dashboard/Dashboard.tsx": () => import("../components/mockups/neo-dashboard/Dashboard.tsx"),

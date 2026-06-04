@@ -38,20 +38,59 @@ export const INDUSTRIES: Industry[] = [
   { label: 'Barber / Stylist',Icon: Scissors, color: '#3B82F6', features: ['Cut & Color Library', 'Booksy + IG Lead Sync', 'Chair-Side Payments', 'Staff & Chairs Mgmt', 'Social Scheduler'], route: '/barber' },
   { label: 'Popup Chef',      Icon: ChefHat,  color: '#F97316', features: ['Menu Drop Engine', 'Event Lead Scraper', 'Ticket Management', 'Ingredient Costing', 'Guest Management'], route: '/chef' },
   { label: 'Realtor',         Icon: Home,     color: '#6366F1', features: ['Neighborhood Intel', 'FSBO & Expired Leads', 'Listing Showcase', 'Showing Scheduler', 'Transaction Tracker'], route: '/realtor' },
-  { label: 'Creators',        Icon: Clapperboard, color: '#818CF8', features: ['Trinity Content Engine — 12 posts/mo', 'Video Production AI — cinematic short-form', 'Audience Intelligence — niche trend monitoring', 'Monetization Layer — sponsors to products', 'Go Live — multi-platform streaming studio'], route: '/creators' },
+  { label: 'Business',        Icon: TrendingUp, color: '#818CF8', features: ['Trinity Content Engine — 12 campaigns/mo', 'AI Production Workflow — polished deliverables fast', 'Audience Intelligence — lead and customer signals', 'Monetization Layer — offers, retainers, and subscriptions', 'Launch Hub — campaigns, events, and partnerships'], route: '/business' },
 ];
 
 export const STATS = [
-  { val: 2400,  label: 'Creative professionals', suffix: '+' },
-  { val: 98000, label: 'Leads AI-scraped',       suffix: '+' },
-  { val: 98,    label: 'Satisfaction rate',      suffix: '%' },
+  { val: 2400,  label: 'Businesses supported', suffix: '+' },
+  { val: 98000, label: 'Leads AI-scraped',     suffix: '+' },
+  { val: 98,    label: 'Satisfaction rate',    suffix: '%' },
 ];
 
-export const PRICING = [
-  { tier: 'Starter', price: 0,  blurb: 'Your first 20 AI-scraped leads, free forever.',
-    feats: ['20 leads/month via N.O.R.I.', '1 industry dashboard', 'Basic CRM (25 contacts)', '5 scheduled social posts', 'Community support'], cta: 'Get Started Free' },
-  { tier: 'Pro',     price: 49, popular: true, blurb: 'Everything you need to run and grow your business.',
-    feats: ['Unlimited AI lead scraping', 'Full 9-tab dashboard', 'Unlimited CRM contacts', 'Content Studio (all formats)', 'Signature industry feature', 'Social media scheduler', 'Review automation', 'Email support'], cta: 'Start Pro' },
-  { tier: 'Agency',  price: 97, blurb: 'Run multiple verticals. Build a team.',
-    feats: ['Everything in Pro', 'All 6 industry verticals', '3 team seats included', 'White-label branding', 'Advanced analytics', 'Priority support', 'Early access'], cta: 'Contact Sales' },
+export type PricingTier = {
+  tier: string;
+  price: number;
+  blurb: string;
+  feats: string[];
+  cta: string;
+  popular?: boolean;
+  trial?: string;
+  seats?: number;
+  custom?: boolean;
+};
+
+export const PRICING: PricingTier[] = [
+  {
+    tier: 'Starter',
+    price: 39,
+    trial: '14-day free trial',
+    blurb: 'Essential tools to get your business moving.',
+    feats: ['50 leads/month via N.O.R.I.', '1 industry dashboard (basic)', 'Basic CRM (100 contacts)', '10 scheduled social posts', '1 team seat', 'Community support'],
+    cta: 'Start Free Trial',
+  },
+  {
+    tier: 'Pro',
+    price: 79,
+    popular: true,
+    trial: '14-day free trial',
+    blurb: 'More power to grow — but not the full stack.',
+    feats: ['200 leads/month via N.O.R.I.', '1 industry dashboard (standard)', 'Full CRM (1,000 contacts)', 'Content Studio (basic templates)', '1 team seat', 'Social media scheduler', 'Review automation', 'Email support'],
+    cta: 'Start Pro Trial',
+  },
+  {
+    tier: 'Agency',
+    price: 119,
+    trial: '14-day free trial',
+    blurb: 'Full dashboard power for your vertical.',
+    feats: ['Unlimited AI lead scraping', 'Full dashboard — YOUR vertical (all features)', 'Unlimited CRM contacts', 'Content Studio (all formats)', 'Signature industry feature', '5 team seats included', 'Social media scheduler', 'Review automation', 'Priority support'],
+    cta: 'Start Agency Trial',
+  },
+  {
+    tier: 'Custom',
+    price: 149,
+    custom: true,
+    blurb: 'Need a dashboard built for your industry?',
+    feats: ['Custom dashboard for any industry', 'All features included', 'Tailored workflow design', 'White-label options', 'Dedicated onboarding', '$500 one-time build fee'],
+    cta: 'Contact Us',
+  },
 ];

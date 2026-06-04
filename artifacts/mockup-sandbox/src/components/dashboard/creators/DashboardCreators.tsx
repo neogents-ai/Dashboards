@@ -32,11 +32,11 @@ export function DashboardCreators() {
       greeting="Good morning, Kai"
       dateLabel="June 2, 2026"
       quickStats={<>
-        <StatPill label="3 Videos Today" />
-        <StatPill label="847K Subscribers" />
+        <StatPill label="3 Campaigns Today" />
+        <StatPill label="1.2K Leads" />
         <StatPill label="$12.4K/mo Revenue" />
       </>}
-      className="creators-canvas"
+      className="business-canvas"
     >
       {activeTab === "home" && <HomeTab />}
       {activeTab === "calendar" && <CalendarTab />}
@@ -60,35 +60,35 @@ function HomeTab() {
   return (
     <div className="p-6 lg:p-8 max-w-[1600px] mx-auto space-y-6">
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
-        <KpiTile title="Subscribers" value="847K" trend="+12.3K this month" trendPositive icon={<Users className="w-5 h-5" />} />
-        <KpiTile title="Monthly Views" value="4.2M" trend="+18% vs last month" trendPositive icon={<Eye className="w-5 h-5" />} />
-        <KpiTile title="Engagement Rate" value="8.4%" subtitle="avg across platforms" icon={<TrendingUp className="w-5 h-5" />} />
+        <KpiTile title="Active Accounts" value="847" trend="+12 this month" trendPositive icon={<Users className="w-5 h-5" />} />
+        <KpiTile title="Website Traffic" value="4.2K" trend="+18% vs last month" trendPositive icon={<Eye className="w-5 h-5" />} />
+        <KpiTile title="Conversion Rate" value="8.4%" subtitle="avg customer funnel" icon={<TrendingUp className="w-5 h-5" />} />
         <KpiTile title="Est. Revenue" value="$12.4K" trend="+$2.1K vs last month" trendPositive icon={<DollarSign className="w-5 h-5" />} />
       </div>
 
       <div className="space-y-4">
-        <CollapsibleCard title="Content Pipeline" subtitle="5 ideas · 3 scripting · 2 editing · 1 scheduled" icon={<Film className="w-5 h-5" />} defaultOpen storageKey="creators-home-pipeline">
+        <CollapsibleCard title="Business Pipeline" subtitle="5 proposals · 3 drafts · 2 reviews · 1 launch" icon={<Film className="w-5 h-5" />} defaultOpen storageKey="business-home-pipeline">
           <ContentPipeline />
         </CollapsibleCard>
 
-        <CollapsibleCard title="Today's Analytics" subtitle="Real-time performance across platforms" icon={<BarChart3 className="w-5 h-5" />} storageKey="creators-home-analytics">
+        <CollapsibleCard title="Current Performance" subtitle="Real-time business signals across channels" icon={<BarChart3 className="w-5 h-5" />} storageKey="business-home-analytics">
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
-            <PlatformCard platform="YouTube" views="1.2M" subs="+3.4K" color="#FF0000" icon={<Youtube className="w-4 h-4" />} />
-            <PlatformCard platform="TikTok" views="2.1M" subs="+8.7K" color="#00f2ea" icon={<Video className="w-4 h-4" />} />
-            <PlatformCard platform="Instagram" views="890K" subs="+1.2K" color="#E4405F" icon={<Instagram className="w-4 h-4" />} />
+            <PlatformCard platform="Website" views="1.2K" subs="+3.4%" color="#3B82F6" icon={<Globe className="w-4 h-4" />} />
+            <PlatformCard platform="Email" views="2.1K" subs="+8.7%" color="#0EA5E9" icon={<MessageSquare className="w-4 h-4" />} />
+            <PlatformCard platform="Social" views="890" subs="+1.2%" color="#22C55E" icon={<Share2 className="w-4 h-4" />} />
           </div>
         </CollapsibleCard>
 
-        <CollapsibleCard title="Weekly Performance" subtitle="Views by day — last 7 days" icon={<TrendingUp className="w-5 h-5" />} storageKey="creators-home-weekly">
+        <CollapsibleCard title="Weekly Performance" subtitle="Performance by day — last 7 days" icon={<TrendingUp className="w-5 h-5" />} storageKey="business-home-weekly">
           <WeeklyBarChart />
         </CollapsibleCard>
 
-        <CollapsibleCard title="Brand Deal Pipeline" subtitle="4 active negotiations · $34K potential" icon={<DollarSign className="w-5 h-5" />} storageKey="creators-home-deals">
+        <CollapsibleCard title="Partnership Pipeline" subtitle="4 active negotiations · $34K potential" icon={<DollarSign className="w-5 h-5" />} storageKey="business-home-deals">
           <div className="space-y-3">
-            <DealRow brand="NordLayer" type="Sponsored Video" value="$8,500" status="negotiating" />
-            <DealRow brand="Squarespace" type="Integration" value="$12,000" status="signed" />
-            <DealRow brand="Audible" type="Affiliate Push" value="$4,200" status="delivered" />
-            <DealRow brand="Luminar Neo" type="Tutorial Series" value="$9,500" status="new" />
+            <DealRow brand="NordLayer" type="Channel Partnership" value="$8,500" status="negotiating" />
+            <DealRow brand="Squarespace" type="Platform Integration" value="$12,000" status="signed" />
+            <DealRow brand="Audible" type="Co-Marketing" value="$4,200" status="delivered" />
+            <DealRow brand="Luminar Neo" type="Campaign Activation" value="$9,500" status="new" />
           </div>
         </CollapsibleCard>
       </div>
@@ -98,20 +98,20 @@ function HomeTab() {
 
 function ContentPipeline() {
   const stages = [
-    { title: "Ideas", count: 5, color: "border-[var(--accent-rose-500)]", items: [
-      { name: "AI Avatar Deep Dive", detail: "Show the cloning process", ai: true },
-      { name: "Day in the Life", detail: "Behind-the-scenes studio", ai: false },
+    { title: "Prospects", count: 5, color: "border-[var(--accent-rose-500)]", items: [
+      { name: "AI Brand Persona Brief", detail: "Outline customer-facing messaging", ai: true },
+      { name: "Sales Opportunity Audit", detail: "Score the highest-value leads", ai: false },
     ]},
-    { title: "Scripting", count: 3, color: "border-purple-500", items: [
-      { name: "Multi-Platform Strategy", detail: "Repurposing masterclass", ai: true },
+    { title: "Proposals", count: 3, color: "border-purple-500", items: [
+      { name: "Multi-Channel Campaign", detail: "Repurposing plan for email + socials", ai: true },
     ]},
-    { title: "Editing", count: 2, color: "border-blue-500", items: [
-      { name: "Q4 Revenue Breakdown", detail: "Transparent income report", ai: false },
+    { title: "Deliverables", count: 2, color: "border-blue-500", items: [
+      { name: "Q4 Revenue Review", detail: "Internal report and client summary", ai: false },
     ]},
-    { title: "Scheduled", count: 1, color: "border-amber-500", items: [
-      { name: "Go Live Studio Tour", detail: "Premieres tomorrow 10AM", ai: true },
+    { title: "Launches", count: 1, color: "border-amber-500", items: [
+      { name: "Campaign Kickoff", detail: "Launches tomorrow 10AM", ai: true },
     ]},
-    { title: "Published", count: 48, color: "border-emerald-500", items: [] },
+    { title: "Completed", count: 48, color: "border-emerald-500", items: [] },
   ];
 
   return (
@@ -134,7 +134,7 @@ function ContentPipeline() {
                 <p className="text-xs text-[#888]">{item.detail}</p>
               </div>
             ))}
-            {stage.items.length === 0 && <div className="text-center text-[#444] text-xs py-6">{stage.count} published videos</div>}
+            {stage.items.length === 0 && <div className="text-center text-[#444] text-xs py-6">{stage.count} completed projects</div>}
           </div>
         </div>
       ))}
@@ -151,9 +151,9 @@ function PlatformCard({ platform, views, subs, color, icon }: { platform: string
       </div>
       <div className="flex items-baseline gap-2">
         <span className="text-xl font-bold text-white">{views}</span>
-        <span className="text-xs text-[#888]">views</span>
+        <span className="text-xs text-[#888]">leads</span>
       </div>
-      <p className="mt-1 text-xs text-emerald-400 font-medium">{subs} new subs</p>
+      <p className="mt-1 text-xs text-emerald-400 font-medium">{subs} conversion</p>
     </div>
   );
 }
@@ -219,41 +219,41 @@ function DealRow({ brand, type, value, status }: { brand: string; type: string; 
 function CalendarTab() {
   const week = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"];
   const schedule = [
-    { day: 0, slots: [{ time: "10:00", platform: "youtube", title: "Tech Review", type: "publish" }, { time: "15:00", platform: "tiktok", title: "Short Clip", type: "draft" }] },
-    { day: 1, slots: [{ time: "09:00", platform: "instagram", title: "Reel Drop", type: "publish" }, { time: "19:00", platform: "twitch", title: "Live Q&A", type: "live" }] },
-    { day: 2, slots: [{ time: "11:00", platform: "youtube", title: "Tutorial", type: "publish", best: true }] },
-    { day: 3, slots: [{ time: "14:00", platform: "tiktok", title: "Trending Audio", type: "draft" }, { time: "20:00", platform: "x", title: "Space", type: "live" }] },
-    { day: 4, slots: [{ time: "10:00", platform: "youtube", title: "Weekly Wrap", type: "publish", best: true }] },
-    { day: 5, slots: [{ time: "12:00", platform: "instagram", title: "Story Series", type: "publish" }, { time: "18:00", platform: "twitch", title: "Gaming Stream", type: "live" }] },
-    { day: 6, slots: [{ time: "11:00", platform: "youtube", title: "Behind Scenes", type: "draft" }] },
+    { day: 0, slots: [{ time: "10:00", platform: "website", title: "Client Kickoff", type: "publish" }, { time: "15:00", platform: "email", title: "Proposal Draft", type: "draft" }] },
+    { day: 1, slots: [{ time: "09:00", platform: "crm", title: "Lead Follow-up", type: "publish" }, { time: "19:00", platform: "meeting", title: "Team Sync", type: "live" }] },
+    { day: 2, slots: [{ time: "11:00", platform: "website", title: "Strategy Review", type: "publish", best: true }] },
+    { day: 3, slots: [{ time: "14:00", platform: "sales", title: "Campaign Prep", type: "draft" }, { time: "20:00", platform: "meeting", title: "All-Hands", type: "live" }] },
+    { day: 4, slots: [{ time: "10:00", platform: "website", title: "Weekly Report", type: "publish", best: true }] },
+    { day: 5, slots: [{ time: "12:00", platform: "email", title: "Launch Announcement", type: "publish" }, { time: "18:00", platform: "sales", title: "Partner Check-In", type: "live" }] },
+    { day: 6, slots: [{ time: "11:00", platform: "crm", title: "Weekly Planning", type: "draft" }] },
   ];
 
   const platformIcons: Record<string, React.ReactNode> = {
-    youtube: <Youtube className="w-3.5 h-3.5" />,
-    tiktok: <Video className="w-3.5 h-3.5" />,
-    instagram: <Instagram className="w-3.5 h-3.5" />,
-    twitch: <Twitch className="w-3.5 h-3.5" />,
-    x: <Twitter className="w-3.5 h-3.5" />,
+    website: <Globe className="w-3.5 h-3.5" />,
+    email: <MessageSquare className="w-3.5 h-3.5" />,
+    crm: <Users className="w-3.5 h-3.5" />,
+    sales: <DollarSign className="w-3.5 h-3.5" />,
+    meeting: <Calendar className="w-3.5 h-3.5" />,
   };
 
   const platformColors: Record<string, string> = {
-    youtube: "#FF0000",
-    tiktok: "#00f2ea",
-    instagram: "#E4405F",
-    twitch: "#9146FF",
-    x: "#1DA1F2",
+    website: "#22C55E",
+    email: "#0EA5E9",
+    crm: "#818CF8",
+    sales: "#FBBF24",
+    meeting: "#8B5CF6",
   };
 
   return (
     <div className="p-6 lg:p-8 max-w-[1600px] mx-auto space-y-6">
       <div className="flex items-center justify-between flex-wrap gap-3">
         <div>
-          <h2 className="text-2xl font-bold text-white">Publishing Schedule</h2>
+          <h2 className="text-2xl font-bold text-white">Operations Calendar</h2>
           <p className="text-[#888]">Week of June 1 — June 7, 2026</p>
         </div>
         <div className="flex gap-2">
           <button className="dm-glass-strip px-3 py-1.5 rounded-lg text-xs font-medium text-[var(--accent-rose-400)] border border-[var(--accent-rose-20)] bg-[var(--accent-rose-10)]">
-            <Plus className="w-3 h-3" /> Add Slot
+            <Plus className="w-3 h-3" /> Add Task
           </button>
         </div>
       </div>
@@ -295,12 +295,12 @@ function CalendarTab() {
 
       <div className="rounded-2xl border border-[var(--canvas-border)] bg-[var(--canvas-surface)] p-5">
         <h3 className="text-sm font-bold text-white mb-4 flex items-center gap-2">
-          <Clock className="w-4 h-4 text-[var(--accent-rose-400)]" /> Upcoming Live Streams
+          <Clock className="w-4 h-4 text-[var(--accent-rose-400)]" /> Upcoming Events
         </h3>
         <div className="space-y-3">
-          <StreamRow platform="twitch" title="Weekly Q&A — Ask Me Anything" time="Tue 7:00 PM" countdown="2h 14m" viewers="2.4K" />
-          <StreamRow platform="youtube" title="Product Review Live — New Gear" time="Thu 2:00 PM" countdown="1d 4h" viewers="850" />
-          <StreamRow platform="tiktok" title="Trending Audio Challenge Live" time="Sat 6:00 PM" countdown="2d 5h" viewers="1.2K" />
+          <StreamRow platform="meeting" title="Weekly Leadership Review" time="Tue 7:00 PM" countdown="2h 14m" viewers="24" />
+          <StreamRow platform="website" title="Product Launch Prep" time="Thu 2:00 PM" countdown="1d 4h" viewers="18" />
+          <StreamRow platform="email" title="Campaign Briefing" time="Sat 6:00 PM" countdown="2d 5h" viewers="34" />
         </div>
       </div>
     </div>
@@ -309,14 +309,14 @@ function CalendarTab() {
 
 function StreamRow({ platform, title, time, countdown, viewers }: { platform: string; title: string; time: string; countdown: string; viewers: string }) {
   const icons: Record<string, React.ReactNode> = {
-    twitch: <Twitch className="w-4 h-4" />,
-    youtube: <Youtube className="w-4 h-4" />,
-    tiktok: <Video className="w-4 h-4" />,
+    meeting: <Calendar className="w-4 h-4" />,
+    website: <Globe className="w-4 h-4" />,
+    email: <MessageSquare className="w-4 h-4" />,
   };
   const colors: Record<string, string> = {
-    twitch: "#9146FF",
-    youtube: "#FF0000",
-    tiktok: "#00f2ea",
+    meeting: "#8B5CF6",
+    website: "#22C55E",
+    email: "#0EA5E9",
   };
   return (
     <div className="flex items-center gap-4 p-3 rounded-xl bg-[var(--canvas-surface-raised)] hover:bg-[#131e35] transition-colors">
@@ -329,10 +329,10 @@ function StreamRow({ platform, title, time, countdown, viewers }: { platform: st
       </div>
       <div className="text-right">
         <p className="text-xs font-medium text-[var(--accent-rose-400)]">{countdown}</p>
-        <p className="text-[10px] text-[#888]">{viewers} expected</p>
+        <p className="text-[10px] text-[#888]">{viewers} attendees</p>
       </div>
       <button className="px-3 py-1.5 rounded-lg bg-[var(--accent-rose-10)] border border-[var(--accent-rose-20)] text-[var(--accent-rose-400)] text-xs font-medium hover:bg-[var(--accent-rose-20)] transition-colors">
-        Remind
+        Notify
       </button>
     </div>
   );
@@ -341,31 +341,31 @@ function StreamRow({ platform, title, time, countdown, viewers }: { platform: st
 /* ═══ AUDIENCE TAB ═══ */
 function AudienceTab() {
   const segments = [
-    { label: "New Followers", count: "12.4K", pct: "+24%", color: "bg-blue-500", width: "35%" },
-    { label: "Active Engaged", count: "89.2K", pct: "+8%", color: "bg-[var(--accent-rose-500)]", width: "55%" },
-    { label: "Dormant", count: "45.1K", pct: "-3%", color: "bg-amber-500", width: "25%" },
-    { label: "VIP Supporters", count: "2.8K", pct: "+12%", color: "bg-emerald-500", width: "8%" },
+    { label: "New Leads", count: "12.4K", pct: "+24%", color: "bg-blue-500", width: "35%" },
+    { label: "Active Clients", count: "89.2K", pct: "+8%", color: "bg-[var(--accent-rose-500)]", width: "55%" },
+    { label: "Dormant Accounts", count: "45.1K", pct: "-3%", color: "bg-amber-500", width: "25%" },
+    { label: "VIP Customers", count: "2.8K", pct: "+12%", color: "bg-emerald-500", width: "8%" },
   ];
 
   const topContent = [
-    { title: "AI Avatar Tutorial", views: "2.1M", engagement: "12.4%", platform: "YouTube" },
-    { title: "Day in the Life 2026", views: "1.8M", engagement: "9.2%", platform: "TikTok" },
-    { title: "Revenue Breakdown Q1", views: "980K", engagement: "15.1%", platform: "YouTube" },
-    { title: "Studio Tour", views: "760K", engagement: "7.8%", platform: "Instagram" },
+    { title: "Q2 Sales Campaign", views: "2.1K", engagement: "12.4%", platform: "Email" },
+    { title: "Launch Landing Page", views: "1.8K", engagement: "9.2%", platform: "Website" },
+    { title: "Revenue Review Q1", views: "980", engagement: "15.1%", platform: "CRM" },
+    { title: "Client Onboarding", views: "760", engagement: "7.8%", platform: "Social" },
   ];
 
   const fanQA = [
-    { fan: "@creative_mind", question: "What camera do you use for your B-roll?", suggested: "Sony A7S III + 24-70mm GM — link in description!", likes: 234 },
-    { fan: "@techie_sarah", question: "When is the next live stream?", suggested: "Tuesdays 7PM EST — set a reminder above!", likes: 189 },
-    { fan: "@design_dave", question: "Can you review the new M4 MacBook?", suggested: "It's on the pipeline — expect it next week!", likes: 156 },
+    { fan: "@operations_lead", question: "Can we move the client call earlier?", suggested: "Shift to 2PM and notify stakeholders.", likes: 234 },
+    { fan: "@marketing_head", question: "What’s the priority campaign this week?", suggested: "Focus on the launch email and partner push.", likes: 189 },
+    { fan: "@sales_director", question: "Are there any high-value deals ready to close?", suggested: "Yes — 2 proposals are in final review.", likes: 156 },
   ];
 
   return (
     <div className="p-6 lg:p-8 max-w-[1600px] mx-auto space-y-6">
       <div className="flex items-center justify-between">
         <div>
-          <h2 className="text-2xl font-bold text-white">Audience Intelligence</h2>
-          <p className="text-[#888]">Understand, segment, and grow your community</p>
+          <h2 className="text-2xl font-bold text-white">Customer Intelligence</h2>
+          <p className="text-[#888]">Understand, segment, and grow your business relationships</p>
         </div>
       </div>
 
@@ -424,7 +424,7 @@ function AudienceTab() {
           </div>
 
           <div className="rounded-2xl border border-[var(--canvas-border)] bg-[var(--canvas-surface)] p-5">
-            <h3 className="text-sm font-bold text-white mb-4">Top Performing Content</h3>
+            <h3 className="text-sm font-bold text-white mb-4">Top Campaigns</h3>
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
               {topContent.map((content) => (
                 <div key={content.title} className="rounded-xl bg-[var(--canvas-surface-raised)] border border-[var(--canvas-border)] p-4 hover:border-[var(--accent-rose-30)] transition-colors">
@@ -434,8 +434,8 @@ function AudienceTab() {
                   </div>
                   <p className="text-sm font-medium text-white mb-1">{content.title}</p>
                   <div className="flex items-center gap-3 text-xs text-[#888]">
-                    <span>{content.views} views</span>
-                    <span className="text-emerald-400">{content.engagement} engagement</span>
+                    <span>{content.views} actions</span>
+                    <span className="text-emerald-400">{content.engagement} conversion</span>
                   </div>
                 </div>
               ))}
@@ -444,7 +444,7 @@ function AudienceTab() {
 
           <div className="rounded-2xl border border-[var(--canvas-border)] bg-[var(--canvas-surface)] p-5">
             <h3 className="text-sm font-bold text-white mb-4 flex items-center gap-2">
-              <MessageSquare className="w-4 h-4 text-[var(--accent-rose-400)]" /> Fan Q&A Queue
+              <MessageSquare className="w-4 h-4 text-[var(--accent-rose-400)]" /> Customer Feedback Queue
             </h3>
             <div className="space-y-3">
               {fanQA.map((qa) => (
@@ -654,21 +654,21 @@ function MoreTab() {
   const [showAvatar, setShowAvatar] = useState(false);
 
   const items = [
-    { icon: <Radio className="w-5 h-5" />, label: "Go Live Studio", desc: "Multi-platform streaming", featured: true, onClick: () => setShowGoLive(true) },
-    { icon: <Wand2 className="w-5 h-5" />, label: "AI Avatar Cloning", desc: "Generate your digital twin", featured: true, onClick: () => setShowAvatar(true) },
+    { icon: <Radio className="w-5 h-5" />, label: "Campaign Studio", desc: "Launch multi-channel activations", featured: true, onClick: () => setShowGoLive(true) },
+    { icon: <Wand2 className="w-5 h-5" />, label: "AI Persona Builder", desc: "Generate business personas", featured: true, onClick: () => setShowAvatar(true) },
     { icon: <Film className="w-5 h-5" />, label: "Content Studio", desc: "Edit, caption, and publish" },
-    { icon: <DollarSign className="w-5 h-5" />, label: "Brand Deal Inbox", desc: "Manage sponsorships" },
-    { icon: <MessageSquare className="w-5 h-5" />, label: "Fan Q&A Agent", desc: "Auto-reply to fans" },
-    { icon: <Share2 className="w-5 h-5" />, label: "Repurpose Machine", desc: "One video → 12 formats" },
-    { icon: <BarChart3 className="w-5 h-5" />, label: "Analytics Deep Dive", desc: "Cross-platform insights" },
+    { icon: <DollarSign className="w-5 h-5" />, label: "Partnership Inbox", desc: "Manage collaborations" },
+    { icon: <MessageSquare className="w-5 h-5" />, label: "Customer Q&A Agent", desc: "Auto-reply to customers" },
+    { icon: <Share2 className="w-5 h-5" />, label: "Repurpose Machine", desc: "One message → 12 formats" },
+    { icon: <BarChart3 className="w-5 h-5" />, label: "Analytics Deep Dive", desc: "Cross-channel insights" },
     { icon: <Settings className="w-5 h-5" />, label: "Settings", desc: "Account & preferences" },
   ];
 
   return (
     <div className="p-6 lg:p-8 max-w-[1600px] mx-auto space-y-6">
       <div>
-        <h2 className="text-2xl font-bold text-white">Creator Tools</h2>
-        <p className="text-[#888]">Everything you need to create, stream, and scale</p>
+        <h2 className="text-2xl font-bold text-white">Business Tools</h2>
+        <p className="text-[#888]">Everything you need to run, launch, and scale your operation</p>
       </div>
 
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
@@ -699,14 +699,14 @@ function MoreTab() {
         ))}
       </div>
 
-      {showGoLive && <GoLiveStudio onClose={() => setShowGoLive(false)} />}
-      {showAvatar && <AIAvatarCloning onClose={() => setShowAvatar(false)} />}
+      {showGoLive && <CampaignStudio onClose={() => setShowGoLive(false)} />}
+      {showAvatar && <AIPersonaBuilder onClose={() => setShowAvatar(false)} />}
     </div>
   );
 }
 
-/* ─── Go Live Studio Modal ─── */
-function GoLiveStudio({ onClose }: { onClose: () => void }) {
+/* ─── Campaign Studio Modal ─── */
+function CampaignStudio({ onClose }: { onClose: () => void }) {
   const [selectedPlatforms, setSelectedPlatforms] = useState<string[]>(["youtube"]);
   const [isLive, setIsLive] = useState(false);
   const [bitrate, setBitrate] = useState(4500);
@@ -722,11 +722,11 @@ function GoLiveStudio({ onClose }: { onClose: () => void }) {
   }, [isLive]);
 
   const platforms = [
-    { id: "youtube", name: "YouTube", icon: <Youtube className="w-5 h-5" />, color: "#FF0000" },
-    { id: "tiktok", name: "TikTok", icon: <Video className="w-5 h-5" />, color: "#00f2ea" },
-    { id: "instagram", name: "Instagram", icon: <Instagram className="w-5 h-5" />, color: "#E4405F" },
-    { id: "twitch", name: "Twitch", icon: <Twitch className="w-5 h-5" />, color: "#9146FF" },
-    { id: "x", name: "X / Twitter", icon: <Twitter className="w-5 h-5" />, color: "#1DA1F2" },
+      { id: "website", name: "Website", icon: <Globe className="w-5 h-5" />, color: "#22C55E" },
+      { id: "email", name: "Email", icon: <MessageSquare className="w-5 h-5" />, color: "#0EA5E9" },
+      { id: "social", name: "Social", icon: <Share2 className="w-5 h-5" />, color: "#8B5CF6" },
+      { id: "crm", name: "CRM", icon: <Users className="w-5 h-5" />, color: "#818CF8" },
+      { id: "ads", name: "Ads", icon: <BarChart3 className="w-5 h-5" />, color: "#F59E0B" },
   ];
 
   const togglePlatform = (id: string) => {
@@ -736,14 +736,14 @@ function GoLiveStudio({ onClose }: { onClose: () => void }) {
   };
 
   const scheduledStreams = [
-    { title: "Weekly Q&A", platform: "twitch", time: "Tue 7:00 PM", countdown: "2h 14m" },
-    { title: "Product Review Live", platform: "youtube", time: "Thu 2:00 PM", countdown: "1d 4h" },
+    { title: "Q2 Launch Review", platform: "website", time: "Tue 7:00 PM", countdown: "2h 14m" },
+    { title: "Holiday Campaign Prep", platform: "email", time: "Thu 2:00 PM", countdown: "1d 4h" },
   ];
 
   const chatMessages = [
-    { user: "@fan_one", msg: "Can't wait for this stream! 🔥", color: "#818CF8" },
-    { user: "@creative_soul", msg: "First time catching you live!", color: "#A5B4FC" },
-    { user: "@tech_guru", msg: "What mic are you using today?", color: "#C7D2FE" },
+    { user: "@operations_lead", msg: "Launch readiness looks good. ✅", color: "#818CF8" },
+    { user: "@marketing_head", msg: "Approval pending for the hero banner.", color: "#A5B4FC" },
+    { user: "@sales_director", msg: "Customer segment list is finalized.", color: "#C7D2FE" },
   ];
 
   return (
@@ -751,12 +751,12 @@ function GoLiveStudio({ onClose }: { onClose: () => void }) {
       <div className="w-full max-w-4xl max-h-[90vh] overflow-auto rounded-3xl border border-[var(--canvas-border)] bg-[var(--canvas-base)] shadow-2xl">
         <div className="p-6 border-b border-[var(--canvas-border)] flex items-center justify-between">
           <div className="flex items-center gap-3">
-            <div className="w-10 h-10 rounded-xl bg-red-500/10 flex items-center justify-center">
-              <Radio className="w-5 h-5 text-red-400 animate-pulse" />
+            <div className="w-10 h-10 rounded-xl bg-[var(--accent-rose-10)] flex items-center justify-center">
+              <Radio className="w-5 h-5 text-[var(--accent-rose-400)] animate-pulse" />
             </div>
             <div>
-              <h3 className="text-lg font-bold text-white">Go Live Studio</h3>
-              <p className="text-xs text-[#888]">Multi-platform streaming control center</p>
+              <h3 className="text-lg font-bold text-white">Campaign Studio</h3>
+              <p className="text-xs text-[#888]">Multi-channel launch and activation control center</p>
             </div>
           </div>
           <button onClick={onClose} className="p-2 rounded-lg hover:bg-[var(--canvas-surface-raised)] transition-colors">
@@ -792,7 +792,7 @@ function GoLiveStudio({ onClose }: { onClose: () => void }) {
           </div>
 
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-            {/* Stream Preview */}
+            {/* Campaign Preview */}
             <div className="rounded-2xl border border-[var(--canvas-border)] bg-[var(--canvas-surface)] overflow-hidden">
               <div className="aspect-video bg-gradient-to-br from-[#0d1120] to-[#1a2040] flex items-center justify-center relative">
                 {isLive ? (
@@ -804,13 +804,13 @@ function GoLiveStudio({ onClose }: { onClose: () => void }) {
                     <div className="absolute top-3 right-3 text-xs text-[#888]">00:04:23</div>
                     <div className="text-center">
                       <Mic className="w-12 h-12 text-white/20 mx-auto mb-2" />
-                      <p className="text-sm text-white/40">Stream preview active</p>
+                      <p className="text-sm text-white/40">Campaign preview active</p>
                     </div>
                   </>
                 ) : (
                   <div className="text-center">
                     <Video className="w-12 h-12 text-white/20 mx-auto mb-2" />
-                    <p className="text-sm text-white/40">Preview will appear here</p>
+                    <p className="text-sm text-white/40">Launch preview will appear here</p>
                   </div>
                 )}
               </div>
@@ -824,15 +824,15 @@ function GoLiveStudio({ onClose }: { onClose: () => void }) {
                       : "bg-[var(--accent-rose-500)] text-white hover:bg-[var(--accent-rose-600)] animate-pulse"
                   )}
                 >
-                  {isLive ? <><Pause className="w-4 h-4" /> End Stream</> : <><Play className="w-4 h-4" /> Start Stream</>}
+                  {isLive ? <><Pause className="w-4 h-4" /> End Campaign</> : <><Play className="w-4 h-4" /> Start Campaign</>}
                 </button>
               </div>
             </div>
 
-            {/* Stream Health + Chat */}
+            {/* Campaign Health + Activity */}
             <div className="space-y-4">
               <div className="rounded-2xl border border-[var(--canvas-border)] bg-[var(--canvas-surface)] p-4">
-                <h4 className="text-sm font-semibold text-white mb-3">Stream Health</h4>
+                <h4 className="text-sm font-semibold text-white mb-3">Campaign Health</h4>
                 <div className="grid grid-cols-3 gap-3">
                   <div className="rounded-xl bg-[var(--canvas-surface-raised)] p-3 text-center">
                     <p className="text-[10px] text-[#888] uppercase">Bitrate</p>
@@ -853,7 +853,7 @@ function GoLiveStudio({ onClose }: { onClose: () => void }) {
               </div>
 
               <div className="rounded-2xl border border-[var(--canvas-border)] bg-[var(--canvas-surface)] p-4">
-                <h4 className="text-sm font-semibold text-white mb-3">Chat Preview</h4>
+                <h4 className="text-sm font-semibold text-white mb-3">Activity Feed</h4>
                 <div className="space-y-2 max-h-32 overflow-auto">
                   {chatMessages.map((msg, i) => (
                     <div key={i} className="flex items-start gap-2 text-xs">
@@ -868,7 +868,7 @@ function GoLiveStudio({ onClose }: { onClose: () => void }) {
 
           {/* Scheduled Streams */}
           <div className="rounded-2xl border border-[var(--canvas-border)] bg-[var(--canvas-surface)] p-4">
-            <h4 className="text-sm font-semibold text-white mb-3">Scheduled Streams</h4>
+            <h4 className="text-sm font-semibold text-white mb-3">Scheduled Launches</h4>
             <div className="space-y-2">
               {scheduledStreams.map((s) => (
                 <div key={s.title} className="flex items-center justify-between p-3 rounded-xl bg-[var(--canvas-surface-raised)]">
@@ -892,17 +892,17 @@ function GoLiveStudio({ onClose }: { onClose: () => void }) {
   );
 }
 
-/* ─── AI Avatar Cloning Modal ─── */
-function AIAvatarCloning({ onClose }: { onClose: () => void }) {
+/* ─── AI Persona Builder Modal ─── */
+function AIPersonaBuilder({ onClose }: { onClose: () => void }) {
   const [step, setStep] = useState<"upload" | "style" | "preview">("upload");
   const [selectedStyle, setSelectedStyle] = useState("professional");
 
   const styles = [
-    { id: "professional", name: "Professional", desc: "Clean headshot, studio lighting", icon: <Monitor className="w-4 h-4" /> },
-    { id: "casual", name: "Casual", desc: "Relaxed, authentic vibe", icon: <Smartphone className="w-4 h-4" /> },
-    { id: "cinematic", name: "Cinematic", desc: "Dramatic lighting, film look", icon: <Film className="w-4 h-4" /> },
-    { id: "animated", name: "Animated", desc: "Stylized 3D character", icon: <Palette className="w-4 h-4" /> },
-    { id: "realistic", name: "Realistic", desc: "Photorealistic, indistinguishable", icon: <Camera className="w-4 h-4" /> },
+    { id: "professional", name: "Professional", desc: "Clean brand identity, polished tone", icon: <Monitor className="w-4 h-4" /> },
+    { id: "casual", name: "Casual", desc: "Friendly, conversational voice", icon: <Smartphone className="w-4 h-4" /> },
+    { id: "cinematic", name: "Cinematic", desc: "Bold, dramatic storytelling", icon: <Film className="w-4 h-4" /> },
+    { id: "animated", name: "Animated", desc: "Stylized persona for campaigns", icon: <Palette className="w-4 h-4" /> },
+    { id: "realistic", name: "Realistic", desc: "Human-like brand representation", icon: <Camera className="w-4 h-4" /> },
   ];
 
   return (
@@ -939,17 +939,17 @@ function AIAvatarCloning({ onClose }: { onClose: () => void }) {
           {step === "upload" && (
             <div className="rounded-2xl border-2 border-dashed border-[var(--canvas-border)] bg-[var(--canvas-surface)] p-10 text-center hover:border-[var(--accent-rose-30)] transition-colors cursor-pointer">
               <Upload className="w-10 h-10 text-[var(--accent-rose-400)] mx-auto mb-3" />
-              <p className="text-sm font-medium text-white mb-1">Upload a photo or video</p>
-              <p className="text-xs text-[#888]">PNG, JPG, or MP4 — min 512×512px</p>
+              <p className="text-sm font-medium text-white mb-1">Upload a business logo or brand mood asset</p>
+              <p className="text-xs text-[#888]">PNG, JPG — min 512×512px</p>
               <button onClick={() => setStep("style")} className="mt-4 px-4 py-2 rounded-xl bg-[var(--accent-rose-10)] border border-[var(--accent-rose-20)] text-[var(--accent-rose-400)] text-xs font-medium hover:bg-[var(--accent-rose-20)] transition-colors">
-                Use Sample Photo
+                Use Sample Brand
               </button>
             </div>
           )}
 
           {step === "style" && (
             <div className="space-y-3">
-              <p className="text-sm text-white font-medium">Choose your avatar style</p>
+              <p className="text-sm text-white font-medium">Choose a persona style</p>
               {styles.map((s) => (
                 <button
                   key={s.id}
@@ -983,8 +983,8 @@ function AIAvatarCloning({ onClose }: { onClose: () => void }) {
                 <div className="w-32 h-32 rounded-2xl bg-gradient-to-br from-[var(--accent-rose-500)] to-[var(--accent-rose-600)] mx-auto mb-4 flex items-center justify-center">
                   <Wand2 className="w-12 h-12 text-white/40" />
                 </div>
-                <p className="text-sm font-medium text-white mb-1">Your AI Avatar is Ready</p>
-                <p className="text-xs text-[#888]">Professional style · 4K render · 0.8s generation</p>
+                <p className="text-sm font-medium text-white mb-1">Your AI Persona is Ready</p>
+                <p className="text-xs text-[#888]">Professional style · brand-ready · 0.8s generation</p>
               </div>
 
               <div className="grid grid-cols-3 gap-3">
