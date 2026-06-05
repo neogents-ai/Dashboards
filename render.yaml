@@ -1,7 +1,7 @@
 services:
   - type: static
     name: neogents-tech
-    buildCommand: cd artifacts/mockup-sandbox && npm ci && npm run build && copy dist\index.html dist\200.html
+    buildCommand: cd artifacts/mockup-sandbox && npm ci && npm run build && cp dist/index.html dist/200.html
     staticPublishPath: artifacts/mockup-sandbox/dist
     pullRequestPreviewsEnabled: true
     envVars:
