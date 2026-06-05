@@ -1,6 +1,6 @@
 services:
   - type: web
-    name: neogents-dashboards
+    name: neogents-spa
     runtime: node
     buildCommand: cd artifacts/mockup-sandbox && npm ci && npm run build && cd ../.. && npm install
     startCommand: node server.js
