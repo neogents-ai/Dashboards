@@ -449,3 +449,187 @@ function MoreTab() {
     </div>
   );
 }
+
+/* ═══ SOCIAL TAB ═══ */
+function SocialTab() {
+  return (
+    <div className="p-6 lg:p-8 max-w-[1600px] mx-auto space-y-6">
+      <div className="flex items-center justify-between">
+        <div>
+          <h2 className="text-2xl font-bold text-[var(--dl-ink)]">Social Media</h2>
+          <p className="text-[var(--dl-muted)]">Schedule and publish across platforms</p>
+        </div>
+        <button className="px-4 py-2 bg-amber-500 text-[var(--dl-ink)] font-bold rounded-lg text-sm hover:bg-amber-600 transition-colors">+ New Post</button>
+      </div>
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+        {["Instagram", "Pinterest", "Behance"].map((platform) => (
+          <div key={platform} className="rounded-2xl border border-white/50 bg-white/40 p-6">
+            <h3 className="text-sm font-semibold text-[var(--dl-ink)] mb-4">{platform}</h3>
+            <div className="space-y-3">
+              <div className="p-3 rounded-xl bg-white/60">
+                <p className="text-xs text-[var(--dl-muted)]">Scheduled: Today 3:00 PM</p>
+                <p className="text-sm text-[var(--dl-ink)]">Behind the scenes — Martinez Wedding</p>
+              </div>
+              <div className="p-3 rounded-xl bg-white/60">
+                <p className="text-xs text-[var(--dl-muted)]">Draft</p>
+                <p className="text-sm text-[var(--dl-ink)]">Portfolio update — May highlights</p>
+              </div>
+            </div>
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+}
+
+/* ═══ MODEL DEV TAB ═══ */
+function ModelTab() {
+  return (
+    <div className="p-6 lg:p-8 max-w-[1600px] mx-auto space-y-6">
+      <div className="flex items-center justify-between">
+        <div>
+          <h2 className="text-2xl font-bold text-[var(--dl-ink)]">Model Development</h2>
+          <p className="text-[var(--dl-muted)]">Train and manage AI models for your workflow</p>
+        </div>
+        <button className="px-4 py-2 bg-amber-500 text-[var(--dl-ink)] font-bold rounded-lg text-sm hover:bg-amber-600 transition-colors">+ New Model</button>
+      </div>
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+        <div className="rounded-2xl border border-white/50 bg-white/40 p-6">
+          <h3 className="text-sm font-semibold text-[var(--dl-ink)] mb-4">Active Models</h3>
+          <div className="space-y-3">
+            {["Wedding Style Transfer", "Portrait Retouch", "Background Removal"].map((model) => (
+              <div key={model} className="flex items-center justify-between p-3 rounded-xl bg-white/60">
+                <span className="text-sm text-[var(--dl-ink)]">{model}</span>
+                <span className="text-xs text-emerald-400 font-medium">Active</span>
+              </div>
+            ))}
+          </div>
+        </div>
+        <div className="rounded-2xl border border-white/50 bg-white/40 p-6">
+          <h3 className="text-sm font-semibold text-[var(--dl-ink)] mb-4">Training Queue</h3>
+          <div className="space-y-3">
+            <div className="p-3 rounded-xl bg-white/60">
+              <p className="text-sm text-[var(--dl-ink)]">Fashion Editorial Style</p>
+              <p className="text-xs text-[var(--dl-muted)]">Progress: 67% — 12 images processed</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+/* ═══ CONTENT TAB ═══ */
+function ContentTab() {
+  return (
+    <div className="p-6 lg:p-8 max-w-[1600px] mx-auto space-y-6">
+      <div className="flex items-center justify-between">
+        <div>
+          <h2 className="text-2xl font-bold text-[var(--dl-ink)]">Content Studio</h2>
+          <p className="text-[var(--dl-muted)]">AI-generated captions, emails, and copy</p>
+        </div>
+        <button className="px-4 py-2 bg-amber-500 text-[var(--dl-ink)] font-bold rounded-lg text-sm hover:bg-amber-600 transition-colors">+ Generate</button>
+      </div>
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+        <div className="rounded-2xl border border-white/50 bg-white/40 p-6">
+          <h3 className="text-sm font-semibold text-[var(--dl-ink)] mb-4">Recent Generations</h3>
+          <div className="space-y-3">
+            <div className="p-3 rounded-xl bg-white/60">
+              <p className="text-xs text-[var(--dl-muted)]">Instagram Caption</p>
+              <p className="text-sm text-[var(--dl-ink)]">Golden hour magic with Emma & Ryan ✨ Every love story deserves to be told in light...</p>
+            </div>
+            <div className="p-3 rounded-xl bg-white/60">
+              <p className="text-xs text-[var(--dl-muted)]">Email Campaign</p>
+              <p className="text-sm text-[var(--dl-ink)]">Summer mini-sessions are here! Book your 30-minute slot...</p>
+            </div>
+          </div>
+        </div>
+        <div className="rounded-2xl border border-white/50 bg-white/40 p-6">
+          <h3 className="text-sm font-semibold text-[var(--dl-ink)] mb-4">Templates</h3>
+          <div className="space-y-3">
+            {["Wedding Announcement", "Portfolio Update", "Seasonal Promo", "Client Thank You"].map((t) => (
+              <div key={t} className="flex items-center justify-between p-3 rounded-xl bg-white/60">
+                <span className="text-sm text-[var(--dl-ink)]">{t}</span>
+                <button className="text-xs text-amber-500 font-medium">Use</button>
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+/* ═══ REVIEWS TAB ═══ */
+function ReviewsTab() {
+  return (
+    <div className="p-6 lg:p-8 max-w-[1600px] mx-auto space-y-6">
+      <div className="flex items-center justify-between">
+        <div>
+          <h2 className="text-2xl font-bold text-[var(--dl-ink)]">Reviews</h2>
+          <p className="text-[var(--dl-muted)]">Manage and respond to client feedback</p>
+        </div>
+        <div className="text-right">
+          <p className="text-3xl font-bold text-[var(--dl-ink)]">4.9</p>
+          <p className="text-xs text-[var(--dl-muted)]">142 reviews across all platforms</p>
+        </div>
+      </div>
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+        {["Google", "Yelp", "The Knot"].map((platform) => (
+          <div key={platform} className="rounded-2xl border border-white/50 bg-white/40 p-6">
+            <h3 className="text-sm font-semibold text-[var(--dl-ink)] mb-4">{platform}</h3>
+            <div className="space-y-3">
+              <div className="p-3 rounded-xl bg-white/60">
+                <div className="flex items-center gap-1 mb-1">
+                  {[1,2,3,4,5].map((s) => <Star key={s} className="w-3 h-3 text-amber-500 fill-amber-500" />)}
+                </div>
+                <p className="text-sm text-[var(--dl-ink)]">"Absolutely stunning photos. Drake captured every moment perfectly."</p>
+                <p className="text-xs text-[var(--dl-muted)] mt-1">— Sarah M., 2 days ago</p>
+              </div>
+            </div>
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+}
+
+/* ═══ SETTINGS TAB ═══ */
+function SettingsTab() {
+  return (
+    <div className="p-6 lg:p-8 max-w-[1600px] mx-auto space-y-6">
+      <div>
+        <h2 className="text-2xl font-bold text-[var(--dl-ink)]">Settings</h2>
+        <p className="text-[var(--dl-muted)]">Account and dashboard preferences</p>
+      </div>
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+        <div className="rounded-2xl border border-white/50 bg-white/40 p-6 space-y-4">
+          <h3 className="text-sm font-semibold text-[var(--dl-ink)]">Profile</h3>
+          <div className="space-y-3">
+            <div>
+              <label className="text-xs text-[var(--dl-muted)]">Display Name</label>
+              <input className="w-full bg-white/60 border border-white/50 rounded-lg px-4 py-2 text-sm text-[var(--dl-ink)]" defaultValue="Drake Reynolds" />
+            </div>
+            <div>
+              <label className="text-xs text-[var(--dl-muted)]">Business Name</label>
+              <input className="w-full bg-white/60 border border-white/50 rounded-lg px-4 py-2 text-sm text-[var(--dl-ink)]" defaultValue="Photography Studio" />
+            </div>
+          </div>
+        </div>
+        <div className="rounded-2xl border border-white/50 bg-white/40 p-6 space-y-4">
+          <h3 className="text-sm font-semibold text-[var(--dl-ink)]">Notifications</h3>
+          <div className="space-y-3">
+            {["New lead alerts", "Booking reminders", "Gallery delivery notifications", "Review alerts"].map((item) => (
+              <div key={item} className="flex items-center justify-between p-3 rounded-xl bg-white/60">
+                <span className="text-sm text-[var(--dl-ink)]">{item}</span>
+                <div className="w-10 h-6 rounded-full bg-emerald-500 relative">
+                  <div className="absolute right-1 top-1 w-4 h-4 rounded-full bg-white" />
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}

@@ -101,7 +101,7 @@ export function LightDashboardShell({
                   }
                 >
                   <span style={isActive ? { color: accentColor } : undefined}>{tab.icon}</span>
-                  <span className="hidden xl:inline">{tab.label}</span>
+                  <span className="hidden lg:inline">{tab.label}</span>
                 </button>
               );
             })}

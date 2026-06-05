@@ -3,10 +3,9 @@ import { useEffect, useState, type ComponentType } from "react";
 import { modules as discoveredModules } from "./.generated/mockup-components";
 import { DashboardPhotography } from "./components/dashboard/photography/DashboardPhotography";
 import { DashboardAesthetician2 } from "./components/dashboard/aesthetician/DashboardAesthetician2";
-import { DashboardBarber2 } from "./components/dashboard/barber/DashboardBarber2";
+import { UnifiedBarberDashboard } from "./components/dashboard/barber/UnifiedBarberDashboard";
 import { DashboardRealtor2 } from "./components/dashboard/realtor/DashboardRealtor2";
 import { DashboardChef } from "./components/mockups/neo-chef/DashboardChef";
-import { DashboardHairstylist } from "./components/dashboard/hairstylist/DashboardHairstylist";
 import { DashboardCreators } from "./components/dashboard/creators/DashboardCreators";
 import { LandingPageV3DeepMind } from "./components/mockups/neo-landing-v3-deepmind-glass/LandingPageV3";
 
@@ -138,8 +137,32 @@ function getPreviewPath(): string | null {
 
 function App() {
   const previewPath = getPreviewPath();
-  const hash = window.location.hash.replace(/^#/, "").replace(/\/$/, "") || "/";
-  const route = hash || "/";
+  const [route, setRoute] = useState(() => {
+    const hash = window.location.hash.replace(/^#/, "").replace(/\?.*$/, "").replace(/\/$/, "") || "/";
+    return hash;
+  });
+
+  useEffect(() => {
+    const onHashChange = () => {
+      const hash = window.location.hash.replace(/^#/, "").replace(/\?.*$/, "").replace(/\/$/, "") || "/";
+      setRoute(hash);
+    };
+    window.addEventListener("hashchange", onHashChange);
+    // Also handle direct clicks on anchor tags that might not trigger hashchange in some browsers
+    const onClick = (e: MouseEvent) => {
+      const target = e.target as HTMLElement;
+      const anchor = target.closest("a");
+      if (anchor?.hash) {
+        const hash = anchor.hash.replace(/^#/, "").replace(/\?.*$/, "").replace(/\/$/, "") || "/";
+        setRoute(hash);
+      }
+    };
+    document.addEventListener("click", onClick);
+    return () => {
+      window.removeEventListener("hashchange", onHashChange);
+      document.removeEventListener("click", onClick);
+    };
+  }, []);
 
   if (previewPath) {
     return (
@@ -152,11 +175,10 @@ function App() {
 
   if (route === "/photography") return <DashboardPhotography />;
   if (route === "/aesthetician") return <DashboardAesthetician2 />;
-  if (route === "/barber") return <DashboardBarber2 />;
-  if (route === "/hairstylist") return <DashboardHairstylist />;
+  if (route === "/barber" || route === "/hairstylist") return <UnifiedBarberDashboard />;
   if (route === "/chef") return <DashboardChef />;
   if (route === "/realtor") return <DashboardRealtor2 />;
-  if (route === "/business" || route === "/creators") return <DashboardCreators />;
+  if (route === "/creators") return <DashboardCreators />;
 
   return <LandingPageV3DeepMind />;
 }

@@ -28,22 +28,22 @@ export function KpiTile({
       )}
     >
       <div className="flex items-start justify-between mb-3">
-        <span className="text-xs font-medium uppercase tracking-wider text-[#888]">
+        <span className="text-xs font-medium uppercase tracking-wider text-[var(--dl-muted)]">
           {label}
         </span>
-        {icon && <div className="text-[#666]">{icon}</div>}
+        {icon && <div className="text-[var(--dl-muted)]">{icon}</div>}
       </div>
       <div className="flex items-baseline gap-2">
-        <span className="text-2xl font-bold text-white">{value}</span>
+        <span className="text-2xl font-bold text-[var(--dl-ink)]">{value}</span>
         {subtitle && (
-          <span className="text-sm text-[#888]">{subtitle}</span>
+          <span className="text-sm text-[var(--dl-muted)]">{subtitle}</span>
         )}
       </div>
       {trend && (
         <p
           className={cn(
             "mt-2 text-xs font-medium",
-            trendPositive ? "text-emerald-400" : "text-red-400"
+            trendPositive ? "text-emerald-600" : "text-red-500"
           )}
         >
           {trend}

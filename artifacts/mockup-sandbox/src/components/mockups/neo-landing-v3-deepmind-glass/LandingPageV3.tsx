@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
 import type { CSSProperties, MouseEvent } from 'react';
-import { ArrowRight, Check, Home, Camera, Scissors, ChefHat, Compass, Settings2, Clapperboard, Lock, Unlock, Play, Zap, Star, Brush } from 'lucide-react';
+import { ArrowRight, Check, Home, Camera, Scissors, ChefHat, Compass, Settings2, Lock, Unlock, Play, Zap, Star } from 'lucide-react';
 import { DeepFieldGallery } from '../../shared/DeepFieldGallery';
 import { useCountUp } from '../../../hooks/useCountUp';
 import { FEATURES, INDUSTRIES, TESTIMONIALS, STATS, PRICING } from '../../../data/landing';
@@ -89,16 +89,14 @@ export function LandingPageV3DeepMind() {
     obs.observe(el); return () => obs.disconnect();
   }, []);
 
-  // Dock items — all 8 verticals
+  // Dock items — all 6 verticals
   const dockItems = [
     { idx: 0, icon: <Camera className="w-4 h-4" />, label: "Photo" },
     { idx: 1, icon: <Star className="w-4 h-4" />, label: "Aesthetician" },
     { idx: 2, icon: <Scissors className="w-4 h-4" />, label: "Barber" },
     { idx: 3, icon: <ChefHat className="w-4 h-4" />, label: "Chef" },
     { idx: 4, icon: <Home className="w-4 h-4" />, label: "Realtor" },
-    { idx: 5, icon: <Clapperboard className="w-4 h-4" />, label: "Business" },
-    { idx: 6, icon: <Brush className="w-4 h-4" />, label: "Hairstylist" },
-    { idx: 7, icon: <Zap className="w-4 h-4" />, label: "Creators" },
+    { idx: 5, icon: <Zap className="w-4 h-4" />, label: "Creators" },
   ];
 
   return (
@@ -209,11 +207,11 @@ export function LandingPageV3DeepMind() {
                       { label: 'Transactions/Yr', value: '10' },
                       { label: 'Annual Income', value: '$58,100' },
                     ],
-                    /* Business — Source: theleadcrafters.com, thunderbit.com */
+                    /* Creators — Source: influencermarketinghub.com */
                     [
-                      { label: 'Avg Deal Size', value: '$2,800' },
-                      { label: 'Lead Response', value: '<2 min' },
-                      { label: 'Monthly Contracts', value: '6' },
+                      { label: 'Avg Brand Deal', value: '$2,500' },
+                      { label: 'Campaigns/Mo', value: '4' },
+                      { label: 'Audience Growth', value: '+12%' },
                     ],
                   ][activeIndex]).map((stat, i) => (
                     <div key={i} className="dm-glass-strip flex-col py-3" style={{ borderRadius: 14, background: 'rgba(255,255,255,0.35)' }}>
@@ -226,7 +224,7 @@ export function LandingPageV3DeepMind() {
                 {/* CTA */}
                 <div className="flex items-center gap-3 flex-wrap">
                   {lockedVertical !== null ? (
-                    <a href={`#${ind.route}`} className="dm-btn" style={{ background: `linear-gradient(180deg, ${ind.color} 0%, ${ind.color}cc 100%)`, borderColor: 'rgba(255,255,255,0.2)' }}>
+                    <a href={ind.route} className="dm-btn" style={{ background: `linear-gradient(180deg, ${ind.color} 0%, ${ind.color}cc 100%)`, borderColor: 'rgba(255,255,255,0.2)' }}>
                       Explore Dashboard <ArrowRight className="w-4 h-4" />
                     </a>
                   ) : (
@@ -333,9 +331,9 @@ export function LandingPageV3DeepMind() {
                 { v: '2', l: 'Monthly closings', c: '#c89c3f' },
               ],
               [
-                { v: '$2,800', l: 'Avg deal size', c: '#3b6bff' },
-                { v: '<2 min', l: 'Lead response time', c: '#8a5cf6' },
-                { v: '6', l: 'Monthly contracts', c: '#c89c3f' },
+                { v: '$2,500', l: 'Avg brand deal', c: '#3b6bff' },
+                { v: '4', l: 'Campaigns per month', c: '#8a5cf6' },
+                { v: '+12%', l: 'Audience growth', c: '#c89c3f' },
               ],
             ][activeIndex]).map((k, i) => (
               <GlassPanel key={i} className="col-span-12 md:col-span-2 p-6">
