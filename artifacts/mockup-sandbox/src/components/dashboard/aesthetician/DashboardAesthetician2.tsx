@@ -23,23 +23,40 @@ import "./aesthetician-tokens.css";
 export function DashboardAesthetician2() {
   const [activeTab, setActiveTab] = useState<string>("home");
 
+  const tabs: TabDef[] = [
+    { id: "home", label: "Dashboard", icon: <Sparkles className="w-5 h-5" /> },
+    { id: "calendar", label: "Calendar", icon: <Calendar className="w-5 h-5" /> },
+    { id: "skin", label: "Skin Tracker", icon: <Activity className="w-5 h-5" /> },
+    { id: "leads", label: "Leads & CRM", icon: <Users className="w-5 h-5" /> },
+    { id: "social", label: "Social", icon: <Share2 className="w-5 h-5" /> },
+    { id: "inventory", label: "Inventory", icon: <ShoppingBag className="w-5 h-5" /> },
+    { id: "content", label: "Content", icon: <Film className="w-5 h-5" /> },
+    { id: "reviews", label: "Reviews", icon: <Star className="w-5 h-5" /> },
+    { id: "settings", label: "Settings", icon: <Settings className="w-5 h-5" /> },
+  ];
+
   return (
     <LightDashboardShell
+      tabs={tabs}
       activeTab={activeTab}
       onTabChange={setActiveTab}
       greeting="Good morning, Sofia"
       dateLabel="May 23, 2026"
-      quickStats={<>
-        <StatPill label="6 Clients Today" />
-        <StatPill label="2 New Consults" />
-        <StatPill label="92% Retention" />
-      </>}
+      accentColor="#EC4899"
+      userName="Sofia Chen"
+      userInitials="SC"
+      businessName="Glow Aesthetics"
+      avatarGradient={["#EC4899", "#F472B6"]}
     >
       {activeTab === "home" && <HomeTab />}
       {activeTab === "calendar" && <BookingsTab />}
-      {activeTab === "clients" && <SkinTrackerTab />}
-      {activeTab === "money" && <InventoryTab />}
-      {activeTab === "more" && <MoreTab />}
+      {activeTab === "skin" && <SkinTrackerTab />}
+      {activeTab === "leads" && <LeadsTab />}
+      {activeTab === "social" && <SocialTab />}
+      {activeTab === "inventory" && <InventoryTab />}
+      {activeTab === "content" && <ContentTab />}
+      {activeTab === "reviews" && <ReviewsTab />}
+      {activeTab === "settings" && <SettingsTab />}
     </LightDashboardShell>
   );
 }
@@ -399,6 +416,143 @@ function MoreTab() {
       </div>
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
         {items.map((item) => (
+          <button key={item.label} className="flex items-center gap-4 p-5 rounded-2xl border border-white/50 bg-white/40 hover:bg-white/60 hover:border-[var(--accent-rose-30)] transition-colors text-left">
+            <div className="p-3 rounded-xl bg-[var(--accent-rose-10)] text-[var(--accent-rose-400)]">{item.icon}</div>
+            <div>
+              <p className="text-sm font-semibold text-[var(--dl-ink)]">{item.label}</p>
+              <p className="text-xs text-[var(--dl-muted)]">{item.desc}</p>
+            </div>
+            <ChevronRight className="w-4 h-4 text-[#333] ml-auto" />
+          </button>
+        ))}
+      </div>
+    </div>
+  );
+}
+
+/* ═══ LEADS TAB ═══ */
+function LeadsTab() {
+  return (
+    <div className="p-6 lg:p-8 max-w-[1600px] mx-auto space-y-6">
+      <div className="flex items-center justify-between">
+        <div>
+          <h2 className="text-2xl font-bold text-[var(--dl-ink)]">Leads & CRM</h2>
+          <p className="text-[var(--dl-muted)]">Track and manage client leads</p>
+        </div>
+        <button className="px-4 py-2 bg-[var(--accent-rose-500)] text-[var(--dl-ink)] font-bold rounded-lg text-sm hover:bg-[var(--accent-rose-600)] transition-colors">
+          + Add Lead
+        </button>
+      </div>
+      <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
+        <KpiTile title="New Leads" value="8" trend="+2 this week" trendPositive icon={<Users className="w-5 h-5" />} />
+        <KpiTile title="Conversion Rate" value="72%" icon={<TrendingUp className="w-5 h-5" />} />
+        <KpiTile title="Avg Response" value="12 min" icon={<Clock className="w-5 h-5" />} />
+        <KpiTile title="Booked" value="6 / 8" icon={<Calendar className="w-5 h-5" />} />
+      </div>
+      <div className="bg-white/40 border border-white/50 rounded-2xl p-6 min-h-[300px] flex items-center justify-center text-[var(--dl-muted)]">
+        <div className="text-center">
+          <Users className="w-12 h-12 mx-auto mb-4 opacity-20" />
+          <p className="text-sm">Lead pipeline integration coming soon</p>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+/* ═══ SOCIAL TAB ═══ */
+function SocialTab() {
+  return (
+    <div className="p-6 lg:p-8 max-w-[1600px] mx-auto space-y-6">
+      <div>
+        <h2 className="text-2xl font-bold text-[var(--dl-ink)]">Social Media</h2>
+        <p className="text-[var(--dl-muted)]">Manage your social presence</p>
+      </div>
+      <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
+        <KpiTile title="Instagram" value="3.2K" subtitle="followers" icon={<Share2 className="w-5 h-5" />} />
+        <KpiTile title="TikTok" value="1.5K" subtitle="followers" icon={<Film className="w-5 h-5" />} />
+        <KpiTile title="Engagement" value="5.1%" trend="+0.8%" trendPositive icon={<TrendingUp className="w-5 h-5" />} />
+        <KpiTile title="Posts This Week" value="4" icon={<Sparkles className="w-5 h-5" />} />
+      </div>
+      <div className="bg-white/40 border border-white/50 rounded-2xl p-6 min-h-[300px] flex items-center justify-center text-[var(--dl-muted)]">
+        <div className="text-center">
+          <Share2 className="w-12 h-12 mx-auto mb-4 opacity-20" />
+          <p className="text-sm">Social media scheduler coming soon</p>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+/* ═══ CONTENT TAB ═══ */
+function ContentTab() {
+  return (
+    <div className="p-6 lg:p-8 max-w-[1600px] mx-auto space-y-6">
+      <div className="flex items-center justify-between">
+        <div>
+          <h2 className="text-2xl font-bold text-[var(--dl-ink)]">Content Studio</h2>
+          <p className="text-[var(--dl-muted)]">Create and manage content</p>
+        </div>
+        <button className="px-4 py-2 bg-[var(--accent-rose-500)] text-[var(--dl-ink)] font-bold rounded-lg text-sm hover:bg-[var(--accent-rose-600)] transition-colors">
+          + New Post
+        </button>
+      </div>
+      <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
+        <KpiTile title="Drafts" value="2" icon={<Film className="w-5 h-5" />} />
+        <KpiTile title="Scheduled" value="3" icon={<Calendar className="w-5 h-5" />} />
+        <KpiTile title="Published" value="28" icon={<Sparkles className="w-5 h-5" />} />
+        <KpiTile title="Views" value="8.2K" trend="+12%" trendPositive icon={<TrendingUp className="w-5 h-5" />} />
+      </div>
+      <div className="bg-white/40 border border-white/50 rounded-2xl p-6 min-h-[300px] flex items-center justify-center text-[var(--dl-muted)]">
+        <div className="text-center">
+          <Film className="w-12 h-12 mx-auto mb-4 opacity-20" />
+          <p className="text-sm">Content studio coming soon</p>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+/* ═══ REVIEWS TAB ═══ */
+function ReviewsTab() {
+  return (
+    <div className="p-6 lg:p-8 max-w-[1600px] mx-auto space-y-6">
+      <div>
+        <h2 className="text-2xl font-bold text-[var(--dl-ink)]">Reviews</h2>
+        <p className="text-[var(--dl-muted)]">Manage customer feedback</p>
+      </div>
+      <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
+        <KpiTile title="Google" value="4.9★" subtitle="86 reviews" icon={<Star className="w-5 h-5" />} />
+        <KpiTile title="Yelp" value="4.8★" subtitle="42 reviews" icon={<Star className="w-5 h-5" />} />
+        <KpiTile title="Vagaro" value="5.0★" subtitle="34 reviews" icon={<Star className="w-5 h-5" />} />
+        <KpiTile title="Response Rate" value="96%" trend="+1%" trendPositive icon={<TrendingUp className="w-5 h-5" />} />
+      </div>
+      <div className="bg-white/40 border border-white/50 rounded-2xl p-6 min-h-[300px] flex items-center justify-center text-[var(--dl-muted)]">
+        <div className="text-center">
+          <Star className="w-12 h-12 mx-auto mb-4 opacity-20" />
+          <p className="text-sm">Review aggregator coming soon</p>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+/* ═══ SETTINGS TAB ═══ */
+function SettingsTab() {
+  return (
+    <div className="p-6 lg:p-8 max-w-[1600px] mx-auto space-y-6">
+      <div>
+        <h2 className="text-2xl font-bold text-[var(--dl-ink)]">Settings</h2>
+        <p className="text-[var(--dl-muted)]">Account and business preferences</p>
+      </div>
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+        {[
+          { icon: <UserPlus className="w-5 h-5" />, label: "Profile", desc: "Business info and branding" },
+          { icon: <CreditCard className="w-5 h-5" />, label: "Billing", desc: "Subscription and payments" },
+          { icon: <Users className="w-5 h-5" />, label: "Team", desc: "Staff permissions" },
+          { icon: <Bell className="w-5 h-5" />, label: "Notifications", desc: "Alerts and reminders" },
+          { icon: <Smartphone className="w-5 h-5" />, label: "Integrations", desc: "Calendar and social sync" },
+          { icon: <Settings className="w-5 h-5" />, label: "Advanced", desc: "API and webhooks" },
+        ].map((item) => (
           <button key={item.label} className="flex items-center gap-4 p-5 rounded-2xl border border-white/50 bg-white/40 hover:bg-white/60 hover:border-[var(--accent-rose-30)] transition-colors text-left">
             <div className="p-3 rounded-xl bg-[var(--accent-rose-10)] text-[var(--accent-rose-400)]">{item.icon}</div>
             <div>

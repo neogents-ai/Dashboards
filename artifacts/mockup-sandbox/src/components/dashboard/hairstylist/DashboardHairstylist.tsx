@@ -25,23 +25,40 @@ import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetDescription } from "
 export function DashboardHairstylist() {
   const [activeTab, setActiveTab] = useState<string>("home");
 
+  const tabs: TabDef[] = [
+    { id: "home", label: "Dashboard", icon: <LayoutDashboard className="w-5 h-5" /> },
+    { id: "calendar", label: "Calendar", icon: <Calendar className="w-5 h-5" /> },
+    { id: "styles", label: "Style Library", icon: <Scissors className="w-5 h-5" /> },
+    { id: "leads", label: "Leads & CRM", icon: <Users className="w-5 h-5" /> },
+    { id: "social", label: "Social", icon: <Share2 className="w-5 h-5" /> },
+    { id: "staff", label: "Staff & Chairs", icon: <UserPlus className="w-5 h-5" /> },
+    { id: "content", label: "Content", icon: <Film className="w-5 h-5" /> },
+    { id: "reviews", label: "Reviews", icon: <Star className="w-5 h-5" /> },
+    { id: "settings", label: "Settings", icon: <Sparkles className="w-5 h-5" /> },
+  ];
+
   return (
     <LightDashboardShell
+      tabs={tabs}
       activeTab={activeTab}
       onTabChange={setActiveTab}
       greeting="Good morning, Lisa"
       dateLabel="May 23, 2026"
-      quickStats={<>
-        <QuickStat label="8 Chairs Today" />
-        <QuickStat label="6 New Clients" />
-        <QuickStat label="94% Capacity" />
-      </>}
+      accentColor="#EC4899"
+      userName="Lisa Chen"
+      userInitials="LC"
+      businessName="Luxe Hair Studio"
+      avatarGradient={["#EC4899", "#F472B6"]}
     >
       {activeTab === "home" && <HomeTab />}
       {activeTab === "calendar" && <CalendarTab />}
-      {activeTab === "clients" && <ClientsTab />}
-      {activeTab === "money" && <MoneyTab />}
-      {activeTab === "more" && <MoreTab />}
+      {activeTab === "styles" && <StyleLibraryTab />}
+      {activeTab === "leads" && <LeadsTab />}
+      {activeTab === "social" && <SocialTab />}
+      {activeTab === "staff" && <StaffTab />}
+      {activeTab === "content" && <ContentTab />}
+      {activeTab === "reviews" && <ReviewsTab />}
+      {activeTab === "settings" && <SettingsTab />}
     </LightDashboardShell>
   );
 }
@@ -857,6 +874,225 @@ function MoreTab() {
             <div className="p-3 rounded-xl bg-[var(--accent-rose-10)] text-[var(--accent-rose-400)]">
               {item.icon}
             </div>
+            <div>
+              <p className="text-sm font-semibold text-[var(--dl-ink)]">{item.label}</p>
+              <p className="text-xs text-[var(--dl-muted)]">{item.desc}</p>
+            </div>
+            <ChevronRight className="w-4 h-4 text-[#333] ml-auto" />
+          </button>
+        ))}
+      </div>
+    </div>
+  );
+}
+
+/* ═══ STYLE LIBRARY TAB ═══ */
+function StyleLibraryTab() {
+  return (
+    <div className="p-6 lg:p-8 max-w-[1600px] mx-auto space-y-6">
+      <div className="flex items-center justify-between">
+        <div>
+          <h2 className="text-2xl font-bold text-[var(--dl-ink)]">Style Library</h2>
+          <p className="text-[var(--dl-muted)]">Browse and save hairstyle references</p>
+        </div>
+        <button className="px-4 py-2 bg-[var(--accent-rose-500)] text-[var(--dl-ink)] font-bold rounded-lg text-sm hover:bg-[var(--accent-rose-600)] transition-colors">
+          + Add Style
+        </button>
+      </div>
+      <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
+        <KpiTile title="Saved Styles" value="24" icon={<Palette className="w-5 h-5" />} />
+        <KpiTile title="Categories" value="6" icon={<Scissors className="w-5 h-5" />} />
+        <KpiTile title="Shared" value="8" icon={<Share2 className="w-5 h-5" />} />
+        <KpiTile title="Favorites" value="12" icon={<Star className="w-5 h-5" />} />
+      </div>
+      <div className="bg-white/40 border border-white/50 rounded-2xl p-6 min-h-[300px] flex items-center justify-center text-[var(--dl-muted)]">
+        <div className="text-center">
+          <Palette className="w-12 h-12 mx-auto mb-4 opacity-20" />
+          <p className="text-sm">Style library coming soon</p>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+/* ═══ LEADS TAB ═══ */
+function LeadsTab() {
+  return (
+    <div className="p-6 lg:p-8 max-w-[1600px] mx-auto space-y-6">
+      <div className="flex items-center justify-between">
+        <div>
+          <h2 className="text-2xl font-bold text-[var(--dl-ink)]">Leads & CRM</h2>
+          <p className="text-[var(--dl-muted)]">Track and manage client leads</p>
+        </div>
+        <button className="px-4 py-2 bg-[var(--accent-rose-500)] text-[var(--dl-ink)] font-bold rounded-lg text-sm hover:bg-[var(--accent-rose-600)] transition-colors">
+          + Add Lead
+        </button>
+      </div>
+      <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
+        <KpiTile title="New Leads" value="10" trend="+3 this week" trendPositive icon={<Users className="w-5 h-5" />} />
+        <KpiTile title="Conversion Rate" value="70%" icon={<TrendingUp className="w-5 h-5" />} />
+        <KpiTile title="Avg Response" value="10 min" icon={<Clock className="w-5 h-5" />} />
+        <KpiTile title="Booked" value="7 / 10" icon={<Calendar className="w-5 h-5" />} />
+      </div>
+      <div className="bg-white/40 border border-white/50 rounded-2xl p-6 min-h-[300px] flex items-center justify-center text-[var(--dl-muted)]">
+        <div className="text-center">
+          <Users className="w-12 h-12 mx-auto mb-4 opacity-20" />
+          <p className="text-sm">Lead pipeline integration coming soon</p>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+/* ═══ SOCIAL TAB ═══ */
+function SocialTab() {
+  return (
+    <div className="p-6 lg:p-8 max-w-[1600px] mx-auto space-y-6">
+      <div>
+        <h2 className="text-2xl font-bold text-[var(--dl-ink)]">Social Media</h2>
+        <p className="text-[var(--dl-muted)]">Manage your social presence</p>
+      </div>
+      <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
+        <KpiTile title="Instagram" value="3.8K" subtitle="followers" icon={<Share2 className="w-5 h-5" />} />
+        <KpiTile title="TikTok" value="2.1K" subtitle="followers" icon={<Film className="w-5 h-5" />} />
+        <KpiTile title="Engagement" value="5.5%" trend="+0.7%" trendPositive icon={<TrendingUp className="w-5 h-5" />} />
+        <KpiTile title="Posts This Week" value="6" icon={<Camera className="w-5 h-5" />} />
+      </div>
+      <div className="bg-white/40 border border-white/50 rounded-2xl p-6 min-h-[300px] flex items-center justify-center text-[var(--dl-muted)]">
+        <div className="text-center">
+          <Share2 className="w-12 h-12 mx-auto mb-4 opacity-20" />
+          <p className="text-sm">Social media scheduler coming soon</p>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+/* ═══ STAFF TAB ═══ */
+function StaffTab() {
+  return (
+    <div className="p-6 lg:p-8 max-w-[1600px] mx-auto space-y-6">
+      <div className="flex items-center justify-between">
+        <div>
+          <h2 className="text-2xl font-bold text-[var(--dl-ink)]">Staff & Chairs</h2>
+          <p className="text-[var(--dl-muted)]">Manage stylists and chair assignments</p>
+        </div>
+        <button className="px-4 py-2 bg-[var(--accent-rose-500)] text-[var(--dl-ink)] font-bold rounded-lg text-sm hover:bg-[var(--accent-rose-600)] transition-colors">
+          + Add Staff
+        </button>
+      </div>
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+        {[
+          { name: "Tasha Williams", role: "Senior Stylist", chair: "Chair 1", revenue: "$2,100", clients: "48", rating: "5.0" },
+          { name: "Jordan Lee", role: "Color Specialist", chair: "Chair 2", revenue: "$1,680", clients: "36", rating: "4.9" },
+          { name: "Maya Chen", role: "Stylist", chair: "Chair 3", revenue: "$1,240", clients: "28", rating: "4.8" },
+        ].map((stylist) => (
+          <div key={stylist.name} className="rounded-2xl border border-white/50 bg-white/40 p-6">
+            <div className="flex items-start justify-between mb-4">
+              <div className="flex items-center gap-4">
+                <div className="w-12 h-12 rounded-full bg-gradient-to-tr from-[var(--accent-rose-600)] to-[var(--accent-rose-400)] flex items-center justify-center text-sm font-bold text-[var(--dl-ink)]">
+                  {stylist.name.split(" ").map((n) => n[0]).join("")}
+                </div>
+                <div>
+                  <h3 className="text-base font-bold text-[var(--dl-ink)]">{stylist.name}</h3>
+                  <p className="text-xs text-[var(--dl-muted)]">{stylist.role} • {stylist.chair}</p>
+                </div>
+              </div>
+              <div className="w-2 h-2 rounded-full bg-emerald-500" />
+            </div>
+            <div className="grid grid-cols-3 gap-4">
+              <div className="p-3 rounded-xl bg-white/60">
+                <p className="text-xs text-[var(--dl-muted)]">Revenue</p>
+                <p className="text-lg font-bold text-[var(--dl-ink)]">{stylist.revenue}</p>
+              </div>
+              <div className="p-3 rounded-xl bg-white/60">
+                <p className="text-xs text-[var(--dl-muted)]">Clients</p>
+                <p className="text-lg font-bold text-[var(--dl-ink)]">{stylist.clients}</p>
+              </div>
+              <div className="p-3 rounded-xl bg-white/60">
+                <p className="text-xs text-[var(--dl-muted)]">Rating</p>
+                <p className="text-lg font-bold text-[var(--dl-ink)]">{stylist.rating}★</p>
+              </div>
+            </div>
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+}
+
+/* ═══ CONTENT TAB ═══ */
+function ContentTab() {
+  return (
+    <div className="p-6 lg:p-8 max-w-[1600px] mx-auto space-y-6">
+      <div className="flex items-center justify-between">
+        <div>
+          <h2 className="text-2xl font-bold text-[var(--dl-ink)]">Content Studio</h2>
+          <p className="text-[var(--dl-muted)]">Create and manage content</p>
+        </div>
+        <button className="px-4 py-2 bg-[var(--accent-rose-500)] text-[var(--dl-ink)] font-bold rounded-lg text-sm hover:bg-[var(--accent-rose-600)] transition-colors">
+          + New Post
+        </button>
+      </div>
+      <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
+        <KpiTile title="Drafts" value="3" icon={<Film className="w-5 h-5" />} />
+        <KpiTile title="Scheduled" value="4" icon={<Calendar className="w-5 h-5" />} />
+        <KpiTile title="Published" value="52" icon={<Camera className="w-5 h-5" />} />
+        <KpiTile title="Views" value="15.8K" trend="+10%" trendPositive icon={<TrendingUp className="w-5 h-5" />} />
+      </div>
+      <div className="bg-white/40 border border-white/50 rounded-2xl p-6 min-h-[300px] flex items-center justify-center text-[var(--dl-muted)]">
+        <div className="text-center">
+          <Film className="w-12 h-12 mx-auto mb-4 opacity-20" />
+          <p className="text-sm">Content studio coming soon</p>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+/* ═══ REVIEWS TAB ═══ */
+function ReviewsTab() {
+  return (
+    <div className="p-6 lg:p-8 max-w-[1600px] mx-auto space-y-6">
+      <div>
+        <h2 className="text-2xl font-bold text-[var(--dl-ink)]">Reviews</h2>
+        <p className="text-[var(--dl-muted)]">Manage customer feedback</p>
+      </div>
+      <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
+        <KpiTile title="Google" value="4.9★" subtitle="112 reviews" icon={<Star className="w-5 h-5" />} />
+        <KpiTile title="Yelp" value="4.8★" subtitle="76 reviews" icon={<Star className="w-5 h-5" />} />
+        <KpiTile title="StyleSeat" value="5.0★" subtitle="48 reviews" icon={<Star className="w-5 h-5" />} />
+        <KpiTile title="Response Rate" value="95%" trend="+1%" trendPositive icon={<TrendingUp className="w-5 h-5" />} />
+      </div>
+      <div className="bg-white/40 border border-white/50 rounded-2xl p-6 min-h-[300px] flex items-center justify-center text-[var(--dl-muted)]">
+        <div className="text-center">
+          <Star className="w-12 h-12 mx-auto mb-4 opacity-20" />
+          <p className="text-sm">Review aggregator coming soon</p>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+/* ═══ SETTINGS TAB ═══ */
+function SettingsTab() {
+  return (
+    <div className="p-6 lg:p-8 max-w-[1600px] mx-auto space-y-6">
+      <div>
+        <h2 className="text-2xl font-bold text-[var(--dl-ink)]">Settings</h2>
+        <p className="text-[var(--dl-muted)]">Account and business preferences</p>
+      </div>
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+        {[
+          { icon: <UserPlus className="w-5 h-5" />, label: "Profile", desc: "Business info and branding" },
+          { icon: <CreditCard className="w-5 h-5" />, label: "Billing", desc: "Subscription and payments" },
+          { icon: <Users className="w-5 h-5" />, label: "Team", desc: "Staff permissions" },
+          { icon: <Bell className="w-5 h-5" />, label: "Notifications", desc: "Alerts and reminders" },
+          { icon: <Smartphone className="w-5 h-5" />, label: "Integrations", desc: "Calendar and social sync" },
+          { icon: <Settings className="w-5 h-5" />, label: "Advanced", desc: "API and webhooks" },
+        ].map((item) => (
+          <button key={item.label} className="flex items-center gap-4 p-5 rounded-2xl border border-white/50 bg-white/40 hover:bg-white/60 hover:border-[var(--accent-rose-30)] transition-colors text-left">
+            <div className="p-3 rounded-xl bg-[var(--accent-rose-10)] text-[var(--accent-rose-400)]">{item.icon}</div>
             <div>
               <p className="text-sm font-semibold text-[var(--dl-ink)]">{item.label}</p>
               <p className="text-xs text-[var(--dl-muted)]">{item.desc}</p>
