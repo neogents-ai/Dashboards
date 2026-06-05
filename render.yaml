@@ -4,6 +4,10 @@ services:
     buildCommand: cd artifacts/mockup-sandbox && npm ci && npm run build && cp dist/index.html dist/200.html
     staticPublishPath: artifacts/mockup-sandbox/dist
     pullRequestPreviewsEnabled: true
+    routes:
+      - type: rewrite
+        source: /.*
+        destination: /index.html
     envVars:
       - key: NODE_VERSION
         value: 20
