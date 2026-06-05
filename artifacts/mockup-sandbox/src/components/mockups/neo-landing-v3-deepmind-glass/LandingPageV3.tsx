@@ -226,7 +226,7 @@ export function LandingPageV3DeepMind() {
                 {/* CTA */}
                 <div className="flex items-center gap-3 flex-wrap">
                   {lockedVertical !== null ? (
-                    <a href={ind.route} className="dm-btn" style={{ background: `linear-gradient(180deg, ${ind.color} 0%, ${ind.color}cc 100%)`, borderColor: 'rgba(255,255,255,0.2)' }}>
+                    <a href={`#${ind.route}`} className="dm-btn" style={{ background: `linear-gradient(180deg, ${ind.color} 0%, ${ind.color}cc 100%)`, borderColor: 'rgba(255,255,255,0.2)' }}>
                       Explore Dashboard <ArrowRight className="w-4 h-4" />
                     </a>
                   ) : (

@@ -1,12 +1,9 @@
 services:
-  - type: web
-    name: neogents-app
-    runtime: node
-    plan: free
-    buildCommand: cd artifacts/mockup-sandbox && npm ci && npm run build && cd ../.. && npm install
-    startCommand: node server.js
+  - type: static
+    name: neogents-tech
+    buildCommand: cd artifacts/mockup-sandbox && npm ci && npm run build
+    staticPublishPath: artifacts/mockup-sandbox/dist
+    pullRequestPreviewsEnabled: true
     envVars:
       - key: NODE_VERSION
         value: 20
-      - key: PORT
-        value: 10000

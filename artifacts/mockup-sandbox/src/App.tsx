@@ -138,7 +138,8 @@ function getPreviewPath(): string | null {
 
 function App() {
   const previewPath = getPreviewPath();
-  const route = window.location.pathname.replace(/\/$/, "") || "/";
+  const hash = window.location.hash.replace(/^#/, "").replace(/\/$/, "") || "/";
+  const route = hash || "/";
 
   if (previewPath) {
     return (
