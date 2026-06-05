@@ -2,4 +2,5 @@ services:
   - type: static
     name: neogents-tech
     staticPublishPath: artifacts/mockup-sandbox/dist
+    buildCommand: ""
     pullRequestPreviewsEnabled: true
