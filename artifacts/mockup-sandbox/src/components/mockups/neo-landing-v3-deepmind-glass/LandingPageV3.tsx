@@ -65,12 +65,12 @@ export function LandingPageV3DeepMind() {
   const activeIndex = lockedVertical !== null ? lockedVertical : industryIdx;
   const ind = INDUSTRIES[activeIndex];
 
-  // Splash timer — cycle every 4s unless locked
+  // Splash timer — cycle every 2.5s unless locked
   useEffect(() => {
     if (lockedVertical !== null) return;
     timerRef.current = setInterval(() => {
       setIndustryIdx((prev) => (prev + 1) % INDUSTRIES.length);
-    }, 4000);
+    }, 2500);
     return () => { if (timerRef.current) clearInterval(timerRef.current); };
   }, [lockedVertical]);
 
@@ -241,7 +241,7 @@ export function LandingPageV3DeepMind() {
                 </div>
 
                 {/* Progress bar */}
-                {lockedVertical === null && <SplashProgress duration={4000} active={true} />}
+                {lockedVertical === null && <SplashProgress duration={2500} active={true} />}
                 {lockedVertical !== null && (
                   <div className="flex items-center gap-2 mt-4">
                     <Lock className="w-3 h-3 text-[var(--muted)]" />
