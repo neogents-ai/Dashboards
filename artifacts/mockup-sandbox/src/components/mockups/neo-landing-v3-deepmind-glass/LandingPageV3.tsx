@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
 import type { CSSProperties, MouseEvent } from 'react';
-import { ArrowRight, Check, Home, Camera, Scissors, ChefHat, Compass, Settings2, Clapperboard, Lock, Unlock, Play, Zap, Star } from 'lucide-react';
+import { ArrowRight, Check, Home, Camera, Scissors, ChefHat, Compass, Settings2, Clapperboard, Lock, Unlock, Play, Zap, Star, Brush } from 'lucide-react';
 import { DeepFieldGallery } from '../../shared/DeepFieldGallery';
 import { useCountUp } from '../../../hooks/useCountUp';
 import { FEATURES, INDUSTRIES, TESTIMONIALS, STATS, PRICING } from '../../../data/landing';
@@ -89,14 +89,16 @@ export function LandingPageV3DeepMind() {
     obs.observe(el); return () => obs.disconnect();
   }, []);
 
-  // Dock items with Business vertical added
+  // Dock items — all 8 verticals
   const dockItems = [
-    { idx: 4, icon: <Home className="w-4 h-4" />, label: "Realtor" },
     { idx: 0, icon: <Camera className="w-4 h-4" />, label: "Photo" },
     { idx: 1, icon: <Star className="w-4 h-4" />, label: "Aesthetician" },
     { idx: 2, icon: <Scissors className="w-4 h-4" />, label: "Barber" },
     { idx: 3, icon: <ChefHat className="w-4 h-4" />, label: "Chef" },
+    { idx: 4, icon: <Home className="w-4 h-4" />, label: "Realtor" },
     { idx: 5, icon: <Clapperboard className="w-4 h-4" />, label: "Business" },
+    { idx: 6, icon: <Brush className="w-4 h-4" />, label: "Hairstylist" },
+    { idx: 7, icon: <Zap className="w-4 h-4" />, label: "Creators" },
   ];
 
   return (

@@ -3,12 +3,12 @@
 
 .aesthetician-canvas {
   /* Canvas */
-  --canvas-base: #0c0d0c;
-  --canvas-gradient: #111411;
-  --canvas-surface: #111411;
-  --canvas-surface-raised: #181a18;
-  --canvas-border: #222820;
-  --canvas-border-hover: #2e3828;
+  --canvas-base: #f8fafc;
+  --canvas-gradient: #f8fafc;
+  --canvas-surface: rgba(255,255,255,0.45);
+  --canvas-surface-raised: rgba(255,255,255,0.6);
+  --canvas-border: rgba(255,255,255,0.5);
+  --canvas-border-hover: rgba(255,255,255,0.7);
 
   /* Accent — remap rose tokens to sage green */
   --accent-rose: #84a98c;

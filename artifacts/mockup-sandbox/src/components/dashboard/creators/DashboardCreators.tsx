@@ -12,10 +12,10 @@ import {
   ChevronDown, X, Lock, Unlock
 } from "lucide-react";
 import { cn } from "@/lib/utils";
-import { GlassShell, type TabKey } from "../shared/GlassShell";
+import { LightDashboardShell, type TabDef } from "../shared/LightDashboardShell";
 import { KpiTile } from "../shared/KpiTile";
 import { CollapsibleCard } from "../shared/CollapsibleCard";
-import "../shared/glass-tokens.css";
+import "../shared/dashboard-light.css";
 import "./creators-tokens.css";
 
 /* ───────────────────────────────────────────────────────────
@@ -23,10 +23,10 @@ import "./creators-tokens.css";
    ─────────────────────────────────────────────────────────── */
 
 export function DashboardCreators() {
-  const [activeTab, setActiveTab] = useState<TabKey>("home");
+  const [activeTab, setActiveTab] = useState<string>("home");
 
   return (
-    <GlassShell
+    <LightDashboardShell
       activeTab={activeTab}
       onTabChange={setActiveTab}
       greeting="Good morning, Kai"
@@ -36,14 +36,13 @@ export function DashboardCreators() {
         <StatPill label="1.2K Leads" />
         <StatPill label="$12.4K/mo Revenue" />
       </>}
-      className="business-canvas"
     >
       {activeTab === "home" && <HomeTab />}
       {activeTab === "calendar" && <CalendarTab />}
       {activeTab === "clients" && <AudienceTab />}
       {activeTab === "money" && <MoneyTab />}
       {activeTab === "more" && <MoreTab />}
-    </GlassShell>
+    </LightDashboardShell>
   );
 }
 
@@ -118,23 +117,23 @@ function ContentPipeline() {
     <div className="overflow-x-auto flex gap-4 pb-2">
       {stages.map((stage) => (
         <div key={stage.title} className="min-w-[240px] flex flex-col">
-          <div className={cn("flex items-center justify-between p-3 rounded-t-xl border-t-2 bg-[var(--canvas-surface)]", stage.color)}>
-            <span className="text-sm font-bold text-white">{stage.title}</span>
-            <span className="text-xs bg-[var(--canvas-surface-raised)] text-white px-2 py-0.5 rounded-full">{stage.count}</span>
+          <div className={cn("flex items-center justify-between p-3 rounded-t-xl border-t-2 bg-white/40", stage.color)}>
+            <span className="text-sm font-bold text-[var(--dl-ink)]">{stage.title}</span>
+            <span className="text-xs bg-white/60 text-[var(--dl-ink)] px-2 py-0.5 rounded-full">{stage.count}</span>
           </div>
-          <div className="flex-1 bg-[var(--canvas-surface)] rounded-b-xl p-3 space-y-3 min-h-[180px]">
+          <div className="flex-1 bg-white/40 rounded-b-xl p-3 space-y-3 min-h-[180px]">
             {stage.items.map((item) => (
-              <div key={item.name} className="bg-[var(--canvas-surface-raised)] border border-[var(--canvas-border)] rounded-xl p-3 hover:border-[var(--accent-rose-30)] transition-colors relative">
+              <div key={item.name} className="bg-white/60 border border-white/50 rounded-xl p-3 hover:border-[var(--accent-rose-30)] transition-colors relative">
                 {item.ai && (
                   <span className="absolute -top-2 -right-2 px-2 py-0.5 rounded-full bg-[var(--accent-rose-10)] border border-[var(--accent-rose-20)] text-[var(--accent-rose-400)] text-[9px] font-bold uppercase tracking-wider flex items-center gap-1">
                     <Sparkles className="w-2.5 h-2.5" /> AI Assist
                   </span>
                 )}
-                <p className="text-sm font-medium text-white">{item.name}</p>
-                <p className="text-xs text-[#888]">{item.detail}</p>
+                <p className="text-sm font-medium text-[var(--dl-ink)]">{item.name}</p>
+                <p className="text-xs text-[var(--dl-muted)]">{item.detail}</p>
               </div>
             ))}
-            {stage.items.length === 0 && <div className="text-center text-[#444] text-xs py-6">{stage.count} completed projects</div>}
+            {stage.items.length === 0 && <div className="text-center text-[var(--dl-muted)] text-xs py-6">{stage.count} completed projects</div>}
           </div>
         </div>
       ))}
@@ -144,14 +143,14 @@ function ContentPipeline() {
 
 function PlatformCard({ platform, views, subs, color, icon }: { platform: string; views: string; subs: string; color: string; icon: React.ReactNode }) {
   return (
-    <div className="rounded-xl border border-[var(--canvas-border)] bg-[var(--canvas-surface-raised)] p-4">
+    <div className="rounded-xl border border-white/50 bg-white/60 p-4">
       <div className="flex items-center gap-2 mb-3">
         <span style={{ color }}>{icon}</span>
-        <span className="text-sm font-semibold text-white">{platform}</span>
+        <span className="text-sm font-semibold text-[var(--dl-ink)]">{platform}</span>
       </div>
       <div className="flex items-baseline gap-2">
-        <span className="text-xl font-bold text-white">{views}</span>
-        <span className="text-xs text-[#888]">leads</span>
+        <span className="text-xl font-bold text-[var(--dl-ink)]">{views}</span>
+        <span className="text-xs text-[var(--dl-muted)]">leads</span>
       </div>
       <p className="mt-1 text-xs text-emerald-400 font-medium">{subs} conversion</p>
     </div>
@@ -174,14 +173,14 @@ function WeeklyBarChart() {
         {days.map((d) => (
           <div key={d.day} className="flex-1 flex flex-col items-center gap-1">
             <div className="w-full rounded-t-lg relative group" style={{ height: `${d.val}%`, background: `linear-gradient(to top, rgba(129,140,248,${0.3 + d.val / 300}), rgba(129,140,248,${0.1 + d.val / 500}))` }}>
-              <div className="absolute -top-6 left-1/2 -translate-x-1/2 text-[10px] text-white opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap">
+              <div className="absolute -top-6 left-1/2 -translate-x-1/2 text-[10px] text-[var(--dl-ink)] opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap">
                 {d.val}0K
               </div>
             </div>
           </div>
         ))}
       </div>
-      <div className="flex justify-between text-[10px] text-[#666]">
+      <div className="flex justify-between text-[10px] text-[var(--dl-muted)]">
         {days.map((d) => <span key={d.day}>{d.day}</span>)}
       </div>
     </div>
@@ -197,18 +196,18 @@ function DealRow({ brand, type, value, status }: { brand: string; type: string; 
   };
   const c = config[status];
   return (
-    <div className="flex items-center justify-between p-3 rounded-xl bg-[var(--canvas-surface-raised)] hover:bg-[#131e35] transition-colors">
+    <div className="flex items-center justify-between p-3 rounded-xl bg-white/60 hover:bg-[#131e35] transition-colors">
       <div className="flex items-center gap-3">
         <div className="w-10 h-10 rounded-xl bg-[var(--accent-rose-10)] flex items-center justify-center text-[var(--accent-rose-400)] font-bold text-xs">
           {brand[0]}
         </div>
         <div>
-          <p className="text-sm font-medium text-white">{brand}</p>
-          <p className="text-xs text-[#888]">{type}</p>
+          <p className="text-sm font-medium text-[var(--dl-ink)]">{brand}</p>
+          <p className="text-xs text-[var(--dl-muted)]">{type}</p>
         </div>
       </div>
       <div className="flex items-center gap-3">
-        <span className="text-sm font-semibold text-white">{value}</span>
+        <span className="text-sm font-semibold text-[var(--dl-ink)]">{value}</span>
         <span className={cn("px-2 py-0.5 rounded-full text-[10px] font-bold uppercase tracking-wider", c.bg, c.text)}>{c.label}</span>
       </div>
     </div>
@@ -248,8 +247,8 @@ function CalendarTab() {
     <div className="p-6 lg:p-8 max-w-[1600px] mx-auto space-y-6">
       <div className="flex items-center justify-between flex-wrap gap-3">
         <div>
-          <h2 className="text-2xl font-bold text-white">Operations Calendar</h2>
-          <p className="text-[#888]">Week of June 1 — June 7, 2026</p>
+          <h2 className="text-2xl font-bold text-[var(--dl-ink)]">Operations Calendar</h2>
+          <p className="text-[var(--dl-muted)]">Week of June 1 — June 7, 2026</p>
         </div>
         <div className="flex gap-2">
           <button className="dm-glass-strip px-3 py-1.5 rounded-lg text-xs font-medium text-[var(--accent-rose-400)] border border-[var(--accent-rose-20)] bg-[var(--accent-rose-10)]">
@@ -262,20 +261,20 @@ function CalendarTab() {
         {week.map((day, i) => {
           const daySchedule = schedule.find((s) => s.day === i);
           return (
-            <div key={day} className="rounded-2xl border border-[var(--canvas-border)] bg-[var(--canvas-surface)] overflow-hidden">
-              <div className="p-3 border-b border-[var(--canvas-border)] text-center">
-                <span className="text-xs font-bold text-white uppercase">{day}</span>
-                <span className="block text-[10px] text-[#888]">Jun {i + 1}</span>
+            <div key={day} className="rounded-2xl border border-white/50 bg-white/40 overflow-hidden">
+              <div className="p-3 border-b border-white/50 text-center">
+                <span className="text-xs font-bold text-[var(--dl-ink)] uppercase">{day}</span>
+                <span className="block text-[10px] text-[var(--dl-muted)]">Jun {i + 1}</span>
               </div>
               <div className="p-2 space-y-2 min-h-[200px]">
                 {daySchedule?.slots.map((slot, idx) => (
-                  <div key={idx} className={cn("rounded-xl p-2.5 text-xs relative", slot.type === "live" ? "bg-red-500/10 border border-red-500/20" : slot.type === "draft" ? "bg-[var(--canvas-surface-raised)] border border-dashed border-[var(--canvas-border)]" : "bg-[var(--accent-rose-10)] border border-[var(--accent-rose-20)]")}>
+                  <div key={idx} className={cn("rounded-xl p-2.5 text-xs relative", slot.type === "live" ? "bg-red-500/10 border border-red-500/20" : slot.type === "draft" ? "bg-white/60 border border-dashed border-white/50" : "bg-[var(--accent-rose-10)] border border-[var(--accent-rose-20)]")}>
                     {slot.best && <span className="absolute -top-1 -right-1 w-2 h-2 rounded-full bg-emerald-400" title="Best time to post" />}
                     <div className="flex items-center gap-1.5 mb-1">
                       <span style={{ color: platformColors[slot.platform] }}>{platformIcons[slot.platform]}</span>
-                      <span className="text-[10px] text-[#888]">{slot.time}</span>
+                      <span className="text-[10px] text-[var(--dl-muted)]">{slot.time}</span>
                     </div>
-                    <p className="text-white font-medium truncate">{slot.title}</p>
+                    <p className="text-[var(--dl-ink)] font-medium truncate">{slot.title}</p>
                     {slot.type === "live" && (
                       <div className="flex items-center gap-1 mt-1">
                         <Radio className="w-2.5 h-2.5 text-red-400 animate-pulse" />
@@ -285,7 +284,7 @@ function CalendarTab() {
                   </div>
                 ))}
                 {!daySchedule?.slots.length && (
-                  <div className="h-full flex items-center justify-center text-[#444] text-[10px]">No slots</div>
+                  <div className="h-full flex items-center justify-center text-[var(--dl-muted)] text-[10px]">No slots</div>
                 )}
               </div>
             </div>
@@ -293,8 +292,8 @@ function CalendarTab() {
         })}
       </div>
 
-      <div className="rounded-2xl border border-[var(--canvas-border)] bg-[var(--canvas-surface)] p-5">
-        <h3 className="text-sm font-bold text-white mb-4 flex items-center gap-2">
+      <div className="rounded-2xl border border-white/50 bg-white/40 p-5">
+        <h3 className="text-sm font-bold text-[var(--dl-ink)] mb-4 flex items-center gap-2">
           <Clock className="w-4 h-4 text-[var(--accent-rose-400)]" /> Upcoming Events
         </h3>
         <div className="space-y-3">
@@ -319,17 +318,17 @@ function StreamRow({ platform, title, time, countdown, viewers }: { platform: st
     email: "#0EA5E9",
   };
   return (
-    <div className="flex items-center gap-4 p-3 rounded-xl bg-[var(--canvas-surface-raised)] hover:bg-[#131e35] transition-colors">
+    <div className="flex items-center gap-4 p-3 rounded-xl bg-white/60 hover:bg-[#131e35] transition-colors">
       <div className="w-10 h-10 rounded-xl flex items-center justify-center" style={{ background: colors[platform] + "20", color: colors[platform] }}>
         {icons[platform]}
       </div>
       <div className="flex-1 min-w-0">
-        <p className="text-sm font-medium text-white truncate">{title}</p>
-        <p className="text-xs text-[#888]">{time}</p>
+        <p className="text-sm font-medium text-[var(--dl-ink)] truncate">{title}</p>
+        <p className="text-xs text-[var(--dl-muted)]">{time}</p>
       </div>
       <div className="text-right">
         <p className="text-xs font-medium text-[var(--accent-rose-400)]">{countdown}</p>
-        <p className="text-[10px] text-[#888]">{viewers} attendees</p>
+        <p className="text-[10px] text-[var(--dl-muted)]">{viewers} attendees</p>
       </div>
       <button className="px-3 py-1.5 rounded-lg bg-[var(--accent-rose-10)] border border-[var(--accent-rose-20)] text-[var(--accent-rose-400)] text-xs font-medium hover:bg-[var(--accent-rose-20)] transition-colors">
         Notify
@@ -364,24 +363,24 @@ function AudienceTab() {
     <div className="p-6 lg:p-8 max-w-[1600px] mx-auto space-y-6">
       <div className="flex items-center justify-between">
         <div>
-          <h2 className="text-2xl font-bold text-white">Customer Intelligence</h2>
-          <p className="text-[#888]">Understand, segment, and grow your business relationships</p>
+          <h2 className="text-2xl font-bold text-[var(--dl-ink)]">Customer Intelligence</h2>
+          <p className="text-[var(--dl-muted)]">Understand, segment, and grow your business relationships</p>
         </div>
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
         {/* Sidebar Segments */}
         <div className="lg:col-span-4 space-y-4">
-          <div className="rounded-2xl border border-[var(--canvas-border)] bg-[var(--canvas-surface)] p-5">
-            <h3 className="text-sm font-bold text-white mb-4">Follower Segments</h3>
+          <div className="rounded-2xl border border-white/50 bg-white/40 p-5">
+            <h3 className="text-sm font-bold text-[var(--dl-ink)] mb-4">Follower Segments</h3>
             <div className="space-y-4">
               {segments.map((seg) => (
                 <div key={seg.label}>
                   <div className="flex items-center justify-between mb-1">
-                    <span className="text-xs text-white font-medium">{seg.label}</span>
-                    <span className="text-xs text-[#888]">{seg.count} <span className={seg.pct.startsWith("+") ? "text-emerald-400" : "text-red-400"}>{seg.pct}</span></span>
+                    <span className="text-xs text-[var(--dl-ink)] font-medium">{seg.label}</span>
+                    <span className="text-xs text-[var(--dl-muted)]">{seg.count} <span className={seg.pct.startsWith("+") ? "text-emerald-400" : "text-red-400"}>{seg.pct}</span></span>
                   </div>
-                  <div className="h-2 rounded-full bg-[var(--canvas-surface-raised)] overflow-hidden">
+                  <div className="h-2 rounded-full bg-white/60 overflow-hidden">
                     <div className={cn("h-full rounded-full", seg.color)} style={{ width: seg.width }} />
                   </div>
                 </div>
@@ -389,26 +388,26 @@ function AudienceTab() {
             </div>
           </div>
 
-          <div className="rounded-2xl border border-[var(--canvas-border)] bg-[var(--canvas-surface)] p-5">
-            <h3 className="text-sm font-bold text-white mb-3">Demographics</h3>
+          <div className="rounded-2xl border border-white/50 bg-white/40 p-5">
+            <h3 className="text-sm font-bold text-[var(--dl-ink)] mb-3">Demographics</h3>
             <div className="space-y-3">
               <DemoBar label="18-24" pct={42} />
               <DemoBar label="25-34" pct={35} />
               <DemoBar label="35-44" pct={15} />
               <DemoBar label="45+" pct={8} />
             </div>
-            <div className="mt-4 pt-3 border-t border-[var(--canvas-border)] flex gap-4 text-center">
+            <div className="mt-4 pt-3 border-t border-white/50 flex gap-4 text-center">
               <div className="flex-1">
-                <p className="text-lg font-bold text-white">62%</p>
-                <p className="text-[10px] text-[#888]">Male</p>
+                <p className="text-lg font-bold text-[var(--dl-ink)]">62%</p>
+                <p className="text-[10px] text-[var(--dl-muted)]">Male</p>
               </div>
               <div className="flex-1">
-                <p className="text-lg font-bold text-white">36%</p>
-                <p className="text-[10px] text-[#888]">Female</p>
+                <p className="text-lg font-bold text-[var(--dl-ink)]">36%</p>
+                <p className="text-[10px] text-[var(--dl-muted)]">Female</p>
               </div>
               <div className="flex-1">
-                <p className="text-lg font-bold text-white">2%</p>
-                <p className="text-[10px] text-[#888]">Other</p>
+                <p className="text-lg font-bold text-[var(--dl-ink)]">2%</p>
+                <p className="text-[10px] text-[var(--dl-muted)]">Other</p>
               </div>
             </div>
           </div>
@@ -416,24 +415,24 @@ function AudienceTab() {
 
         {/* Main Content */}
         <div className="lg:col-span-8 space-y-4">
-          <div className="rounded-2xl border border-[var(--canvas-border)] bg-[var(--canvas-surface)] p-5">
-            <h3 className="text-sm font-bold text-white mb-4 flex items-center gap-2">
+          <div className="rounded-2xl border border-white/50 bg-white/40 p-5">
+            <h3 className="text-sm font-bold text-[var(--dl-ink)] mb-4 flex items-center gap-2">
               <TrendingUp className="w-4 h-4 text-[var(--accent-rose-400)]" /> Growth Trajectory
             </h3>
             <GrowthChart />
           </div>
 
-          <div className="rounded-2xl border border-[var(--canvas-border)] bg-[var(--canvas-surface)] p-5">
-            <h3 className="text-sm font-bold text-white mb-4">Top Campaigns</h3>
+          <div className="rounded-2xl border border-white/50 bg-white/40 p-5">
+            <h3 className="text-sm font-bold text-[var(--dl-ink)] mb-4">Top Campaigns</h3>
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
               {topContent.map((content) => (
-                <div key={content.title} className="rounded-xl bg-[var(--canvas-surface-raised)] border border-[var(--canvas-border)] p-4 hover:border-[var(--accent-rose-30)] transition-colors">
+                <div key={content.title} className="rounded-xl bg-white/60 border border-white/50 p-4 hover:border-[var(--accent-rose-30)] transition-colors">
                   <div className="flex items-center justify-between mb-2">
-                    <span className="text-[10px] text-[#888] uppercase tracking-wider">{content.platform}</span>
+                    <span className="text-[10px] text-[var(--dl-muted)] uppercase tracking-wider">{content.platform}</span>
                     <Star className="w-3 h-3 text-amber-400" />
                   </div>
-                  <p className="text-sm font-medium text-white mb-1">{content.title}</p>
-                  <div className="flex items-center gap-3 text-xs text-[#888]">
+                  <p className="text-sm font-medium text-[var(--dl-ink)] mb-1">{content.title}</p>
+                  <div className="flex items-center gap-3 text-xs text-[var(--dl-muted)]">
                     <span>{content.views} actions</span>
                     <span className="text-emerald-400">{content.engagement} conversion</span>
                   </div>
@@ -442,21 +441,21 @@ function AudienceTab() {
             </div>
           </div>
 
-          <div className="rounded-2xl border border-[var(--canvas-border)] bg-[var(--canvas-surface)] p-5">
-            <h3 className="text-sm font-bold text-white mb-4 flex items-center gap-2">
+          <div className="rounded-2xl border border-white/50 bg-white/40 p-5">
+            <h3 className="text-sm font-bold text-[var(--dl-ink)] mb-4 flex items-center gap-2">
               <MessageSquare className="w-4 h-4 text-[var(--accent-rose-400)]" /> Customer Feedback Queue
             </h3>
             <div className="space-y-3">
               {fanQA.map((qa) => (
-                <div key={qa.fan} className="rounded-xl bg-[var(--canvas-surface-raised)] border border-[var(--canvas-border)] p-4">
+                <div key={qa.fan} className="rounded-xl bg-white/60 border border-white/50 p-4">
                   <div className="flex items-start gap-3">
                     <div className="w-8 h-8 rounded-full bg-[var(--accent-rose-10)] flex items-center justify-center text-[var(--accent-rose-400)] text-xs font-bold flex-shrink-0">
                       {qa.fan[1].toUpperCase()}
                     </div>
                     <div className="flex-1 min-w-0">
-                      <p className="text-xs text-[#888] mb-0.5">{qa.fan}</p>
-                      <p className="text-sm text-white mb-2">{qa.question}</p>
-                      <div className="rounded-lg bg-[var(--canvas-surface)] border border-[var(--accent-rose-20)] p-3">
+                      <p className="text-xs text-[var(--dl-muted)] mb-0.5">{qa.fan}</p>
+                      <p className="text-sm text-[var(--dl-ink)] mb-2">{qa.question}</p>
+                      <div className="rounded-lg bg-white/40 border border-[var(--accent-rose-20)] p-3">
                         <div className="flex items-center gap-1.5 mb-1">
                           <Sparkles className="w-3 h-3 text-[var(--accent-rose-400)]" />
                           <span className="text-[10px] text-[var(--accent-rose-400)] uppercase font-bold">AI Suggested</span>
@@ -467,10 +466,10 @@ function AudienceTab() {
                         <button className="flex items-center gap-1 text-[10px] text-emerald-400 hover:text-emerald-300 transition-colors">
                           <Send className="w-3 h-3" /> Reply
                         </button>
-                        <button className="flex items-center gap-1 text-[10px] text-[#888] hover:text-white transition-colors">
+                        <button className="flex items-center gap-1 text-[10px] text-[var(--dl-muted)] hover:text-[var(--dl-ink)] transition-colors">
                           <Copy className="w-3 h-3" /> Copy
                         </button>
-                        <span className="text-[10px] text-[#888] ml-auto flex items-center gap-1">
+                        <span className="text-[10px] text-[var(--dl-muted)] ml-auto flex items-center gap-1">
                           <Heart className="w-3 h-3" /> {qa.likes}
                         </span>
                       </div>
@@ -489,11 +488,11 @@ function AudienceTab() {
 function DemoBar({ label, pct }: { label: string; pct: number }) {
   return (
     <div className="flex items-center gap-3">
-      <span className="text-xs text-[#888] w-12">{label}</span>
-      <div className="flex-1 h-2 rounded-full bg-[var(--canvas-surface-raised)] overflow-hidden">
+      <span className="text-xs text-[var(--dl-muted)] w-12">{label}</span>
+      <div className="flex-1 h-2 rounded-full bg-white/60 overflow-hidden">
         <div className="h-full rounded-full bg-[var(--accent-rose-500)]" style={{ width: `${pct}%` }} />
       </div>
-      <span className="text-xs text-white w-8 text-right">{pct}%</span>
+      <span className="text-xs text-[var(--dl-ink)] w-8 text-right">{pct}%</span>
     </div>
   );
 }
@@ -508,14 +507,14 @@ function GrowthChart() {
         {values.map((v, i) => (
           <div key={i} className="flex-1 flex flex-col items-center gap-1">
             <div className="w-full rounded-t-lg relative group" style={{ height: `${(v / max) * 100}%`, background: `linear-gradient(to top, rgba(129,140,248,${0.3 + v / 2000}), rgba(129,140,248,${0.1 + v / 4000}))` }}>
-              <div className="absolute -top-6 left-1/2 -translate-x-1/2 text-[10px] text-white opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap">
+              <div className="absolute -top-6 left-1/2 -translate-x-1/2 text-[10px] text-[var(--dl-ink)] opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap">
                 {v}K
               </div>
             </div>
           </div>
         ))}
       </div>
-      <div className="flex justify-between text-[10px] text-[#666]">
+      <div className="flex justify-between text-[10px] text-[var(--dl-muted)]">
         {months.map((m) => <span key={m}>{m}</span>)}
       </div>
     </div>
@@ -550,8 +549,8 @@ function MoneyTab() {
   return (
     <div className="p-6 lg:p-8 max-w-[1600px] mx-auto space-y-6">
       <div>
-        <h2 className="text-2xl font-bold text-white">Monetization & Deals</h2>
-        <p className="text-[#888]">Revenue breakdown, brand deals, and deal pipeline</p>
+        <h2 className="text-2xl font-bold text-[var(--dl-ink)]">Monetization & Deals</h2>
+        <p className="text-[var(--dl-muted)]">Revenue breakdown, brand deals, and deal pipeline</p>
       </div>
 
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
@@ -563,41 +562,41 @@ function MoneyTab() {
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
         {/* Revenue Breakdown */}
-        <div className="rounded-2xl border border-[var(--canvas-border)] bg-[var(--canvas-surface)] p-6">
-          <h3 className="font-bold text-white mb-5 flex items-center gap-2">
+        <div className="rounded-2xl border border-white/50 bg-white/40 p-6">
+          <h3 className="font-bold text-[var(--dl-ink)] mb-5 flex items-center gap-2">
             <PieChartIcon className="w-5 h-5 text-[var(--accent-rose-400)]" /> Revenue Breakdown
           </h3>
           <div className="space-y-4">
             {revenue.map((r) => (
               <div key={r.source}>
                 <div className="flex items-center justify-between mb-1">
-                  <span className="text-sm text-white">{r.source}</span>
-                  <span className="text-sm font-semibold text-white">{r.amount}</span>
+                  <span className="text-sm text-[var(--dl-ink)]">{r.source}</span>
+                  <span className="text-sm font-semibold text-[var(--dl-ink)]">{r.amount}</span>
                 </div>
-                <div className="h-3 rounded-full bg-[var(--canvas-surface-raised)] overflow-hidden">
+                <div className="h-3 rounded-full bg-white/60 overflow-hidden">
                   <div className={cn("h-full rounded-full", r.color)} style={{ width: `${r.pct}%` }} />
                 </div>
-                <span className="text-[10px] text-[#888]">{r.pct}% of total</span>
+                <span className="text-[10px] text-[var(--dl-muted)]">{r.pct}% of total</span>
               </div>
             ))}
           </div>
         </div>
 
         {/* Deal Pipeline */}
-        <div className="rounded-2xl border border-[var(--canvas-border)] bg-[var(--canvas-surface)] p-6">
-          <h3 className="font-bold text-white mb-5 flex items-center gap-2">
+        <div className="rounded-2xl border border-white/50 bg-white/40 p-6">
+          <h3 className="font-bold text-[var(--dl-ink)] mb-5 flex items-center gap-2">
             <ArrowUpRight className="w-5 h-5 text-[var(--accent-rose-400)]" /> Deal Value Pipeline
           </h3>
           <div className="space-y-3">
             {pipeline.map((p) => (
-              <div key={p.stage} className="flex items-center justify-between p-3 rounded-xl bg-[var(--canvas-surface-raised)]">
+              <div key={p.stage} className="flex items-center justify-between p-3 rounded-xl bg-white/60">
                 <div className="flex items-center gap-3">
                   <div className={cn("w-2 h-2 rounded-full", p.count > 0 ? "bg-[var(--accent-rose-400)]" : "bg-[#333]")} />
-                  <span className="text-sm text-white">{p.stage}</span>
+                  <span className="text-sm text-[var(--dl-ink)]">{p.stage}</span>
                 </div>
                 <div className="text-right">
-                  <span className="text-sm font-semibold text-white">{p.value}</span>
-                  <span className="text-xs text-[#888] ml-2">{p.count} deals</span>
+                  <span className="text-sm font-semibold text-[var(--dl-ink)]">{p.value}</span>
+                  <span className="text-xs text-[var(--dl-muted)] ml-2">{p.count} deals</span>
                 </div>
               </div>
             ))}
@@ -606,16 +605,16 @@ function MoneyTab() {
       </div>
 
       {/* Brand Deal Inbox */}
-      <div className="rounded-2xl border border-[var(--canvas-border)] bg-[var(--canvas-surface)] p-6">
+      <div className="rounded-2xl border border-white/50 bg-white/40 p-6">
         <div className="flex items-center justify-between mb-5">
-          <h3 className="font-bold text-white flex items-center gap-2">
+          <h3 className="font-bold text-[var(--dl-ink)] flex items-center gap-2">
             <MailIcon className="w-5 h-5 text-[var(--accent-rose-400)]" /> Brand Deal Inbox
           </h3>
           <div className="flex gap-2">
-            <button className="px-3 py-1.5 rounded-lg text-xs font-medium text-[#888] hover:text-white transition-colors flex items-center gap-1">
+            <button className="px-3 py-1.5 rounded-lg text-xs font-medium text-[var(--dl-muted)] hover:text-[var(--dl-ink)] transition-colors flex items-center gap-1">
               <Filter className="w-3 h-3" /> Filter
             </button>
-            <button className="px-3 py-1.5 rounded-lg text-xs font-medium text-[#888] hover:text-white transition-colors flex items-center gap-1">
+            <button className="px-3 py-1.5 rounded-lg text-xs font-medium text-[var(--dl-muted)] hover:text-[var(--dl-ink)] transition-colors flex items-center gap-1">
               <Search className="w-3 h-3" /> Search
             </button>
           </div>
@@ -667,8 +666,8 @@ function MoreTab() {
   return (
     <div className="p-6 lg:p-8 max-w-[1600px] mx-auto space-y-6">
       <div>
-        <h2 className="text-2xl font-bold text-white">Business Tools</h2>
-        <p className="text-[#888]">Everything you need to run, launch, and scale your operation</p>
+        <h2 className="text-2xl font-bold text-[var(--dl-ink)]">Business Tools</h2>
+        <p className="text-[var(--dl-muted)]">Everything you need to run, launch, and scale your operation</p>
       </div>
 
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
@@ -680,15 +679,15 @@ function MoreTab() {
               "flex flex-col items-start gap-3 p-5 rounded-2xl border text-left transition-all hover:scale-[1.02]",
               item.featured
                 ? "border-[var(--accent-rose-30)] bg-[var(--accent-rose-10)] hover:bg-[var(--accent-rose-20)]"
-                : "border-[var(--canvas-border)] bg-[var(--canvas-surface)] hover:bg-[var(--canvas-surface-raised)] hover:border-[var(--accent-rose-30)]"
+                : "border-white/50 bg-white/40 hover:bg-white/60 hover:border-[var(--accent-rose-30)]"
             )}
           >
             <div className={cn("p-3 rounded-xl", item.featured ? "bg-[var(--accent-rose-20)] text-[var(--accent-rose-400)]" : "bg-[var(--accent-rose-10)] text-[var(--accent-rose-400)]")}>
               {item.icon}
             </div>
             <div>
-              <p className="text-sm font-semibold text-white">{item.label}</p>
-              <p className="text-xs text-[#888]">{item.desc}</p>
+              <p className="text-sm font-semibold text-[var(--dl-ink)]">{item.label}</p>
+              <p className="text-xs text-[var(--dl-muted)]">{item.desc}</p>
             </div>
             {item.featured && (
               <span className="mt-auto px-2 py-0.5 rounded-full bg-[var(--accent-rose-20)] border border-[var(--accent-rose-30)] text-[var(--accent-rose-400)] text-[9px] font-bold uppercase tracking-wider">
@@ -748,26 +747,26 @@ function CampaignStudio({ onClose }: { onClose: () => void }) {
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm">
-      <div className="w-full max-w-4xl max-h-[90vh] overflow-auto rounded-3xl border border-[var(--canvas-border)] bg-[var(--canvas-base)] shadow-2xl">
-        <div className="p-6 border-b border-[var(--canvas-border)] flex items-center justify-between">
+      <div className="w-full max-w-4xl max-h-[90vh] overflow-auto rounded-3xl border border-white/50 bg-[var(--canvas-base)] shadow-2xl">
+        <div className="p-6 border-b border-white/50 flex items-center justify-between">
           <div className="flex items-center gap-3">
             <div className="w-10 h-10 rounded-xl bg-[var(--accent-rose-10)] flex items-center justify-center">
               <Radio className="w-5 h-5 text-[var(--accent-rose-400)] animate-pulse" />
             </div>
             <div>
-              <h3 className="text-lg font-bold text-white">Campaign Studio</h3>
-              <p className="text-xs text-[#888]">Multi-channel launch and activation control center</p>
+              <h3 className="text-lg font-bold text-[var(--dl-ink)]">Campaign Studio</h3>
+              <p className="text-xs text-[var(--dl-muted)]">Multi-channel launch and activation control center</p>
             </div>
           </div>
-          <button onClick={onClose} className="p-2 rounded-lg hover:bg-[var(--canvas-surface-raised)] transition-colors">
-            <X className="w-5 h-5 text-[#888]" />
+          <button onClick={onClose} className="p-2 rounded-lg hover:bg-white/60 transition-colors">
+            <X className="w-5 h-5 text-[var(--dl-muted)]" />
           </button>
         </div>
 
         <div className="p-6 space-y-6">
           {/* Platform Selector */}
           <div>
-            <h4 className="text-sm font-semibold text-white mb-3">Select Platforms</h4>
+            <h4 className="text-sm font-semibold text-[var(--dl-ink)] mb-3">Select Platforms</h4>
             <div className="flex flex-wrap gap-3">
               {platforms.map((p) => {
                 const isSelected = selectedPlatforms.includes(p.id);
@@ -778,8 +777,8 @@ function CampaignStudio({ onClose }: { onClose: () => void }) {
                     className={cn(
                       "flex items-center gap-2 px-4 py-2.5 rounded-xl border text-sm font-medium transition-all",
                       isSelected
-                        ? "border-[var(--accent-rose-30)] bg-[var(--accent-rose-10)] text-white"
-                        : "border-[var(--canvas-border)] bg-[var(--canvas-surface)] text-[#888] hover:text-white"
+                        ? "border-[var(--accent-rose-30)] bg-[var(--accent-rose-10)] text-[var(--dl-ink)]"
+                        : "border-white/50 bg-white/40 text-[var(--dl-muted)] hover:text-[var(--dl-ink)]"
                     )}
                   >
                     <span style={{ color: isSelected ? p.color : "#666" }}>{p.icon}</span>
@@ -793,7 +792,7 @@ function CampaignStudio({ onClose }: { onClose: () => void }) {
 
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
             {/* Campaign Preview */}
-            <div className="rounded-2xl border border-[var(--canvas-border)] bg-[var(--canvas-surface)] overflow-hidden">
+            <div className="rounded-2xl border border-white/50 bg-white/40 overflow-hidden">
               <div className="aspect-video bg-gradient-to-br from-[#0d1120] to-[#1a2040] flex items-center justify-center relative">
                 {isLive ? (
                   <>
@@ -801,16 +800,16 @@ function CampaignStudio({ onClose }: { onClose: () => void }) {
                       <span className="w-2 h-2 rounded-full bg-red-400 animate-pulse" />
                       <span className="text-xs font-bold text-red-400 uppercase">Live</span>
                     </div>
-                    <div className="absolute top-3 right-3 text-xs text-[#888]">00:04:23</div>
+                    <div className="absolute top-3 right-3 text-xs text-[var(--dl-muted)]">00:04:23</div>
                     <div className="text-center">
-                      <Mic className="w-12 h-12 text-white/20 mx-auto mb-2" />
-                      <p className="text-sm text-white/40">Campaign preview active</p>
+                      <Mic className="w-12 h-12 text-[var(--dl-ink)]/20 mx-auto mb-2" />
+                      <p className="text-sm text-[var(--dl-ink)]/40">Campaign preview active</p>
                     </div>
                   </>
                 ) : (
                   <div className="text-center">
-                    <Video className="w-12 h-12 text-white/20 mx-auto mb-2" />
-                    <p className="text-sm text-white/40">Launch preview will appear here</p>
+                    <Video className="w-12 h-12 text-[var(--dl-ink)]/20 mx-auto mb-2" />
+                    <p className="text-sm text-[var(--dl-ink)]/40">Launch preview will appear here</p>
                   </div>
                 )}
               </div>
@@ -821,7 +820,7 @@ function CampaignStudio({ onClose }: { onClose: () => void }) {
                     "w-full py-3 rounded-xl text-sm font-bold uppercase tracking-wider transition-all flex items-center justify-center gap-2",
                     isLive
                       ? "bg-red-500/10 border border-red-500/30 text-red-400 hover:bg-red-500/20"
-                      : "bg-[var(--accent-rose-500)] text-white hover:bg-[var(--accent-rose-600)] animate-pulse"
+                      : "bg-[var(--accent-rose-500)] text-[var(--dl-ink)] hover:bg-[var(--accent-rose-600)] animate-pulse"
                   )}
                 >
                   {isLive ? <><Pause className="w-4 h-4" /> End Campaign</> : <><Play className="w-4 h-4" /> Start Campaign</>}
@@ -831,29 +830,29 @@ function CampaignStudio({ onClose }: { onClose: () => void }) {
 
             {/* Campaign Health + Activity */}
             <div className="space-y-4">
-              <div className="rounded-2xl border border-[var(--canvas-border)] bg-[var(--canvas-surface)] p-4">
-                <h4 className="text-sm font-semibold text-white mb-3">Campaign Health</h4>
+              <div className="rounded-2xl border border-white/50 bg-white/40 p-4">
+                <h4 className="text-sm font-semibold text-[var(--dl-ink)] mb-3">Campaign Health</h4>
                 <div className="grid grid-cols-3 gap-3">
-                  <div className="rounded-xl bg-[var(--canvas-surface-raised)] p-3 text-center">
-                    <p className="text-[10px] text-[#888] uppercase">Bitrate</p>
-                    <p className="text-lg font-bold text-white">{bitrate}</p>
+                  <div className="rounded-xl bg-white/60 p-3 text-center">
+                    <p className="text-[10px] text-[var(--dl-muted)] uppercase">Bitrate</p>
+                    <p className="text-lg font-bold text-[var(--dl-ink)]">{bitrate}</p>
                     <p className="text-[10px] text-emerald-400">kbps</p>
                   </div>
-                  <div className="rounded-xl bg-[var(--canvas-surface-raised)] p-3 text-center">
-                    <p className="text-[10px] text-[#888] uppercase">Resolution</p>
-                    <p className="text-lg font-bold text-white">1080p</p>
+                  <div className="rounded-xl bg-white/60 p-3 text-center">
+                    <p className="text-[10px] text-[var(--dl-muted)] uppercase">Resolution</p>
+                    <p className="text-lg font-bold text-[var(--dl-ink)]">1080p</p>
                     <p className="text-[10px] text-emerald-400">HD</p>
                   </div>
-                  <div className="rounded-xl bg-[var(--canvas-surface-raised)] p-3 text-center">
-                    <p className="text-[10px] text-[#888] uppercase">Frame Rate</p>
-                    <p className="text-lg font-bold text-white">{fps}</p>
+                  <div className="rounded-xl bg-white/60 p-3 text-center">
+                    <p className="text-[10px] text-[var(--dl-muted)] uppercase">Frame Rate</p>
+                    <p className="text-lg font-bold text-[var(--dl-ink)]">{fps}</p>
                     <p className="text-[10px] text-emerald-400">fps</p>
                   </div>
                 </div>
               </div>
 
-              <div className="rounded-2xl border border-[var(--canvas-border)] bg-[var(--canvas-surface)] p-4">
-                <h4 className="text-sm font-semibold text-white mb-3">Activity Feed</h4>
+              <div className="rounded-2xl border border-white/50 bg-white/40 p-4">
+                <h4 className="text-sm font-semibold text-[var(--dl-ink)] mb-3">Activity Feed</h4>
                 <div className="space-y-2 max-h-32 overflow-auto">
                   {chatMessages.map((msg, i) => (
                     <div key={i} className="flex items-start gap-2 text-xs">
@@ -867,18 +866,18 @@ function CampaignStudio({ onClose }: { onClose: () => void }) {
           </div>
 
           {/* Scheduled Streams */}
-          <div className="rounded-2xl border border-[var(--canvas-border)] bg-[var(--canvas-surface)] p-4">
-            <h4 className="text-sm font-semibold text-white mb-3">Scheduled Launches</h4>
+          <div className="rounded-2xl border border-white/50 bg-white/40 p-4">
+            <h4 className="text-sm font-semibold text-[var(--dl-ink)] mb-3">Scheduled Launches</h4>
             <div className="space-y-2">
               {scheduledStreams.map((s) => (
-                <div key={s.title} className="flex items-center justify-between p-3 rounded-xl bg-[var(--canvas-surface-raised)]">
+                <div key={s.title} className="flex items-center justify-between p-3 rounded-xl bg-white/60">
                   <div className="flex items-center gap-3">
                     <span style={{ color: platforms.find((p) => p.id === s.platform)?.color }}>
                       {platforms.find((p) => p.id === s.platform)?.icon}
                     </span>
                     <div>
-                      <p className="text-sm text-white">{s.title}</p>
-                      <p className="text-xs text-[#888]">{s.time}</p>
+                      <p className="text-sm text-[var(--dl-ink)]">{s.title}</p>
+                      <p className="text-xs text-[var(--dl-muted)]">{s.time}</p>
                     </div>
                   </div>
                   <span className="text-xs font-medium text-[var(--accent-rose-400)]">{s.countdown}</span>
@@ -907,19 +906,19 @@ function AIPersonaBuilder({ onClose }: { onClose: () => void }) {
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm">
-      <div className="w-full max-w-2xl max-h-[90vh] overflow-auto rounded-3xl border border-[var(--canvas-border)] bg-[var(--canvas-base)] shadow-2xl">
-        <div className="p-6 border-b border-[var(--canvas-border)] flex items-center justify-between">
+      <div className="w-full max-w-2xl max-h-[90vh] overflow-auto rounded-3xl border border-white/50 bg-[var(--canvas-base)] shadow-2xl">
+        <div className="p-6 border-b border-white/50 flex items-center justify-between">
           <div className="flex items-center gap-3">
             <div className="w-10 h-10 rounded-xl bg-[var(--accent-rose-10)] flex items-center justify-center">
               <Wand2 className="w-5 h-5 text-[var(--accent-rose-400)]" />
             </div>
             <div>
-              <h3 className="text-lg font-bold text-white">AI Avatar Cloning</h3>
-              <p className="text-xs text-[#888]">Generate your digital twin for content at scale</p>
+              <h3 className="text-lg font-bold text-[var(--dl-ink)]">AI Avatar Cloning</h3>
+              <p className="text-xs text-[var(--dl-muted)]">Generate your digital twin for content at scale</p>
             </div>
           </div>
-          <button onClick={onClose} className="p-2 rounded-lg hover:bg-[var(--canvas-surface-raised)] transition-colors">
-            <X className="w-5 h-5 text-[#888]" />
+          <button onClick={onClose} className="p-2 rounded-lg hover:bg-white/60 transition-colors">
+            <X className="w-5 h-5 text-[var(--dl-muted)]" />
           </button>
         </div>
 
@@ -928,7 +927,7 @@ function AIPersonaBuilder({ onClose }: { onClose: () => void }) {
           <div className="flex items-center gap-2">
             {["upload", "style", "preview"].map((s, i) => (
               <React.Fragment key={s}>
-                <div className={cn("w-8 h-8 rounded-full flex items-center justify-center text-xs font-bold", step === s ? "bg-[var(--accent-rose-500)] text-white" : i < ["upload", "style", "preview"].indexOf(step) ? "bg-emerald-500/20 text-emerald-400" : "bg-[var(--canvas-surface-raised)] text-[#888]")}>
+                <div className={cn("w-8 h-8 rounded-full flex items-center justify-center text-xs font-bold", step === s ? "bg-[var(--accent-rose-500)] text-[var(--dl-ink)]" : i < ["upload", "style", "preview"].indexOf(step) ? "bg-emerald-500/20 text-emerald-400" : "bg-white/60 text-[var(--dl-muted)]")}>
                   {i < ["upload", "style", "preview"].indexOf(step) ? <CheckCircle2 className="w-4 h-4" /> : i + 1}
                 </div>
                 {i < 2 && <div className={cn("flex-1 h-0.5", i < ["upload", "style", "preview"].indexOf(step) ? "bg-emerald-500/30" : "bg-[var(--canvas-border)]")} />}
@@ -937,10 +936,10 @@ function AIPersonaBuilder({ onClose }: { onClose: () => void }) {
           </div>
 
           {step === "upload" && (
-            <div className="rounded-2xl border-2 border-dashed border-[var(--canvas-border)] bg-[var(--canvas-surface)] p-10 text-center hover:border-[var(--accent-rose-30)] transition-colors cursor-pointer">
+            <div className="rounded-2xl border-2 border-dashed border-white/50 bg-white/40 p-10 text-center hover:border-[var(--accent-rose-30)] transition-colors cursor-pointer">
               <Upload className="w-10 h-10 text-[var(--accent-rose-400)] mx-auto mb-3" />
-              <p className="text-sm font-medium text-white mb-1">Upload a business logo or brand mood asset</p>
-              <p className="text-xs text-[#888]">PNG, JPG — min 512×512px</p>
+              <p className="text-sm font-medium text-[var(--dl-ink)] mb-1">Upload a business logo or brand mood asset</p>
+              <p className="text-xs text-[var(--dl-muted)]">PNG, JPG — min 512×512px</p>
               <button onClick={() => setStep("style")} className="mt-4 px-4 py-2 rounded-xl bg-[var(--accent-rose-10)] border border-[var(--accent-rose-20)] text-[var(--accent-rose-400)] text-xs font-medium hover:bg-[var(--accent-rose-20)] transition-colors">
                 Use Sample Brand
               </button>
@@ -949,7 +948,7 @@ function AIPersonaBuilder({ onClose }: { onClose: () => void }) {
 
           {step === "style" && (
             <div className="space-y-3">
-              <p className="text-sm text-white font-medium">Choose a persona style</p>
+              <p className="text-sm text-[var(--dl-ink)] font-medium">Choose a persona style</p>
               {styles.map((s) => (
                 <button
                   key={s.id}
@@ -958,20 +957,20 @@ function AIPersonaBuilder({ onClose }: { onClose: () => void }) {
                     "w-full flex items-center gap-4 p-4 rounded-xl border text-left transition-all",
                     selectedStyle === s.id
                       ? "border-[var(--accent-rose-30)] bg-[var(--accent-rose-10)]"
-                      : "border-[var(--canvas-border)] bg-[var(--canvas-surface)] hover:border-[var(--accent-rose-30)]"
+                      : "border-white/50 bg-white/40 hover:border-[var(--accent-rose-30)]"
                   )}
                 >
-                  <div className={cn("p-2.5 rounded-xl", selectedStyle === s.id ? "bg-[var(--accent-rose-20)] text-[var(--accent-rose-400)]" : "bg-[var(--canvas-surface-raised)] text-[#888]")}>
+                  <div className={cn("p-2.5 rounded-xl", selectedStyle === s.id ? "bg-[var(--accent-rose-20)] text-[var(--accent-rose-400)]" : "bg-white/60 text-[var(--dl-muted)]")}>
                     {s.icon}
                   </div>
                   <div className="flex-1">
-                    <p className="text-sm font-medium text-white">{s.name}</p>
-                    <p className="text-xs text-[#888]">{s.desc}</p>
+                    <p className="text-sm font-medium text-[var(--dl-ink)]">{s.name}</p>
+                    <p className="text-xs text-[var(--dl-muted)]">{s.desc}</p>
                   </div>
                   {selectedStyle === s.id && <CheckCircle2 className="w-5 h-5 text-[var(--accent-rose-400)]" />}
                 </button>
               ))}
-              <button onClick={() => setStep("preview")} className="w-full py-3 rounded-xl bg-[var(--accent-rose-500)] text-white text-sm font-bold hover:bg-[var(--accent-rose-600)] transition-colors">
+              <button onClick={() => setStep("preview")} className="w-full py-3 rounded-xl bg-[var(--accent-rose-500)] text-[var(--dl-ink)] text-sm font-bold hover:bg-[var(--accent-rose-600)] transition-colors">
                 Generate Preview
               </button>
             </div>
@@ -979,36 +978,36 @@ function AIPersonaBuilder({ onClose }: { onClose: () => void }) {
 
           {step === "preview" && (
             <div className="space-y-4">
-              <div className="rounded-2xl border border-[var(--canvas-border)] bg-[var(--canvas-surface)] p-6 text-center">
+              <div className="rounded-2xl border border-white/50 bg-white/40 p-6 text-center">
                 <div className="w-32 h-32 rounded-2xl bg-gradient-to-br from-[var(--accent-rose-500)] to-[var(--accent-rose-600)] mx-auto mb-4 flex items-center justify-center">
-                  <Wand2 className="w-12 h-12 text-white/40" />
+                  <Wand2 className="w-12 h-12 text-[var(--dl-ink)]/40" />
                 </div>
-                <p className="text-sm font-medium text-white mb-1">Your AI Persona is Ready</p>
-                <p className="text-xs text-[#888]">Professional style · brand-ready · 0.8s generation</p>
+                <p className="text-sm font-medium text-[var(--dl-ink)] mb-1">Your AI Persona is Ready</p>
+                <p className="text-xs text-[var(--dl-muted)]">Professional style · brand-ready · 0.8s generation</p>
               </div>
 
               <div className="grid grid-cols-3 gap-3">
-                <button className="p-3 rounded-xl bg-[var(--canvas-surface)] border border-[var(--canvas-border)] hover:border-[var(--accent-rose-30)] transition-colors text-center">
+                <button className="p-3 rounded-xl bg-white/40 border border-white/50 hover:border-[var(--accent-rose-30)] transition-colors text-center">
                   <Film className="w-4 h-4 text-[var(--accent-rose-400)] mx-auto mb-1" />
-                  <span className="text-[10px] text-white">Marketing Video</span>
+                  <span className="text-[10px] text-[var(--dl-ink)]">Marketing Video</span>
                 </button>
-                <button className="p-3 rounded-xl bg-[var(--canvas-surface)] border border-[var(--canvas-border)] hover:border-[var(--accent-rose-30)] transition-colors text-center">
+                <button className="p-3 rounded-xl bg-white/40 border border-white/50 hover:border-[var(--accent-rose-30)] transition-colors text-center">
                   <Globe className="w-4 h-4 text-[var(--accent-rose-400)] mx-auto mb-1" />
-                  <span className="text-[10px] text-white">Multi-Language</span>
+                  <span className="text-[10px] text-[var(--dl-ink)]">Multi-Language</span>
                 </button>
-                <button className="p-3 rounded-xl bg-[var(--canvas-surface)] border border-[var(--canvas-border)] hover:border-[var(--accent-rose-30)] transition-colors text-center">
+                <button className="p-3 rounded-xl bg-white/40 border border-white/50 hover:border-[var(--accent-rose-30)] transition-colors text-center">
                   <Calendar className="w-4 h-4 text-[var(--accent-rose-400)] mx-auto mb-1" />
-                  <span className="text-[10px] text-white">Schedule</span>
+                  <span className="text-[10px] text-[var(--dl-ink)]">Schedule</span>
                 </button>
               </div>
 
               {/* Upsell Banner */}
               <div className="rounded-xl bg-gradient-to-r from-[var(--accent-rose-10)] to-[var(--accent-rose-20)] border border-[var(--accent-rose-30)] p-4 flex items-center justify-between">
                 <div>
-                  <p className="text-sm font-semibold text-white">Upgrade to Pro Clone</p>
-                  <p className="text-xs text-[#888]">Unlimited generations · Voice cloning · 4K video</p>
+                  <p className="text-sm font-semibold text-[var(--dl-ink)]">Upgrade to Pro Clone</p>
+                  <p className="text-xs text-[var(--dl-muted)]">Unlimited generations · Voice cloning · 4K video</p>
                 </div>
-                <button className="px-4 py-2 rounded-lg bg-[var(--accent-rose-500)] text-white text-xs font-bold hover:bg-[var(--accent-rose-600)] transition-colors">
+                <button className="px-4 py-2 rounded-lg bg-[var(--accent-rose-500)] text-[var(--dl-ink)] text-xs font-bold hover:bg-[var(--accent-rose-600)] transition-colors">
                   $49/mo
                 </button>
               </div>

@@ -1,0 +1,235 @@
+/* Dashboard Light Theme — White Glassmorphic
+   Extends landing page dm-glass system for dashboard contexts.
+   Pearlescent canvas background, white glass cards, dark text.
+*/
+
+.dashboard-light-canvas {
+  --dl-pearl-1: #f8fafc;
+  --dl-pearl-2: #e0e7ff;
+  --dl-pearl-3: #fce7f3;
+  --dl-pearl-4: #fef3c7;
+  --dl-ink: #0b1020;
+  --dl-muted: #4a5274;
+  --dl-line: rgba(11, 16, 32, 0.08);
+  --dl-blue: #3b6bff;
+  --dl-gold: #c89c3f;
+
+  background:
+    radial-gradient(1200px 800px at 10% -10%, var(--dl-pearl-2) 0%, transparent 60%),
+    radial-gradient(1000px 700px at 100% 20%, var(--dl-pearl-3) 0%, transparent 60%),
+    radial-gradient(900px 600px at 50% 110%, var(--dl-pearl-4) 0%, transparent 60%),
+    var(--dl-pearl-1);
+  color: var(--dl-ink);
+  font-family: 'Plus Jakarta Sans', 'Inter', sans-serif;
+  min-height: 100dvh;
+}
+
+/* ── Sidebar ── */
+.dashboard-light-sidebar {
+  background: linear-gradient(180deg, rgba(255,255,255,0.72) 0%, rgba(255,255,255,0.45) 100%);
+  border-right: 1px solid rgba(255,255,255,0.6);
+  backdrop-filter: blur(24px) saturate(160%);
+  -webkit-backdrop-filter: blur(24px) saturate(160%);
+  box-shadow:
+    0 1px 0 rgba(255,255,255,0.9) inset,
+    4px 0 24px -8px rgba(15,23,42,0.08);
+}
+
+/* ── Header / Topbar ── */
+.dashboard-light-header {
+  background: linear-gradient(180deg, rgba(255,255,255,0.65) 0%, rgba(255,255,255,0.35) 100%);
+  border-bottom: 1px solid rgba(255,255,255,0.5);
+  backdrop-filter: blur(20px) saturate(150%);
+  -webkit-backdrop-filter: blur(20px) saturate(150%);
+  box-shadow: 0 1px 0 rgba(255,255,255,0.8) inset;
+}
+
+/* ── Cards ── */
+.dashboard-light-card {
+  position: relative;
+  background: linear-gradient(135deg, rgba(255,255,255,0.6) 0%, rgba(255,255,255,0.3) 100%);
+  border: 1px solid rgba(255,255,255,0.55);
+  border-radius: 20px;
+  backdrop-filter: blur(20px) saturate(150%);
+  -webkit-backdrop-filter: blur(20px) saturate(150%);
+  box-shadow:
+    0 1px 0 rgba(255,255,255,0.85) inset,
+    0 -1px 0 rgba(255,255,255,0.35) inset,
+    0 12px 32px -12px rgba(15,23,42,0.1),
+    0 4px 12px -6px rgba(59,107,255,0.08);
+  overflow: hidden;
+  transition: transform .25s cubic-bezier(.2,.7,.2,1), box-shadow .25s;
+}
+.dashboard-light-card:hover {
+  transform: translateY(-1px);
+  box-shadow:
+    0 1px 0 rgba(255,255,255,1) inset,
+    0 -1px 0 rgba(255,255,255,0.4) inset,
+    0 20px 48px -16px rgba(59,107,255,0.15),
+    0 8px 24px -8px rgba(138,92,246,0.1);
+}
+
+/* ── KPI Tile ── */
+.dashboard-light-kpi {
+  background: linear-gradient(135deg, rgba(255,255,255,0.55) 0%, rgba(255,255,255,0.25) 100%);
+  border: 1px solid rgba(255,255,255,0.5);
+  border-radius: 16px;
+  backdrop-filter: blur(16px) saturate(140%);
+  -webkit-backdrop-filter: blur(16px) saturate(140%);
+  box-shadow:
+    0 1px 0 rgba(255,255,255,0.8) inset,
+    0 8px 24px -8px rgba(15,23,42,0.08);
+  padding: 1.25rem;
+  transition: transform .2s, box-shadow .2s;
+}
+.dashboard-light-kpi:hover {
+  transform: translateY(-1px);
+  box-shadow:
+    0 1px 0 rgba(255,255,255,0.9) inset,
+    0 12px 32px -10px rgba(59,107,255,0.12);
+}
+
+/* ── Nav Item ── */
+.dashboard-light-nav-item {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.6rem 0.875rem;
+  border-radius: 12px;
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: var(--dl-muted);
+  cursor: pointer;
+  transition: all .2s;
+  border: 1px solid transparent;
+}
+.dashboard-light-nav-item:hover {
+  background: rgba(255,255,255,0.4);
+  color: var(--dl-ink);
+}
+.dashboard-light-nav-item.active {
+  background: linear-gradient(135deg, rgba(255,255,255,0.8) 0%, rgba(255,255,255,0.5) 100%);
+  border-color: rgba(255,255,255,0.6);
+  color: var(--dl-ink);
+  box-shadow: 0 1px 0 rgba(255,255,255,0.9) inset, 0 4px 12px -4px rgba(15,23,42,0.08);
+}
+
+/* ── Buttons ── */
+.dashboard-light-btn {
+  background: linear-gradient(180deg, rgba(11,16,32,0.9) 0%, rgba(35,42,74,0.95) 100%);
+  color: #fff;
+  padding: 0.625rem 1.25rem;
+  border-radius: 9999px;
+  font-weight: 500;
+  font-size: 0.875rem;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  border: 1px solid rgba(255,255,255,0.15);
+  box-shadow: 0 4px 16px -6px rgba(11,16,32,0.3), 0 1px 0 rgba(255,255,255,0.15) inset;
+  cursor: pointer;
+  transition: transform .15s, box-shadow .2s;
+}
+.dashboard-light-btn:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 8px 24px -8px rgba(59,107,255,0.35), 0 1px 0 rgba(255,255,255,0.25) inset;
+}
+
+.dashboard-light-btn-glass {
+  background: rgba(255,255,255,0.5);
+  color: var(--dl-ink);
+  border: 1px solid rgba(255,255,255,0.7);
+  padding: 0.625rem 1.25rem;
+  border-radius: 9999px;
+  font-weight: 500;
+  font-size: 0.875rem;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  backdrop-filter: blur(10px);
+  cursor: pointer;
+  transition: background .2s;
+}
+.dashboard-light-btn-glass:hover {
+  background: rgba(255,255,255,0.7);
+}
+
+/* ── Input ── */
+.dashboard-light-input {
+  background: rgba(255,255,255,0.5);
+  border: 1px solid rgba(255,255,255,0.6);
+  border-radius: 12px;
+  padding: 0.625rem 0.875rem;
+  font-size: 0.875rem;
+  color: var(--dl-ink);
+  backdrop-filter: blur(8px);
+  transition: border-color .2s, box-shadow .2s;
+}
+.dashboard-light-input::placeholder {
+  color: var(--dl-muted);
+}
+.dashboard-light-input:focus {
+  outline: none;
+  border-color: var(--dl-blue);
+  box-shadow: 0 0 0 3px rgba(59,107,255,0.15);
+}
+
+/* ── Badge / Pill ── */
+.dashboard-light-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.375rem;
+  padding: 0.25rem 0.75rem;
+  border-radius: 9999px;
+  font-size: 0.75rem;
+  font-weight: 500;
+  font-family: 'Geist Mono', monospace;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  background: rgba(255,255,255,0.45);
+  border: 1px solid rgba(255,255,255,0.5);
+  backdrop-filter: blur(8px);
+}
+
+/* ── Scrollbar ── */
+.dashboard-light-scroll::-webkit-scrollbar {
+  width: 6px;
+}
+.dashboard-light-scroll::-webkit-scrollbar-track {
+  background: transparent;
+}
+.dashboard-light-scroll::-webkit-scrollbar-thumb {
+  background: rgba(11,16,32,0.12);
+  border-radius: 3px;
+}
+.dashboard-light-scroll::-webkit-scrollbar-thumb:hover {
+  background: rgba(11,16,32,0.2);
+}
+
+/* ── Mobile Bottom Nav ── */
+.dashboard-light-mobile-nav {
+  background: linear-gradient(180deg, rgba(255,255,255,0.8) 0%, rgba(255,255,255,0.5) 100%);
+  border-top: 1px solid rgba(255,255,255,0.6);
+  backdrop-filter: blur(20px) saturate(150%);
+  -webkit-backdrop-filter: blur(20px) saturate(150%);
+  box-shadow: 0 -4px 24px -8px rgba(15,23,42,0.08);
+}
+
+/* ── NORI Badge (light) ── */
+.dashboard-light-nori {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.5rem;
+  border-radius: 12px;
+  background: rgba(255,255,255,0.4);
+  border: 1px solid rgba(255,255,255,0.5);
+}
+.dashboard-light-nori-text {
+  font-size: 0.625rem;
+  font-weight: 700;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  font-family: 'Geist Mono', monospace;
+  color: #00B359;
+}

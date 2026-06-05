@@ -1,18 +1,18 @@
-/* Photography vertical — Raycast-inspired monochrome + amber accent */
-/* Scoped to .photography-canvas — overrides glass-tokens.css :root values */
+/* Photography vertical — White glassmorphic + amber accent */
+/* Scoped to .photography-canvas — light theme overrides */
 
 .photography-canvas {
-  /* Canvas */
-  --canvas-base: #0e0e0e;
-  --canvas-gradient: #121212;
-  --canvas-surface: #121212;
-  --canvas-surface-raised: #1a1a1a;
-  --canvas-border: #222222;
-  --canvas-border-hover: #333333;
+  /* Light canvas */
+  --canvas-base: #f8fafc;
+  --canvas-gradient: #f8fafc;
+  --canvas-surface: rgba(255,255,255,0.45);
+  --canvas-surface-raised: rgba(255,255,255,0.6);
+  --canvas-border: rgba(255,255,255,0.5);
+  --canvas-border-hover: rgba(255,255,255,0.7);
 
-  /* Accent — remap rose tokens to amber so GlassShell picks them up unchanged */
+  /* Accent — amber */
   --accent-rose: #f59e0b;
-  --accent-rose-400: #fbbf24;
+  --accent-rose-400: #f59e0b;
   --accent-rose-500: #f59e0b;
   --accent-rose-600: #d97706;
   --accent-rose-300: #fcd34d;
@@ -21,7 +21,7 @@
   --accent-rose-30: rgba(245, 158, 11, 0.30);
   --accent-rose-50: rgba(245, 158, 11, 0.50);
 
-  /* Override the hairstylist pink gradient with a near-neutral amber whisper */
+  /* Light tint */
   --warm-pink-tint:
     radial-gradient(ellipse at 20% 10%, rgba(245, 158, 11, 0.06) 0%, transparent 50%),
     radial-gradient(ellipse at 80% 85%, rgba(245, 158, 11, 0.03) 0%, transparent 50%);

@@ -10,10 +10,10 @@ import {
   History, Info
 } from "lucide-react";
 import { cn } from "@/lib/utils";
-import { GlassShell, type TabKey } from "../shared/GlassShell";
+import { LightDashboardShell, type TabDef } from "../shared/LightDashboardShell";
 import { KpiTile } from "../shared/KpiTile";
 import { CollapsibleCard } from "../shared/CollapsibleCard";
-import "../shared/glass-tokens.css";
+import "../shared/dashboard-light.css";
 import "./barber-tokens.css";
 
 /* ───────────────────────────────────────────────────────────
@@ -21,10 +21,10 @@ import "./barber-tokens.css";
    ─────────────────────────────────────────────────────────── */
 
 export function DashboardBarber2() {
-  const [activeTab, setActiveTab] = useState<TabKey>("home");
+  const [activeTab, setActiveTab] = useState<string>("home");
 
   return (
-    <GlassShell
+    <LightDashboardShell
       activeTab={activeTab}
       onTabChange={setActiveTab}
       greeting="Good morning, Marcus"
@@ -34,14 +34,13 @@ export function DashboardBarber2() {
         <StatPill label="3 Walk-ins" />
         <StatPill label="$860 Today" />
       </>}
-      className="barber-canvas"
     >
       {activeTab === "home" && <HomeTab />}
       {activeTab === "calendar" && <ScheduleTab />}
       {activeTab === "clients" && <CutLibraryTab />}
       {activeTab === "money" && <MoneyTab />}
       {activeTab === "more" && <MoreTab />}
-    </GlassShell>
+    </LightDashboardShell>
   );
 }
 
@@ -80,7 +79,7 @@ function HomeTab() {
             <WalkInCard name="Alex Turner" wait="~10 min" chair="Chair 2 (Andre)" number={1} />
             <WalkInCard name="Marcus Jr." wait="~25 min" chair="Chair 4 (Darius)" number={2} />
             <WalkInCard name="Bryan Lee" wait="~35 min" chair="Any available" number={3} />
-            <button className="w-full border border-dashed border-[var(--canvas-border)] hover:border-[var(--accent-rose-30)] hover:text-[var(--accent-rose-400)] text-[#888] rounded-lg py-3 flex items-center justify-center gap-2 text-sm font-medium transition-colors">
+            <button className="w-full border border-dashed border-white/50 hover:border-[var(--accent-rose-30)] hover:text-[var(--accent-rose-400)] text-[var(--dl-muted)] rounded-lg py-3 flex items-center justify-center gap-2 text-sm font-medium transition-colors">
               <Plus className="w-4 h-4" /> Add Walk-in
             </button>
           </div>
@@ -93,21 +92,21 @@ function HomeTab() {
                 <div key={i} className="flex-1 rounded-t" style={{ height: `${h}%`, background: `rgba(245,158,11,${0.2 + h / 200})` }} />
               ))}
             </div>
-            <div className="flex justify-between text-[10px] text-[#666]">
+            <div className="flex justify-between text-[10px] text-[var(--dl-muted)]">
               {["M", "T", "W", "T", "F", "S", "S"].map((d, i) => <span key={i}>{d}</span>)}
             </div>
             <div className="grid grid-cols-3 gap-3 pt-2">
-              <div className="p-3 rounded-xl bg-[var(--canvas-surface-raised)]">
-                <p className="text-xs text-[#888]">Cuts / Day</p>
-                <p className="text-lg font-bold text-white">32</p>
+              <div className="p-3 rounded-xl bg-white/60">
+                <p className="text-xs text-[var(--dl-muted)]">Cuts / Day</p>
+                <p className="text-lg font-bold text-[var(--dl-ink)]">32</p>
               </div>
-              <div className="p-3 rounded-xl bg-[var(--canvas-surface-raised)]">
-                <p className="text-xs text-[#888]">Rebook Rate</p>
-                <p className="text-lg font-bold text-white">71%</p>
+              <div className="p-3 rounded-xl bg-white/60">
+                <p className="text-xs text-[var(--dl-muted)]">Rebook Rate</p>
+                <p className="text-lg font-bold text-[var(--dl-ink)]">71%</p>
               </div>
-              <div className="p-3 rounded-xl bg-[var(--canvas-surface-raised)]">
-                <p className="text-xs text-[#888]">Avg Ticket</p>
-                <p className="text-lg font-bold text-white">$42</p>
+              <div className="p-3 rounded-xl bg-white/60">
+                <p className="text-xs text-[var(--dl-muted)]">Avg Ticket</p>
+                <p className="text-lg font-bold text-[var(--dl-ink)]">$42</p>
               </div>
             </div>
           </div>
@@ -119,14 +118,14 @@ function HomeTab() {
 
 function ChairRow({ time, name, client, service, barber, price, status }: { time: string; name?: string; client?: string; service: string; barber: string; price: string; status: "in-progress" | "upcoming" }) {
   return (
-    <div className="flex items-center gap-4 p-3 rounded-xl bg-[var(--canvas-surface-raised)] hover:bg-[#231a09] transition-colors">
-      <div className="w-16 text-xs font-medium text-[#888]">{time}</div>
+    <div className="flex items-center gap-4 p-3 rounded-xl bg-white/60 hover:bg-[#231a09] transition-colors">
+      <div className="w-16 text-xs font-medium text-[var(--dl-muted)]">{time}</div>
       <div className="flex-1 min-w-0">
         <div className="flex items-center gap-2">
-          <span className="text-sm font-medium text-white truncate">{name ?? <span className="italic text-[#888]">{client}</span>}</span>
+          <span className="text-sm font-medium text-[var(--dl-ink)] truncate">{name ?? <span className="italic text-[var(--dl-muted)]">{client}</span>}</span>
           {status === "in-progress" && <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />}
         </div>
-        <p className="text-xs text-[#888] truncate">{service} • {barber}</p>
+        <p className="text-xs text-[var(--dl-muted)] truncate">{service} • {barber}</p>
       </div>
       <span className="text-sm font-semibold text-[var(--accent-rose-400)]">{price}</span>
     </div>
@@ -135,11 +134,11 @@ function ChairRow({ time, name, client, service, barber, price, status }: { time
 
 function WalkInCard({ name, wait, chair, number }: { name: string; wait: string; chair: string; number: number }) {
   return (
-    <div className="flex items-center gap-4 p-3 rounded-xl bg-[var(--canvas-surface-raised)]">
-      <div className="w-8 h-8 rounded-full bg-[var(--accent-rose-500)] flex items-center justify-center text-xs font-bold text-white flex-shrink-0">{number}</div>
+    <div className="flex items-center gap-4 p-3 rounded-xl bg-white/60">
+      <div className="w-8 h-8 rounded-full bg-[var(--accent-rose-500)] flex items-center justify-center text-xs font-bold text-[var(--dl-ink)] flex-shrink-0">{number}</div>
       <div className="flex-1">
-        <p className="text-sm font-medium text-white">{name}</p>
-        <p className="text-xs text-[#888]">{chair}</p>
+        <p className="text-sm font-medium text-[var(--dl-ink)]">{name}</p>
+        <p className="text-xs text-[var(--dl-muted)]">{chair}</p>
       </div>
       <span className="text-xs text-[var(--accent-rose-400)] font-medium">{wait}</span>
     </div>
@@ -152,27 +151,27 @@ function ScheduleTab() {
     <div className="p-6 lg:p-8 max-w-[1600px] mx-auto space-y-6">
       <div className="flex items-center justify-between">
         <div>
-          <h2 className="text-2xl font-bold text-white">Chair Schedule</h2>
-          <p className="text-[#888]">Manage all 4 chairs and barbers</p>
+          <h2 className="text-2xl font-bold text-[var(--dl-ink)]">Chair Schedule</h2>
+          <p className="text-[var(--dl-muted)]">Manage all 4 chairs and barbers</p>
         </div>
-        <button className="px-4 py-2 bg-[var(--accent-rose-500)] text-white font-bold rounded-lg text-sm hover:bg-[var(--accent-rose-600)] transition-colors">
+        <button className="px-4 py-2 bg-[var(--accent-rose-500)] text-[var(--dl-ink)] font-bold rounded-lg text-sm hover:bg-[var(--accent-rose-600)] transition-colors">
           + New Appointment
         </button>
       </div>
       <div className="grid grid-cols-1 lg:grid-cols-4 gap-4">
         {["Marcus (Chair 1)", "Andre (Chair 2)", "Darius (Chair 3)", "Vacant (Chair 4)"].map((barber, i) => (
-          <div key={barber} className="bg-[var(--canvas-surface)] border border-[var(--canvas-border)] rounded-2xl p-4">
+          <div key={barber} className="bg-white/40 border border-white/50 rounded-2xl p-4">
             <div className="flex items-center gap-2 mb-4">
-              <div className="w-8 h-8 rounded-full bg-[var(--accent-rose-500)] flex items-center justify-center text-xs font-bold text-white">{barber.slice(0, 2)}</div>
-              <p className="text-sm font-semibold text-white">{barber}</p>
+              <div className="w-8 h-8 rounded-full bg-[var(--accent-rose-500)] flex items-center justify-center text-xs font-bold text-[var(--dl-ink)]">{barber.slice(0, 2)}</div>
+              <p className="text-sm font-semibold text-[var(--dl-ink)]">{barber}</p>
             </div>
-            <div className="space-y-2 text-[#888] text-xs">
+            <div className="space-y-2 text-[var(--dl-muted)] text-xs">
               {i === 3 ? <p className="italic text-[#555]">Chair available</p> : <p>{3 + i} appointments today</p>}
             </div>
           </div>
         ))}
       </div>
-      <div className="bg-[var(--canvas-surface)] border border-[var(--canvas-border)] rounded-2xl p-6 min-h-[400px] flex items-center justify-center text-[#444]">
+      <div className="bg-white/40 border border-white/50 rounded-2xl p-6 min-h-[400px] flex items-center justify-center text-[var(--dl-muted)]">
         <div className="text-center">
           <Calendar className="w-12 h-12 mx-auto mb-4 opacity-20" />
           <p className="text-sm">Calendar Integration</p>
@@ -194,21 +193,21 @@ function CutLibraryTab() {
 
   return (
     <div className="flex h-full bg-[var(--canvas-base)]">
-      <div className="w-[300px] border-r border-[var(--canvas-border)] bg-[var(--canvas-surface)] flex flex-col flex-shrink-0">
-        <div className="p-5 border-b border-[var(--canvas-border)]">
+      <div className="w-[300px] border-r border-white/50 bg-white/40 flex flex-col flex-shrink-0">
+        <div className="p-5 border-b border-white/50">
           <div className="relative">
-            <Search className="w-4 h-4 text-[#666] absolute left-3 top-1/2 -translate-y-1/2" />
-            <input className="w-full bg-[var(--canvas-surface-raised)] border border-[var(--canvas-border)] rounded-lg py-2 pl-10 pr-4 text-sm text-white focus:outline-none focus:border-[var(--accent-rose-500)]" placeholder="Search clients..." value={search} onChange={(e) => setSearch(e.target.value)} />
+            <Search className="w-4 h-4 text-[var(--dl-muted)] absolute left-3 top-1/2 -translate-y-1/2" />
+            <input className="w-full bg-white/60 border border-white/50 rounded-lg py-2 pl-10 pr-4 text-sm text-[var(--dl-ink)] focus:outline-none focus:border-[var(--accent-rose-500)]" placeholder="Search clients..." value={search} onChange={(e) => setSearch(e.target.value)} />
           </div>
         </div>
         <div className="flex-1 overflow-y-auto p-2 space-y-1">
           {clients.map((c) => (
-            <div key={c.id} className="p-3 rounded-lg hover:bg-[var(--canvas-surface-raised)] cursor-pointer group transition-colors">
+            <div key={c.id} className="p-3 rounded-lg hover:bg-white/60 cursor-pointer group transition-colors">
               <div className="flex items-center gap-3">
-                <div className={cn("w-10 h-10 rounded-full flex items-center justify-center font-bold text-xs text-white", c.avatarColor)}>{c.initials}</div>
+                <div className={cn("w-10 h-10 rounded-full flex items-center justify-center font-bold text-xs text-[var(--dl-ink)]", c.avatarColor)}>{c.initials}</div>
                 <div className="flex-1 min-w-0">
-                  <h4 className="text-sm font-medium text-white truncate">{c.name}</h4>
-                  <p className="text-[11px] text-[#666]">{c.style} • {c.lastCut}</p>
+                  <h4 className="text-sm font-medium text-[var(--dl-ink)] truncate">{c.name}</h4>
+                  <p className="text-[11px] text-[var(--dl-muted)]">{c.style} • {c.lastCut}</p>
                 </div>
                 <ChevronRight className="w-4 h-4 text-[#333] group-hover:text-[var(--accent-rose-400)] transition-colors" />
               </div>
@@ -220,48 +219,48 @@ function CutLibraryTab() {
       <div className="flex-1 overflow-y-auto p-8">
         <div className="flex items-start justify-between mb-8">
           <div className="flex items-center gap-5">
-            <div className="w-20 h-20 rounded-2xl bg-gradient-to-tr from-[var(--accent-rose-600)] to-[var(--accent-rose-400)] flex items-center justify-center text-xl font-bold text-white">DW</div>
+            <div className="w-20 h-20 rounded-2xl bg-gradient-to-tr from-[var(--accent-rose-600)] to-[var(--accent-rose-400)] flex items-center justify-center text-xl font-bold text-[var(--dl-ink)]">DW</div>
             <div>
-              <h2 className="text-2xl font-bold text-white mb-1">DeShawn Williams</h2>
-              <p className="text-[#888] text-sm flex items-center gap-2"><Clock className="w-4 h-4" /> Last cut: 2 weeks ago</p>
+              <h2 className="text-2xl font-bold text-[var(--dl-ink)] mb-1">DeShawn Williams</h2>
+              <p className="text-[var(--dl-muted)] text-sm flex items-center gap-2"><Clock className="w-4 h-4" /> Last cut: 2 weeks ago</p>
             </div>
           </div>
-          <button className="px-5 py-2.5 bg-[var(--accent-rose-500)] hover:bg-[var(--accent-rose-600)] text-white font-bold rounded-lg transition-colors">Book</button>
+          <button className="px-5 py-2.5 bg-[var(--accent-rose-500)] hover:bg-[var(--accent-rose-600)] text-[var(--dl-ink)] font-bold rounded-lg transition-colors">Book</button>
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
-          <div className="bg-[var(--canvas-surface)] border border-[var(--canvas-border)] rounded-2xl p-6">
+          <div className="bg-white/40 border border-white/50 rounded-2xl p-6">
             <div className="flex items-center gap-2 mb-5">
               <div className="p-2 bg-[var(--accent-rose-10)] rounded-lg"><Scissors className="w-4 h-4 text-[var(--accent-rose-400)]" /></div>
-              <h3 className="font-bold text-white">The Usual</h3>
+              <h3 className="font-bold text-[var(--dl-ink)]">The Usual</h3>
             </div>
             <div className="space-y-3">
               {[["Style", "High Fade"], ["Guard", "#1.5 on sides"], ["Top Length", "2.5\" on top"], ["Lineup", "Sharp, straight across"], ["Beard", "Light trim only"]].map(([l, v]) => (
-                <div key={l} className="flex justify-between border-b border-[var(--canvas-border)] pb-2 last:border-0">
-                  <span className="text-xs text-[#666]">{l}</span>
-                  <span className="text-sm font-medium text-white">{v}</span>
+                <div key={l} className="flex justify-between border-b border-white/50 pb-2 last:border-0">
+                  <span className="text-xs text-[var(--dl-muted)]">{l}</span>
+                  <span className="text-sm font-medium text-[var(--dl-ink)]">{v}</span>
                 </div>
               ))}
             </div>
           </div>
-          <div className="bg-[var(--canvas-surface)] border border-[var(--canvas-border)] rounded-2xl p-6">
+          <div className="bg-white/40 border border-white/50 rounded-2xl p-6">
             <div className="flex items-center gap-2 mb-5">
               <div className="p-2 bg-purple-500/10 rounded-lg"><Info className="w-4 h-4 text-purple-400" /></div>
-              <h3 className="font-bold text-white">Barber Notes</h3>
+              <h3 className="font-bold text-[var(--dl-ink)]">Barber Notes</h3>
             </div>
             <div className="space-y-3">
               {[["Scalp", "Sensitive near right ear"], ["Texture", "Coarse / Dense"], ["Growth Pattern", "Slight cowlick at crown"], ["Preference", "Always wants edged up"], ["Product", "Likes light matte paste"]].map(([l, v]) => (
-                <div key={l} className="flex justify-between border-b border-[var(--canvas-border)] pb-2 last:border-0">
-                  <span className="text-xs text-[#666]">{l}</span>
-                  <span className="text-sm font-medium text-white">{v}</span>
+                <div key={l} className="flex justify-between border-b border-white/50 pb-2 last:border-0">
+                  <span className="text-xs text-[var(--dl-muted)]">{l}</span>
+                  <span className="text-sm font-medium text-[var(--dl-ink)]">{v}</span>
                 </div>
               ))}
             </div>
           </div>
         </div>
 
-        <div className="bg-[var(--canvas-surface)] border border-[var(--canvas-border)] rounded-2xl p-6">
-          <h3 className="font-bold text-white flex items-center gap-2 mb-5">
+        <div className="bg-white/40 border border-white/50 rounded-2xl p-6">
+          <h3 className="font-bold text-[var(--dl-ink)] flex items-center gap-2 mb-5">
             <History className="w-5 h-5 text-[var(--accent-rose-400)]" /> Cut History
           </h3>
           <div className="space-y-4">
@@ -270,10 +269,10 @@ function CutLibraryTab() {
               { date: "April 25, 2026", barber: "Marcus", service: "High Fade", price: "$40" },
               { date: "April 11, 2026", barber: "Darius", service: "High Fade + Edge Up", price: "$50" },
             ].map((entry) => (
-              <div key={entry.date} className="flex items-center justify-between p-3 rounded-xl bg-[var(--canvas-surface-raised)]">
+              <div key={entry.date} className="flex items-center justify-between p-3 rounded-xl bg-white/60">
                 <div>
-                  <p className="text-sm font-medium text-white">{entry.service}</p>
-                  <p className="text-xs text-[#888]">{entry.date} • {entry.barber}</p>
+                  <p className="text-sm font-medium text-[var(--dl-ink)]">{entry.service}</p>
+                  <p className="text-xs text-[var(--dl-muted)]">{entry.date} • {entry.barber}</p>
                 </div>
                 <span className="text-sm font-semibold text-[var(--accent-rose-400)]">{entry.price}</span>
               </div>
@@ -291,10 +290,10 @@ function MoneyTab() {
     <div className="p-6 lg:p-8 max-w-[1600px] mx-auto space-y-6">
       <div className="flex items-center justify-between">
         <div>
-          <h2 className="text-2xl font-bold text-white">Barber Revenue</h2>
-          <p className="text-[#888]">Track chairs, commissions, and performance</p>
+          <h2 className="text-2xl font-bold text-[var(--dl-ink)]">Barber Revenue</h2>
+          <p className="text-[var(--dl-muted)]">Track chairs, commissions, and performance</p>
         </div>
-        <button className="px-4 py-2 bg-[var(--accent-rose-500)] text-white font-bold rounded-lg text-sm hover:bg-[var(--accent-rose-600)] transition-colors">
+        <button className="px-4 py-2 bg-[var(--accent-rose-500)] text-[var(--dl-ink)] font-bold rounded-lg text-sm hover:bg-[var(--accent-rose-600)] transition-colors">
           + Add Barber
         </button>
       </div>
@@ -312,31 +311,31 @@ function MoneyTab() {
           { name: "Andre Johnson", role: "Senior Barber", chair: "Chair 2", revenue: "$1,240", cuts: "31", rating: "4.9" },
           { name: "Darius King", role: "Barber", chair: "Chair 3", revenue: "$780", cuts: "21", rating: "4.8" },
         ].map((barber) => (
-          <div key={barber.name} className="rounded-2xl border border-[var(--canvas-border)] bg-[var(--canvas-surface)] p-6">
+          <div key={barber.name} className="rounded-2xl border border-white/50 bg-white/40 p-6">
             <div className="flex items-start justify-between mb-4">
               <div className="flex items-center gap-4">
-                <div className="w-12 h-12 rounded-full bg-gradient-to-tr from-[var(--accent-rose-600)] to-[var(--accent-rose-400)] flex items-center justify-center text-sm font-bold text-white">
+                <div className="w-12 h-12 rounded-full bg-gradient-to-tr from-[var(--accent-rose-600)] to-[var(--accent-rose-400)] flex items-center justify-center text-sm font-bold text-[var(--dl-ink)]">
                   {barber.name.split(" ").map((n) => n[0]).join("")}
                 </div>
                 <div>
-                  <h3 className="text-base font-bold text-white">{barber.name}</h3>
-                  <p className="text-xs text-[#888]">{barber.role} • {barber.chair}</p>
+                  <h3 className="text-base font-bold text-[var(--dl-ink)]">{barber.name}</h3>
+                  <p className="text-xs text-[var(--dl-muted)]">{barber.role} • {barber.chair}</p>
                 </div>
               </div>
               <div className="w-2 h-2 rounded-full bg-emerald-500" />
             </div>
             <div className="grid grid-cols-3 gap-4">
-              <div className="p-3 rounded-xl bg-[var(--canvas-surface-raised)]">
-                <p className="text-xs text-[#888]">Revenue</p>
-                <p className="text-lg font-bold text-white">{barber.revenue}</p>
+              <div className="p-3 rounded-xl bg-white/60">
+                <p className="text-xs text-[var(--dl-muted)]">Revenue</p>
+                <p className="text-lg font-bold text-[var(--dl-ink)]">{barber.revenue}</p>
               </div>
-              <div className="p-3 rounded-xl bg-[var(--canvas-surface-raised)]">
-                <p className="text-xs text-[#888]">Cuts</p>
-                <p className="text-lg font-bold text-white">{barber.cuts}</p>
+              <div className="p-3 rounded-xl bg-white/60">
+                <p className="text-xs text-[var(--dl-muted)]">Cuts</p>
+                <p className="text-lg font-bold text-[var(--dl-ink)]">{barber.cuts}</p>
               </div>
-              <div className="p-3 rounded-xl bg-[var(--canvas-surface-raised)]">
-                <p className="text-xs text-[#888]">Rating</p>
-                <p className="text-lg font-bold text-white">{barber.rating}★</p>
+              <div className="p-3 rounded-xl bg-white/60">
+                <p className="text-xs text-[var(--dl-muted)]">Rating</p>
+                <p className="text-lg font-bold text-[var(--dl-ink)]">{barber.rating}★</p>
               </div>
             </div>
           </div>
@@ -361,16 +360,16 @@ function MoreTab() {
   return (
     <div className="p-6 lg:p-8 max-w-[1600px] mx-auto space-y-6">
       <div>
-        <h2 className="text-2xl font-bold text-white">More</h2>
-        <p className="text-[#888]">Everything else you need</p>
+        <h2 className="text-2xl font-bold text-[var(--dl-ink)]">More</h2>
+        <p className="text-[var(--dl-muted)]">Everything else you need</p>
       </div>
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
         {items.map((item) => (
-          <button key={item.label} className="flex items-center gap-4 p-5 rounded-2xl border border-[var(--canvas-border)] bg-[var(--canvas-surface)] hover:bg-[var(--canvas-surface-raised)] hover:border-[var(--accent-rose-30)] transition-colors text-left">
+          <button key={item.label} className="flex items-center gap-4 p-5 rounded-2xl border border-white/50 bg-white/40 hover:bg-white/60 hover:border-[var(--accent-rose-30)] transition-colors text-left">
             <div className="p-3 rounded-xl bg-[var(--accent-rose-10)] text-[var(--accent-rose-400)]">{item.icon}</div>
             <div>
-              <p className="text-sm font-semibold text-white">{item.label}</p>
-              <p className="text-xs text-[#888]">{item.desc}</p>
+              <p className="text-sm font-semibold text-[var(--dl-ink)]">{item.label}</p>
+              <p className="text-xs text-[var(--dl-muted)]">{item.desc}</p>
             </div>
             <ChevronRight className="w-4 h-4 text-[#333] ml-auto" />
           </button>

@@ -1,7 +1,7 @@
 import type { ElementType } from 'react';
 import {
   Camera, Calendar, Share2, Zap, Users, TrendingUp,
-  Scissors, ChefHat, Home, Sparkles, Mic, Clapperboard,
+  Scissors, ChefHat, Home, Sparkles, Mic, Clapperboard, Brush, Star,
 } from 'lucide-react';
 
 export const HERO_IMAGES = Array.from({ length: 10 }, (_, i) => `/images/neo_${i + 1}.png`);
@@ -38,7 +38,9 @@ export const INDUSTRIES: Industry[] = [
   { label: 'Barber / Stylist',Icon: Scissors, color: '#3B82F6', features: ['Cut & Color Library', 'Booksy + IG Lead Sync', 'Chair-Side Payments', 'Staff & Chairs Mgmt', 'Social Scheduler'], route: '/barber' },
   { label: 'Popup Chef',      Icon: ChefHat,  color: '#F97316', features: ['Menu Drop Engine', 'Event Lead Scraper', 'Ticket Management', 'Ingredient Costing', 'Guest Management'], route: '/chef' },
   { label: 'Realtor',         Icon: Home,     color: '#6366F1', features: ['Neighborhood Intel', 'FSBO & Expired Leads', 'Listing Showcase', 'Showing Scheduler', 'Transaction Tracker'], route: '/realtor' },
+  { label: 'Hairstylist',     Icon: Brush,    color: '#EC4899', features: ['Style Library & Lookbook', 'Appointment Scheduling', 'Chair-Side Payments', 'Product Recommendations', 'Client Retention Tracker'], route: '/hairstylist' },
   { label: 'Business',        Icon: TrendingUp, color: '#818CF8', features: ['Trinity Content Engine — 12 campaigns/mo', 'AI Production Workflow — polished deliverables fast', 'Audience Intelligence — lead and customer signals', 'Monetization Layer — offers, retainers, and subscriptions', 'Launch Hub — campaigns, events, and partnerships'], route: '/business' },
+  { label: 'Creators',        Icon: Star,     color: '#A78BFA', features: ['Trinity Content Engine — 12 campaigns/mo', 'AI Production Workflow — polished deliverables fast', 'Audience Intelligence — lead and customer signals', 'Monetization Layer — offers, retainers, and subscriptions', 'Launch Hub — campaigns, events, and partnerships'], route: '/creators' },
 ];
 
 export const STATS = [

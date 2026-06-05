@@ -11,10 +11,10 @@ import {
   CreditCard, Sparkles, Settings
 } from "lucide-react";
 import { cn } from "@/lib/utils";
-import { GlassShell, type TabKey } from "../shared/GlassShell";
+import { LightDashboardShell, type TabDef } from "../shared/LightDashboardShell";
 import { KpiTile } from "../shared/KpiTile";
 import { CollapsibleCard } from "../shared/CollapsibleCard";
-import "../shared/glass-tokens.css";
+import "../shared/dashboard-light.css";
 import "./photography-tokens.css";
 
 /* ───────────────────────────────────────────────────────────
@@ -22,33 +22,54 @@ import "./photography-tokens.css";
    ─────────────────────────────────────────────────────────── */
 
 export function DashboardPhotography() {
-  const [activeTab, setActiveTab] = useState<TabKey>("home");
+  const [activeTab, setActiveTab] = useState("home");
+
+  const tabs: TabDef[] = [
+    { id: "home", label: "Dashboard", icon: <Camera className="w-5 h-5" /> },
+    { id: "calendar", label: "Calendar", icon: <Calendar className="w-5 h-5" /> },
+    { id: "gallery", label: "Gallery & AI", icon: <ImageIcon className="w-5 h-5" /> },
+    { id: "leads", label: "Leads & CRM", icon: <Users className="w-5 h-5" /> },
+    { id: "social", label: "Social", icon: <Share2 className="w-5 h-5" /> },
+    { id: "model", label: "Model Dev", icon: <Film className="w-5 h-5" /> },
+    { id: "content", label: "Content", icon: <Sparkles className="w-5 h-5" /> },
+    { id: "reviews", label: "Reviews", icon: <Star className="w-5 h-5" /> },
+    { id: "settings", label: "Settings", icon: <Settings className="w-5 h-5" /> },
+  ];
 
   return (
-    <GlassShell
+    <LightDashboardShell
+      tabs={tabs}
       activeTab={activeTab}
       onTabChange={setActiveTab}
       greeting="Good morning, Drake"
       dateLabel="May 23, 2026"
+      accentColor="#f59e0b"
+      userName="Drake Reynolds"
+      userInitials="DR"
+      businessName="Photography Studio"
+      avatarGradient={["#f59e0b", "#fbbf24"]}
       quickStats={<>
         <StatPill label="3 Shoots Today" />
         <StatPill label="12 Galleries Pending" />
         <StatPill label="$8,400 MTD" />
       </>}
-      className="photography-canvas"
     >
       {activeTab === "home" && <HomeTab />}
       {activeTab === "calendar" && <BookingsTab />}
-      {activeTab === "clients" && <GalleryTab />}
-      {activeTab === "money" && <LeadsTab />}
-      {activeTab === "more" && <MoreTab />}
-    </GlassShell>
+      {activeTab === "gallery" && <GalleryTab />}
+      {activeTab === "leads" && <LeadsTab />}
+      {activeTab === "social" && <SocialTab />}
+      {activeTab === "model" && <ModelTab />}
+      {activeTab === "content" && <ContentTab />}
+      {activeTab === "reviews" && <ReviewsTab />}
+      {activeTab === "settings" && <SettingsTab />}
+    </LightDashboardShell>
   );
 }
 
 function StatPill({ label }: { label: string }) {
   return (
-    <div className="px-3 py-1.5 rounded-full bg-[var(--accent-rose-10)] border border-[var(--accent-rose-20)] text-[var(--accent-rose-400)] text-xs font-medium whitespace-nowrap">
+    <div className="px-3 py-1.5 rounded-full bg-amber-500/10 border border-amber-500/20 text-amber-600 text-xs font-medium whitespace-nowrap">
       {label}
     </div>
   );
@@ -81,12 +102,12 @@ function HomeTab() {
               { day: "Wednesday", count: "3 sessions", revenue: "$4,200" },
               { day: "Friday", count: "3 sessions", revenue: "$3,500" },
             ].map((row) => (
-              <div key={row.day} className="flex items-center justify-between p-3 rounded-xl bg-[var(--canvas-surface-raised)]">
+              <div key={row.day} className="flex items-center justify-between p-3 rounded-xl bg-white/60">
                 <div>
-                  <p className="text-sm font-medium text-white">{row.day}</p>
-                  <p className="text-xs text-[#888]">{row.count}</p>
+                  <p className="text-sm font-medium text-[var(--dl-ink)]">{row.day}</p>
+                  <p className="text-xs text-[var(--dl-muted)]">{row.count}</p>
                 </div>
-                <span className="text-sm font-semibold text-[var(--accent-rose-400)]">{row.revenue}</span>
+                <span className="text-sm font-semibold text-amber-500">{row.revenue}</span>
               </div>
             ))}
           </div>
@@ -107,17 +128,17 @@ function HomeTab() {
                 <div key={i} className="flex-1 rounded-t transition-all" style={{ height: `${h}%`, background: `rgba(245,158,11,${0.2 + h / 200})` }} />
               ))}
             </div>
-            <div className="flex justify-between text-[10px] text-[#666]">
+            <div className="flex justify-between text-[10px] text-[var(--dl-muted)]">
               {["M", "T", "W", "T", "F", "S", "S"].map((d, i) => <span key={i}>{d}</span>)}
             </div>
             <div className="grid grid-cols-2 gap-3 pt-2">
-              <div className="p-3 rounded-xl bg-[var(--canvas-surface-raised)]">
-                <p className="text-xs text-[#888]">Rebook Rate</p>
-                <p className="text-lg font-bold text-white">64%</p>
+              <div className="p-3 rounded-xl bg-white/60">
+                <p className="text-xs text-[var(--dl-muted)]">Rebook Rate</p>
+                <p className="text-lg font-bold text-[var(--dl-ink)]">64%</p>
               </div>
-              <div className="p-3 rounded-xl bg-[var(--canvas-surface-raised)]">
-                <p className="text-xs text-[#888]">Avg Ticket</p>
-                <p className="text-lg font-bold text-white">$1,250</p>
+              <div className="p-3 rounded-xl bg-white/60">
+                <p className="text-xs text-[var(--dl-muted)]">Avg Ticket</p>
+                <p className="text-lg font-bold text-[var(--dl-ink)]">$1,250</p>
               </div>
             </div>
           </div>
@@ -129,31 +150,31 @@ function HomeTab() {
 
 function ShootRow({ time, client, type, location, price, status }: { time: string; client: string; type: string; location: string; price: string; status: "in-progress" | "upcoming" | "done" }) {
   return (
-    <div className="flex items-center gap-4 p-3 rounded-xl bg-[var(--canvas-surface-raised)] hover:bg-[#222] transition-colors">
-      <div className="w-16 text-xs font-medium text-[#888]">{time}</div>
+    <div className="flex items-center gap-4 p-3 rounded-xl bg-white/60 hover:bg-white/80 transition-colors">
+      <div className="w-16 text-xs font-medium text-[var(--dl-muted)]">{time}</div>
       <div className="flex-1 min-w-0">
         <div className="flex items-center gap-2">
-          <span className="text-sm font-medium text-white truncate">{client}</span>
+          <span className="text-sm font-medium text-[var(--dl-ink)] truncate">{client}</span>
           {status === "in-progress" && <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />}
         </div>
-        <p className="text-xs text-[#888] truncate">{type} • {location}</p>
+        <p className="text-xs text-[var(--dl-muted)] truncate">{type} • {location}</p>
       </div>
-      <span className="text-sm font-semibold text-[var(--accent-rose-400)]">{price}</span>
+      <span className="text-sm font-semibold text-amber-500">{price}</span>
     </div>
   );
 }
 
 function GalleryQueueRow({ client, date, status, due, urgent }: { client: string; date: string; status: string; due: string; urgent?: boolean }) {
-  const statusColor = status === "culling" ? "text-blue-400" : status === "editing" ? "text-[var(--accent-rose-400)]" : "text-emerald-400";
+  const statusColor = status === "culling" ? "text-blue-400" : status === "editing" ? "text-amber-500" : "text-emerald-400";
   return (
-    <div className="flex items-center justify-between p-3 rounded-xl bg-[var(--canvas-surface-raised)]">
+    <div className="flex items-center justify-between p-3 rounded-xl bg-white/60">
       <div>
-        <p className="text-sm font-medium text-white">{client}</p>
-        <p className="text-xs text-[#888]">{date}</p>
+        <p className="text-sm font-medium text-[var(--dl-ink)]">{client}</p>
+        <p className="text-xs text-[var(--dl-muted)]">{date}</p>
       </div>
       <div className="text-right">
         <p className={cn("text-xs font-medium capitalize", statusColor)}>{status}</p>
-        <p className={cn("text-[10px]", urgent ? "text-red-400 font-bold" : "text-[#666]")}>Due {due}</p>
+        <p className={cn("text-[10px]", urgent ? "text-red-400 font-bold" : "text-[var(--dl-muted)]")}>Due {due}</p>
       </div>
     </div>
   );
@@ -165,44 +186,44 @@ function BookingsTab() {
     <div className="p-6 lg:p-8 max-w-[1600px] mx-auto space-y-6">
       <div className="flex items-center justify-between">
         <div>
-          <h2 className="text-2xl font-bold text-white">Shoot Calendar</h2>
-          <p className="text-[#888]">Manage sessions and client prep</p>
+          <h2 className="text-2xl font-bold text-[var(--dl-ink)]">Shoot Calendar</h2>
+          <p className="text-[var(--dl-muted)]">Manage sessions and client prep</p>
         </div>
-        <button className="px-4 py-2 bg-[var(--accent-rose-500)] text-white font-bold rounded-lg text-sm hover:bg-[var(--accent-rose-600)] transition-colors">
+        <button className="px-4 py-2 bg-amber-500 text-[var(--dl-ink)] font-bold rounded-lg text-sm hover:bg-amber-600 transition-colors">
           + New Booking
         </button>
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-        <div className="lg:col-span-2 bg-[var(--canvas-surface)] border border-[var(--canvas-border)] rounded-2xl p-6 min-h-[500px] flex items-center justify-center text-[#444]">
+        <div className="lg:col-span-2 bg-white/40 border border-white/50 rounded-2xl p-6 min-h-[500px] flex items-center justify-center text-[var(--dl-muted)]">
           <div className="text-center">
             <Calendar className="w-12 h-12 mx-auto mb-4 opacity-20" />
             <p className="text-sm">Calendar Integration</p>
           </div>
         </div>
         <div className="space-y-4">
-          <div className="rounded-2xl border border-[var(--canvas-border)] bg-[var(--canvas-surface)] p-5">
-            <h3 className="text-sm font-semibold text-white mb-4 flex items-center gap-2">
-              <Camera className="w-4 h-4 text-[var(--accent-rose-400)]" /> Next Session
+          <div className="rounded-2xl border border-white/50 bg-white/40 p-5">
+            <h3 className="text-sm font-semibold text-[var(--dl-ink)] mb-4 flex items-center gap-2">
+              <Camera className="w-4 h-4 text-amber-500" /> Next Session
             </h3>
             <div className="space-y-2">
-              <p className="text-base font-bold text-white">Emma & Ryan — Engagement</p>
-              <p className="text-sm text-[#888]">Today at 1:00 PM</p>
-              <p className="text-xs text-[#888] flex items-center gap-1"><MapPin className="w-3 h-3" /> Venice Beach</p>
-              <div className="mt-4 pt-4 border-t border-[var(--canvas-border)] space-y-2">
-                <p className="text-xs font-semibold text-[#888] uppercase tracking-wider">Prep Notes</p>
-                <p className="text-xs text-[#888]">Golden hour shoot. Client requested soft warm tones. Bring reflector + ND filter. Emma prefers candid over posed.</p>
+              <p className="text-base font-bold text-[var(--dl-ink)]">Emma & Ryan — Engagement</p>
+              <p className="text-sm text-[var(--dl-muted)]">Today at 1:00 PM</p>
+              <p className="text-xs text-[var(--dl-muted)] flex items-center gap-1"><MapPin className="w-3 h-3" /> Venice Beach</p>
+              <div className="mt-4 pt-4 border-t border-white/50 space-y-2">
+                <p className="text-xs font-semibold text-[var(--dl-muted)] uppercase tracking-wider">Prep Notes</p>
+                <p className="text-xs text-[var(--dl-muted)]">Golden hour shoot. Client requested soft warm tones. Bring reflector + ND filter. Emma prefers candid over posed.</p>
               </div>
             </div>
           </div>
-          <div className="rounded-2xl border border-[var(--canvas-border)] bg-[var(--canvas-surface)] p-5">
-            <h3 className="text-sm font-semibold text-white mb-3 flex items-center gap-2">
-              <FileText className="w-4 h-4 text-[var(--accent-rose-400)]" /> Contracts Pending
+          <div className="rounded-2xl border border-white/50 bg-white/40 p-5">
+            <h3 className="text-sm font-semibold text-[var(--dl-ink)] mb-3 flex items-center gap-2">
+              <FileText className="w-4 h-4 text-amber-500" /> Contracts Pending
             </h3>
             <div className="space-y-3">
               {["Aria Fashion — Campaign", "Lopez Quinceañera", "Blue Sky Realty"].map((name) => (
                 <div key={name} className="flex items-center justify-between">
-                  <span className="text-sm text-white">{name}</span>
+                  <span className="text-sm text-[var(--dl-ink)]">{name}</span>
                   <span className="text-xs text-amber-400 font-medium">Awaiting</span>
                 </div>
               ))}
@@ -231,8 +252,8 @@ function GalleryTab() {
     <div className="p-6 lg:p-8 max-w-[1600px] mx-auto space-y-6">
       <div className="flex items-center justify-between flex-wrap gap-3">
         <div>
-          <h2 className="text-2xl font-bold text-white">AI Gallery Studio</h2>
-          <p className="text-[#888]">Sort, cull, and deliver with NORI</p>
+          <h2 className="text-2xl font-bold text-[var(--dl-ink)]">AI Gallery Studio</h2>
+          <p className="text-[var(--dl-muted)]">Sort, cull, and deliver with NORI</p>
         </div>
         <div className="flex gap-2">
           {(["all", "culling", "editing", "delivered"] as const).map((f) => (
@@ -241,7 +262,7 @@ function GalleryTab() {
               onClick={() => setFilter(f)}
               className={cn(
                 "px-3 py-1.5 rounded-lg text-xs font-medium capitalize transition-colors",
-                filter === f ? "bg-[var(--accent-rose-10)] text-[var(--accent-rose-400)] border border-[var(--accent-rose-20)]" : "text-[#888] hover:text-white"
+                filter === f ? "bg-[var(--accent-rose-10)] text-amber-500 border border-[var(--accent-rose-20)]" : "text-[var(--dl-muted)] hover:text-[var(--dl-ink)]"
               )}
             >
               {f}
@@ -252,29 +273,29 @@ function GalleryTab() {
 
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
         {filtered.map((g) => (
-          <div key={g.id} className="rounded-2xl border border-[var(--canvas-border)] bg-[var(--canvas-surface)] overflow-hidden hover:border-[var(--accent-rose-30)] transition-colors cursor-pointer group">
+          <div key={g.id} className="rounded-2xl border border-white/50 bg-white/40 overflow-hidden hover:border-[var(--accent-rose-30)] transition-colors cursor-pointer group">
             <div className={cn("h-40 flex items-center justify-center", g.cover)}>
-              <Camera className="w-10 h-10 text-white/20 group-hover:text-white/40 transition-colors" />
+              <Camera className="w-10 h-10 text-[var(--dl-ink)]/20 group-hover:text-[var(--dl-ink)]/40 transition-colors" />
             </div>
             <div className="p-4">
               <div className="flex items-start justify-between mb-2">
                 <div>
-                  <p className="text-sm font-semibold text-white">{g.client}</p>
-                  <p className="text-xs text-[#888]">{g.date} • {g.photos} photos</p>
+                  <p className="text-sm font-semibold text-[var(--dl-ink)]">{g.client}</p>
+                  <p className="text-xs text-[var(--dl-muted)]">{g.date} • {g.photos} photos</p>
                 </div>
                 <StatusChip status={g.status} />
               </div>
               <div className="flex gap-2 mt-3">
-                <button className="flex-1 py-1.5 bg-[var(--canvas-surface-raised)] hover:bg-[#252525] rounded-lg text-xs text-white transition-colors flex items-center justify-center gap-1">
+                <button className="flex-1 py-1.5 bg-white/60 hover:bg-[#252525] rounded-lg text-xs text-[var(--dl-ink)] transition-colors flex items-center justify-center gap-1">
                   <Eye className="w-3 h-3" /> View
                 </button>
                 {g.status !== "delivered" && (
-                  <button className="flex-1 py-1.5 bg-[var(--accent-rose-10)] hover:bg-[var(--accent-rose-20)] rounded-lg text-xs text-[var(--accent-rose-400)] transition-colors flex items-center justify-center gap-1">
+                  <button className="flex-1 py-1.5 bg-[var(--accent-rose-10)] hover:bg-[var(--accent-rose-20)] rounded-lg text-xs text-amber-500 transition-colors flex items-center justify-center gap-1">
                     <Sparkles className="w-3 h-3" /> AI Sort
                   </button>
                 )}
                 {g.status === "delivered" && (
-                  <button className="flex-1 py-1.5 bg-[var(--canvas-surface-raised)] rounded-lg text-xs text-[#888] transition-colors flex items-center justify-center gap-1">
+                  <button className="flex-1 py-1.5 bg-white/60 rounded-lg text-xs text-[var(--dl-muted)] transition-colors flex items-center justify-center gap-1">
                     <Download className="w-3 h-3" /> Link
                   </button>
                 )}
@@ -290,11 +311,11 @@ function GalleryTab() {
 function StatusChip({ status }: { status: string }) {
   const config: Record<string, { label: string; cls: string }> = {
     culling: { label: "Culling", cls: "bg-blue-500/10 text-blue-400" },
-    editing: { label: "Editing", cls: "bg-[var(--accent-rose-10)] text-[var(--accent-rose-400)]" },
+    editing: { label: "Editing", cls: "bg-[var(--accent-rose-10)] text-amber-500" },
     review: { label: "Review", cls: "bg-purple-500/10 text-purple-400" },
     delivered: { label: "Delivered", cls: "bg-emerald-500/10 text-emerald-400" },
   };
-  const { label, cls } = config[status] ?? { label: status, cls: "text-[#888]" };
+  const { label, cls } = config[status] ?? { label: status, cls: "text-[var(--dl-muted)]" };
   return <span className={cn("px-2 py-0.5 rounded-full text-[10px] font-bold uppercase tracking-wider", cls)}>{label}</span>;
 }
 
@@ -311,12 +332,12 @@ function LeadsTab() {
     const interval = setInterval(() => {
       const now = new Date();
       const t = `${now.getHours()}:${String(now.getMinutes()).padStart(2, "0")}`;
-      setLogLines((prev) => [...prev, { time: t, msg: phrases[i % phrases.length], color: "text-[#888]" }]);
+      setLogLines((prev) => [...prev, { time: t, msg: phrases[i % phrases.length], color: "text-[var(--dl-muted)]" }]);
       i++;
       if (i > 7) {
         clearInterval(interval);
         const t2 = `${new Date().getHours()}:${String(new Date().getMinutes()).padStart(2, "0")}`;
-        setLogLines((prev) => [...prev, { time: t2, msg: "Success: Scraped 9 high-intent leads.", color: "text-emerald-400" }, { time: t2, msg: "Scan complete.", color: "text-[var(--accent-rose-400)] font-bold" }]);
+        setLogLines((prev) => [...prev, { time: t2, msg: "Success: Scraped 9 high-intent leads.", color: "text-emerald-400" }, { time: t2, msg: "Scan complete.", color: "text-amber-500 font-bold" }]);
         setScanState("done");
       }
     }, 1200);
@@ -324,24 +345,24 @@ function LeadsTab() {
 
   return (
     <div className="flex h-full bg-[var(--canvas-base)]">
-      <div className="w-[320px] border-r border-[var(--canvas-border)] bg-[var(--canvas-surface)] p-6 flex flex-col flex-shrink-0 space-y-6">
-        <h2 className="text-lg font-bold text-white flex items-center gap-2">
-          <Search className="w-5 h-5 text-[var(--accent-rose-400)]" /> Lead Scanner
+      <div className="w-[320px] border-r border-white/50 bg-white/40 p-6 flex flex-col flex-shrink-0 space-y-6">
+        <h2 className="text-lg font-bold text-[var(--dl-ink)] flex items-center gap-2">
+          <Search className="w-5 h-5 text-amber-500" /> Lead Scanner
         </h2>
         <div className="space-y-4">
           <div className="space-y-2">
-            <label className="text-xs text-[#888] font-medium uppercase tracking-wider">Target Keywords</label>
-            <input className="w-full bg-[var(--canvas-surface-raised)] border border-[var(--canvas-border)] rounded-lg px-4 py-2 text-sm text-white focus:outline-none focus:border-[var(--accent-rose-500)]" defaultValue="Wedding photographer, Event photography LA" />
+            <label className="text-xs text-[var(--dl-muted)] font-medium uppercase tracking-wider">Target Keywords</label>
+            <input className="w-full bg-white/60 border border-white/50 rounded-lg px-4 py-2 text-sm text-[var(--dl-ink)] focus:outline-none focus:border-[var(--accent-rose-500)]" defaultValue="Wedding photographer, Event photography LA" />
           </div>
           <div className="space-y-2">
-            <label className="text-xs text-[#888] font-medium uppercase tracking-wider">Location</label>
-            <input className="w-full bg-[var(--canvas-surface-raised)] border border-[var(--canvas-border)] rounded-lg px-4 py-2 text-sm text-white focus:outline-none focus:border-[var(--accent-rose-500)]" defaultValue="Los Angeles, CA" />
+            <label className="text-xs text-[var(--dl-muted)] font-medium uppercase tracking-wider">Location</label>
+            <input className="w-full bg-white/60 border border-white/50 rounded-lg px-4 py-2 text-sm text-[var(--dl-ink)] focus:outline-none focus:border-[var(--accent-rose-500)]" defaultValue="Los Angeles, CA" />
           </div>
           <button
             onClick={startScan}
             disabled={scanState === "running"}
             className={cn("w-full py-3 rounded-xl font-bold text-sm transition-all flex items-center justify-center gap-2",
-              scanState === "running" ? "bg-[var(--accent-rose-20)] text-[var(--accent-rose-400)] border border-[var(--accent-rose-30)]" : "bg-[var(--accent-rose-500)] text-white hover:bg-[var(--accent-rose-600)]"
+              scanState === "running" ? "bg-[var(--accent-rose-20)] text-amber-500 border border-[var(--accent-rose-30)]" : "bg-amber-500 text-[var(--dl-ink)] hover:bg-amber-600"
             )}
           >
             {scanState === "running" ? <><RefreshCw className="w-4 h-4 animate-spin" /> Crawling...</> : <><Zap className="w-4 h-4" /> Run Scan</>}
@@ -350,13 +371,13 @@ function LeadsTab() {
       </div>
 
       <div className="flex-1 flex flex-col overflow-hidden">
-        <div className="h-44 border-b border-[var(--canvas-border)] bg-[#070709] p-4 overflow-y-auto font-mono text-xs">
+        <div className="h-44 border-b border-white/50 bg-[#070709] p-4 overflow-y-auto font-mono text-xs">
           <div className="flex items-center gap-2 mb-2">
             <div className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
             <span className="text-emerald-500 font-bold">NORI LEAD ENGINE LIVE SESSION</span>
           </div>
           {logLines.map((line, i) => (
-            <div key={i} className="mb-1"><span className="text-[#444] mr-2">[{line.time}]</span><span className={line.color}>{line.msg}</span></div>
+            <div key={i} className="mb-1"><span className="text-[var(--dl-muted)] mr-2">[{line.time}]</span><span className={line.color}>{line.msg}</span></div>
           ))}
           {scanState === "idle" && <p className="text-[#333]">$ ready for instructions...</p>}
         </div>
@@ -365,24 +386,24 @@ function LeadsTab() {
             { title: "New Leads", count: scanState === "done" ? 9 : 0, color: "border-[var(--accent-rose-500)]", children: scanState !== "idle" && [{ name: "Vanessa & Chris", type: "Wedding Package", score: "94", time: "Inquiry 1h ago", hot: true }, { name: "Luxe Events Co.", type: "Corporate Events", score: "87", time: "Google Lead" }] },
             { title: "Contacted", count: 3, color: "border-purple-500", children: [{ name: "Sophie Nguyen", type: "Maternity Shoot", score: "78", time: "DM'd yesterday" }] },
             { title: "Booked", count: 7, color: "border-emerald-500", children: [] },
-            { title: "Completed", count: 48, color: "border-[var(--canvas-border)]", children: [] },
+            { title: "Completed", count: 48, color: "border-white/50", children: [] },
           ].map((col) => (
             <div key={col.title} className="min-w-[260px] flex flex-col">
-              <div className={cn("flex items-center justify-between p-3 rounded-t-xl border-t-2 bg-[var(--canvas-surface)]", col.color)}>
-                <span className="text-sm font-bold text-white">{col.title}</span>
-                <span className="text-xs bg-[var(--canvas-surface-raised)] text-white px-2 py-0.5 rounded-full">{col.count}</span>
+              <div className={cn("flex items-center justify-between p-3 rounded-t-xl border-t-2 bg-white/40", col.color)}>
+                <span className="text-sm font-bold text-[var(--dl-ink)]">{col.title}</span>
+                <span className="text-xs bg-white/60 text-[var(--dl-ink)] px-2 py-0.5 rounded-full">{col.count}</span>
               </div>
-              <div className="flex-1 bg-[var(--canvas-surface)] rounded-b-xl p-3 space-y-3">
+              <div className="flex-1 bg-white/40 rounded-b-xl p-3 space-y-3">
                 {Array.isArray(col.children) && col.children.map((lead: any) => (
-                  <div key={lead.name} className="bg-[var(--canvas-surface-raised)] border border-[var(--canvas-border)] rounded-xl p-3 hover:border-[var(--accent-rose-30)] transition-colors">
+                  <div key={lead.name} className="bg-white/60 border border-white/50 rounded-xl p-3 hover:border-[var(--accent-rose-30)] transition-colors">
                     <div className="flex items-center justify-between mb-1">
-                      <p className="text-sm font-medium text-white">{lead.name}</p>
-                      {lead.hot && <span className="text-[10px] font-bold text-[var(--accent-rose-400)] uppercase">Hot</span>}
+                      <p className="text-sm font-medium text-[var(--dl-ink)]">{lead.name}</p>
+                      {lead.hot && <span className="text-[10px] font-bold text-amber-500 uppercase">Hot</span>}
                     </div>
-                    <p className="text-xs text-[#888]">{lead.type}</p>
+                    <p className="text-xs text-[var(--dl-muted)]">{lead.type}</p>
                     <div className="flex justify-between mt-2">
-                      <span className="text-[10px] text-[#666]">{lead.time}</span>
-                      <span className="text-xs font-medium text-white">Score: {lead.score}</span>
+                      <span className="text-[10px] text-[var(--dl-muted)]">{lead.time}</span>
+                      <span className="text-xs font-medium text-[var(--dl-ink)]">Score: {lead.score}</span>
                     </div>
                   </div>
                 ))}
@@ -410,16 +431,16 @@ function MoreTab() {
   return (
     <div className="p-6 lg:p-8 max-w-[1600px] mx-auto space-y-6">
       <div>
-        <h2 className="text-2xl font-bold text-white">More</h2>
-        <p className="text-[#888]">Everything else you need</p>
+        <h2 className="text-2xl font-bold text-[var(--dl-ink)]">More</h2>
+        <p className="text-[var(--dl-muted)]">Everything else you need</p>
       </div>
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
         {items.map((item) => (
-          <button key={item.label} className="flex items-center gap-4 p-5 rounded-2xl border border-[var(--canvas-border)] bg-[var(--canvas-surface)] hover:bg-[var(--canvas-surface-raised)] hover:border-[var(--accent-rose-30)] transition-colors text-left">
-            <div className="p-3 rounded-xl bg-[var(--accent-rose-10)] text-[var(--accent-rose-400)]">{item.icon}</div>
+          <button key={item.label} className="flex items-center gap-4 p-5 rounded-2xl border border-white/50 bg-white/40 hover:bg-white/60 hover:border-[var(--accent-rose-30)] transition-colors text-left">
+            <div className="p-3 rounded-xl bg-[var(--accent-rose-10)] text-amber-500">{item.icon}</div>
             <div>
-              <p className="text-sm font-semibold text-white">{item.label}</p>
-              <p className="text-xs text-[#888]">{item.desc}</p>
+              <p className="text-sm font-semibold text-[var(--dl-ink)]">{item.label}</p>
+              <p className="text-xs text-[var(--dl-muted)]">{item.desc}</p>
             </div>
             <ChevronRight className="w-4 h-4 text-[#333] ml-auto" />
           </button>

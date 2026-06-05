@@ -3,12 +3,12 @@
 
 .barber-canvas {
   /* Canvas — warm brown undertone */
-  --canvas-base: #0f0c08;
-  --canvas-gradient: #151009;
-  --canvas-surface: #151009;
-  --canvas-surface-raised: #1c1508;
-  --canvas-border: #2a2010;
-  --canvas-border-hover: #3a3018;
+  --canvas-base: #f8fafc;
+  --canvas-gradient: #f8fafc;
+  --canvas-surface: rgba(255,255,255,0.45);
+  --canvas-surface-raised: rgba(255,255,255,0.6);
+  --canvas-border: rgba(255,255,255,0.5);
+  --canvas-border-hover: rgba(255,255,255,0.7);
 
   /* Accent — remap rose tokens to warm amber */
   --accent-rose: #f59e0b;

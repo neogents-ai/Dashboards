@@ -108,7 +108,7 @@ All dashboards: NORI animated badge in sidebar, Leads tab with real `POST /api/s
 6. "Add to CRM" button saves lead to in-memory store via `POST /api/leads/:industry`
 
 ## GitHub Integration (Pending)
-- Target: https://github.com/neogents-ai/neo-gents-website
+- Target: https://github.com/neogents-ai/Dashboards
 - Branch: dashboards-tab
 - Status: Repo returned 404 — needs access (make public or provide PAT token)
 

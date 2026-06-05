@@ -1,0 +1,266 @@
+/* ──────────────────────────────────────────────────────────
+   Unified Dashboard — White Canvas + Liquid Glass Cards
+   Matches neo-landing-v3-deepmind-glass aesthetic
+   ────────────────────────────────────────────────────────── */
+
+@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700&family=Inter:wght@300;400;500;600&display=swap');
+
+:root {
+  /* Pearlescent canvas (matches landing page) */
+  --ud-pearl-1: #f8fafc;
+  --ud-pearl-2: #e0e7ff;
+  --ud-pearl-3: #fce7f3;
+  --ud-pearl-4: #fef3c7;
+  --ud-ink: #0b1020;
+  --ud-muted: #4a5274;
+  --ud-line: #0b102014;
+  --ud-blue: #3b6bff;
+  --ud-gold: #c89c3f;
+  --ud-violet: #8a5cf6;
+
+  /* Glass card tokens */
+  --ud-glass-bg: linear-gradient(135deg, rgba(255,255,255,0.72) 0%, rgba(255,255,255,0.45) 100%);
+  --ud-glass-border: rgba(255,255,255,0.65);
+  --ud-glass-blur: 24px;
+  --ud-glass-saturate: 160%;
+  --ud-glass-radius: 20px;
+  --ud-glass-shadow:
+    0 1px 0 rgba(255,255,255,0.9) inset,
+    0 -1px 0 rgba(255,255,255,0.4) inset,
+    0 20px 50px -20px rgba(15,23,42,0.12),
+    0 8px 20px -10px rgba(59,107,255,0.08);
+
+  /* Dark glass (for overlays/modals) */
+  --ud-glass-dark-bg: linear-gradient(135deg, rgba(15,23,42,0.75) 0%, rgba(15,23,42,0.5) 100%);
+  --ud-glass-dark-border: rgba(255,255,255,0.12);
+
+  /* Typography */
+  --ud-font-display: 'Plus Jakarta Sans', 'Inter', sans-serif;
+  --ud-font-body: 'Inter', sans-serif;
+}
+
+/* ─── Canvas Background ─── */
+.ud-canvas {
+  font-family: var(--ud-font-body);
+  color: var(--ud-ink);
+  background:
+    radial-gradient(1200px 800px at 10% -10%, var(--ud-pearl-2) 0%, transparent 60%),
+    radial-gradient(1000px 700px at 100% 20%, var(--ud-pearl-3) 0%, transparent 60%),
+    radial-gradient(900px 600px at 50% 110%, var(--ud-pearl-4) 0%, transparent 60%),
+    var(--ud-pearl-1);
+  min-height: 100dvh;
+}
+
+/* ─── Liquid Glass Card ─── */
+.ud-glass {
+  position: relative;
+  background: var(--ud-glass-bg);
+  border: 1px solid var(--ud-glass-border);
+  border-radius: var(--ud-glass-radius);
+  backdrop-filter: blur(var(--ud-glass-blur)) saturate(var(--ud-glass-saturate));
+  -webkit-backdrop-filter: blur(var(--ud-glass-blur)) saturate(var(--ud-glass-saturate));
+  box-shadow: var(--ud-glass-shadow);
+  overflow: hidden;
+  transition: transform .3s cubic-bezier(.2,.7,.2,1), box-shadow .3s;
+}
+.ud-glass::after {
+  content: '';
+  position: absolute; inset: 0;
+  background: radial-gradient(380px 220px at 30% 15%, rgba(255,255,255,0.5), transparent 70%);
+  pointer-events: none;
+  opacity: 0.6;
+}
+.ud-glass:hover {
+  transform: translateY(-1px);
+  box-shadow:
+    0 1px 0 rgba(255,255,255,1) inset,
+    0 -1px 0 rgba(255,255,255,0.5) inset,
+    0 28px 70px -24px rgba(59,107,255,0.22),
+    0 12px 32px -12px rgba(138,92,246,0.15);
+}
+
+/* ─── Glass Strip (nav bars, pills) ─── */
+.ud-glass-strip {
+  display: inline-flex;
+  align-items: center;
+  gap: .5rem;
+  padding: .5rem 1rem;
+  background: linear-gradient(135deg, rgba(255,255,255,0.6) 0%, rgba(255,255,255,0.3) 100%);
+  border: 1px solid rgba(255,255,255,0.55);
+  border-radius: 9999px;
+  backdrop-filter: blur(16px) saturate(150%);
+  -webkit-backdrop-filter: blur(16px) saturate(150%);
+  box-shadow: 0 4px 16px -6px rgba(15,23,42,0.1);
+  font-size: .8125rem;
+  font-weight: 500;
+  color: var(--ud-ink);
+}
+
+/* ─── KPI Tile ─── */
+.ud-kpi {
+  composes: ud-glass;
+  padding: 1.25rem;
+  display: flex;
+  flex-direction: column;
+  gap: .5rem;
+}
+.ud-kpi-value {
+  font-family: var(--ud-font-display);
+  font-size: 1.75rem;
+  font-weight: 600;
+  letter-spacing: -0.03em;
+  color: var(--ud-ink);
+}
+.ud-kpi-label {
+  font-size: .75rem;
+  font-weight: 500;
+  color: var(--ud-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+.ud-kpi-trend {
+  font-size: .75rem;
+  font-weight: 500;
+  display: inline-flex;
+  align-items: center;
+  gap: .25rem;
+}
+.ud-kpi-trend.up { color: #16a34a; }
+.ud-kpi-trend.down { color: #dc2626; }
+
+/* ─── Sidebar ─── */
+.ud-sidebar {
+  background: linear-gradient(180deg, rgba(255,255,255,0.55) 0%, rgba(255,255,255,0.25) 100%);
+  border-right: 1px solid rgba(255,255,255,0.5);
+  backdrop-filter: blur(20px) saturate(150%);
+  -webkit-backdrop-filter: blur(20px) saturate(150%);
+}
+
+.ud-sidebar-nav-item {
+  display: flex;
+  align-items: center;
+  gap: .75rem;
+  padding: .625rem .875rem;
+  border-radius: 12px;
+  font-size: .875rem;
+  font-weight: 500;
+  color: var(--ud-muted);
+  transition: all .2s;
+  cursor: pointer;
+  border: none;
+  background: transparent;
+  width: 100%;
+}
+.ud-sidebar-nav-item:hover {
+  background: rgba(255,255,255,0.5);
+  color: var(--ud-ink);
+}
+.ud-sidebar-nav-item.active {
+  background: rgba(255,255,255,0.75);
+  color: var(--ud-ink);
+  box-shadow: 0 2px 8px -4px rgba(59,107,255,0.15);
+}
+
+/* ─── Content Card ─── */
+.ud-card {
+  composes: ud-glass;
+  padding: 1.5rem;
+}
+.ud-card-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 1rem;
+}
+.ud-card-title {
+  font-family: var(--ud-font-display);
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--ud-ink);
+}
+.ud-card-subtitle {
+  font-size: .75rem;
+  color: var(--ud-muted);
+  margin-top: .125rem;
+}
+
+/* ─── Table / List Row ─── */
+.ud-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: .875rem 1rem;
+  border-radius: 12px;
+  background: rgba(255,255,255,0.4);
+  border: 1px solid rgba(255,255,255,0.35);
+  transition: background .2s;
+}
+.ud-row:hover {
+  background: rgba(255,255,255,0.65);
+}
+
+/* ─── Button ─── */
+.ud-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: .5rem;
+  padding: .625rem 1.25rem;
+  border-radius: 9999px;
+  font-size: .875rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all .2s;
+  border: 1px solid rgba(255,255,255,0.5);
+}
+.ud-btn-primary {
+  background: linear-gradient(180deg, var(--ud-ink) 0%, #232a4a 100%);
+  color: #fff;
+  box-shadow: 0 6px 20px -8px rgba(11,16,32,0.3);
+}
+.ud-btn-primary:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 10px 28px -10px rgba(59,107,255,0.4);
+}
+.ud-btn-glass {
+  background: rgba(255,255,255,0.55);
+  color: var(--ud-ink);
+}
+.ud-btn-glass:hover {
+  background: rgba(255,255,255,0.8);
+}
+
+/* ─── Accent Pill ─── */
+.ud-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: .375rem;
+  padding: .375rem .875rem;
+  border-radius: 9999px;
+  font-size: .75rem;
+  font-weight: 500;
+  border: 1px solid rgba(255,255,255,0.4);
+  background: rgba(255,255,255,0.35);
+  color: var(--ud-muted);
+}
+
+/* ─── Scrollbar ─── */
+.ud-scroll::-webkit-scrollbar { width: 6px; }
+.ud-scroll::-webkit-scrollbar-track { background: transparent; }
+.ud-scroll::-webkit-scrollbar-thumb { background: rgba(11,16,32,0.12); border-radius: 3px; }
+.ud-scroll::-webkit-scrollbar-thumb:hover { background: rgba(11,16,32,0.2); }
+
+/* ─── Mobile Bottom Nav ─── */
+.ud-mobile-nav {
+  background: linear-gradient(180deg, rgba(255,255,255,0.7) 0%, rgba(255,255,255,0.4) 100%);
+  border-top: 1px solid rgba(255,255,255,0.5);
+  backdrop-filter: blur(20px) saturate(150%);
+  -webkit-backdrop-filter: blur(20px) saturate(150%);
+}
+
+/* ─── Top Header ─── */
+.ud-header {
+  background: linear-gradient(180deg, rgba(255,255,255,0.5) 0%, rgba(255,255,255,0.2) 100%);
+  border-bottom: 1px solid rgba(255,255,255,0.4);
+  backdrop-filter: blur(16px) saturate(150%);
+  -webkit-backdrop-filter: blur(16px) saturate(150%);
+}

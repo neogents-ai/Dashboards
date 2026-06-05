@@ -10,10 +10,10 @@ import {
   Activity, ClipboardList, Info, History
 } from "lucide-react";
 import { cn } from "@/lib/utils";
-import { GlassShell, type TabKey } from "../shared/GlassShell";
+import { LightDashboardShell, type TabDef } from "../shared/LightDashboardShell";
 import { KpiTile } from "../shared/KpiTile";
 import { CollapsibleCard } from "../shared/CollapsibleCard";
-import "../shared/glass-tokens.css";
+import "../shared/dashboard-light.css";
 import "./aesthetician-tokens.css";
 
 /* ───────────────────────────────────────────────────────────
@@ -21,10 +21,10 @@ import "./aesthetician-tokens.css";
    ─────────────────────────────────────────────────────────── */
 
 export function DashboardAesthetician2() {
-  const [activeTab, setActiveTab] = useState<TabKey>("home");
+  const [activeTab, setActiveTab] = useState<string>("home");
 
   return (
-    <GlassShell
+    <LightDashboardShell
       activeTab={activeTab}
       onTabChange={setActiveTab}
       greeting="Good morning, Sofia"
@@ -34,14 +34,13 @@ export function DashboardAesthetician2() {
         <StatPill label="2 New Consults" />
         <StatPill label="92% Retention" />
       </>}
-      className="aesthetician-canvas"
     >
       {activeTab === "home" && <HomeTab />}
       {activeTab === "calendar" && <BookingsTab />}
       {activeTab === "clients" && <SkinTrackerTab />}
       {activeTab === "money" && <InventoryTab />}
       {activeTab === "more" && <MoreTab />}
-    </GlassShell>
+    </LightDashboardShell>
   );
 }
 
@@ -92,10 +91,10 @@ function HomeTab() {
               { day: "Thursday", count: "5 treatments", revenue: "$1,350" },
               { day: "Friday", count: "4 treatments", revenue: "$1,060" },
             ].map((row) => (
-              <div key={row.day} className="flex items-center justify-between p-3 rounded-xl bg-[var(--canvas-surface-raised)]">
+              <div key={row.day} className="flex items-center justify-between p-3 rounded-xl bg-white/60">
                 <div>
-                  <p className="text-sm font-medium text-white">{row.day}</p>
-                  <p className="text-xs text-[#888]">{row.count}</p>
+                  <p className="text-sm font-medium text-[var(--dl-ink)]">{row.day}</p>
+                  <p className="text-xs text-[var(--dl-muted)]">{row.count}</p>
                 </div>
                 <span className="text-sm font-semibold text-[var(--accent-rose-400)]">{row.revenue}</span>
               </div>
@@ -110,17 +109,17 @@ function HomeTab() {
                 <div key={i} className="flex-1 rounded-t" style={{ height: `${h}%`, background: `rgba(132,169,140,${0.2 + h / 200})` }} />
               ))}
             </div>
-            <div className="flex justify-between text-[10px] text-[#666]">
+            <div className="flex justify-between text-[10px] text-[var(--dl-muted)]">
               {["M", "T", "W", "T", "F", "S", "S"].map((d, i) => <span key={i}>{d}</span>)}
             </div>
             <div className="grid grid-cols-2 gap-3 pt-2">
-              <div className="p-3 rounded-xl bg-[var(--canvas-surface-raised)]">
-                <p className="text-xs text-[#888]">Retention Rate</p>
-                <p className="text-lg font-bold text-white">92%</p>
+              <div className="p-3 rounded-xl bg-white/60">
+                <p className="text-xs text-[var(--dl-muted)]">Retention Rate</p>
+                <p className="text-lg font-bold text-[var(--dl-ink)]">92%</p>
               </div>
-              <div className="p-3 rounded-xl bg-[var(--canvas-surface-raised)]">
-                <p className="text-xs text-[#888]">Avg Ticket</p>
-                <p className="text-lg font-bold text-white">$285</p>
+              <div className="p-3 rounded-xl bg-white/60">
+                <p className="text-xs text-[var(--dl-muted)]">Avg Ticket</p>
+                <p className="text-lg font-bold text-[var(--dl-ink)]">$285</p>
               </div>
             </div>
           </div>
@@ -132,14 +131,14 @@ function HomeTab() {
 
 function ApptRow({ time, client, service, duration, price, status }: { time: string; client: string; service: string; duration: string; price: string; status: "in-progress" | "upcoming" | "done" }) {
   return (
-    <div className="flex items-center gap-4 p-3 rounded-xl bg-[var(--canvas-surface-raised)] hover:bg-[#1e231e] transition-colors">
-      <div className="w-16 text-xs font-medium text-[#888]">{time}</div>
+    <div className="flex items-center gap-4 p-3 rounded-xl bg-white/60 hover:bg-[#1e231e] transition-colors">
+      <div className="w-16 text-xs font-medium text-[var(--dl-muted)]">{time}</div>
       <div className="flex-1 min-w-0">
         <div className="flex items-center gap-2">
-          <span className="text-sm font-medium text-white truncate">{client}</span>
+          <span className="text-sm font-medium text-[var(--dl-ink)] truncate">{client}</span>
           {status === "in-progress" && <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />}
         </div>
-        <p className="text-xs text-[#888] truncate">{service} • {duration}</p>
+        <p className="text-xs text-[var(--dl-muted)] truncate">{service} • {duration}</p>
       </div>
       <span className="text-sm font-semibold text-[var(--accent-rose-400)]">{price}</span>
     </div>
@@ -147,13 +146,13 @@ function ApptRow({ time, client, service, duration, price, status }: { time: str
 }
 
 function TaskRow({ label, due, priority }: { label: string; due: string; priority: "high" | "medium" | "low" }) {
-  const color = priority === "high" ? "text-red-400" : priority === "medium" ? "text-amber-400" : "text-[#888]";
+  const color = priority === "high" ? "text-red-400" : priority === "medium" ? "text-amber-400" : "text-[var(--dl-muted)]";
   const dot = priority === "high" ? "bg-red-400" : priority === "medium" ? "bg-amber-400" : "bg-[#555]";
   return (
-    <div className="flex items-center justify-between p-3 rounded-xl bg-[var(--canvas-surface-raised)]">
+    <div className="flex items-center justify-between p-3 rounded-xl bg-white/60">
       <div className="flex items-center gap-3">
         <div className={cn("w-2 h-2 rounded-full flex-shrink-0", dot)} />
-        <span className="text-sm text-white">{label}</span>
+        <span className="text-sm text-[var(--dl-ink)]">{label}</span>
       </div>
       <span className={cn("text-xs font-medium flex-shrink-0", color)}>{due}</span>
     </div>
@@ -166,41 +165,41 @@ function BookingsTab() {
     <div className="p-6 lg:p-8 max-w-[1600px] mx-auto space-y-6">
       <div className="flex items-center justify-between">
         <div>
-          <h2 className="text-2xl font-bold text-white">Bookings</h2>
-          <p className="text-[#888]">Manage appointments and consultations</p>
+          <h2 className="text-2xl font-bold text-[var(--dl-ink)]">Bookings</h2>
+          <p className="text-[var(--dl-muted)]">Manage appointments and consultations</p>
         </div>
-        <button className="px-4 py-2 bg-[var(--accent-rose-500)] text-white font-bold rounded-lg text-sm hover:bg-[var(--accent-rose-600)] transition-colors">
+        <button className="px-4 py-2 bg-[var(--accent-rose-500)] text-[var(--dl-ink)] font-bold rounded-lg text-sm hover:bg-[var(--accent-rose-600)] transition-colors">
           + New Appointment
         </button>
       </div>
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-        <div className="lg:col-span-2 bg-[var(--canvas-surface)] border border-[var(--canvas-border)] rounded-2xl p-6 min-h-[500px] flex items-center justify-center text-[#444]">
+        <div className="lg:col-span-2 bg-white/40 border border-white/50 rounded-2xl p-6 min-h-[500px] flex items-center justify-center text-[var(--dl-muted)]">
           <div className="text-center">
             <Calendar className="w-12 h-12 mx-auto mb-4 opacity-20" />
             <p className="text-sm">Calendar Integration</p>
           </div>
         </div>
         <div className="space-y-4">
-          <div className="rounded-2xl border border-[var(--canvas-border)] bg-[var(--canvas-surface)] p-5">
-            <h3 className="text-sm font-semibold text-white mb-4 flex items-center gap-2">
+          <div className="rounded-2xl border border-white/50 bg-white/40 p-5">
+            <h3 className="text-sm font-semibold text-[var(--dl-ink)] mb-4 flex items-center gap-2">
               <Clock className="w-4 h-4 text-[var(--accent-rose-400)]" /> Next Client
             </h3>
             <div className="space-y-2">
-              <p className="text-base font-bold text-white">Priya Shah</p>
-              <p className="text-sm text-[#888]">10:30 AM — Chemical Peel</p>
-              <div className="mt-3 pt-3 border-t border-[var(--canvas-border)]">
-                <p className="text-xs font-semibold text-[#888] uppercase tracking-wider mb-2">Skin Protocol</p>
-                <p className="text-xs text-[#888]">Fitzpatrick III. Mild hyperpigmentation. On Tretinoin 0.025%. Last peel: 6 weeks ago. No adverse reactions on file.</p>
+              <p className="text-base font-bold text-[var(--dl-ink)]">Priya Shah</p>
+              <p className="text-sm text-[var(--dl-muted)]">10:30 AM — Chemical Peel</p>
+              <div className="mt-3 pt-3 border-t border-white/50">
+                <p className="text-xs font-semibold text-[var(--dl-muted)] uppercase tracking-wider mb-2">Skin Protocol</p>
+                <p className="text-xs text-[var(--dl-muted)]">Fitzpatrick III. Mild hyperpigmentation. On Tretinoin 0.025%. Last peel: 6 weeks ago. No adverse reactions on file.</p>
               </div>
             </div>
           </div>
-          <div className="rounded-2xl border border-[var(--canvas-border)] bg-[var(--canvas-surface)] p-5">
-            <h3 className="text-sm font-semibold text-white mb-3 flex items-center gap-2">
+          <div className="rounded-2xl border border-white/50 bg-white/40 p-5">
+            <h3 className="text-sm font-semibold text-[var(--dl-ink)] mb-3 flex items-center gap-2">
               <UserPlus className="w-4 h-4 text-[var(--accent-rose-400)]" /> New Consults This Week
             </h3>
             <div className="space-y-3">
               {["Isabella Park — Fri 4:30 PM", "Marcus Green — Sat 11:00 AM"].map((name) => (
-                <div key={name} className="text-sm text-white">{name}</div>
+                <div key={name} className="text-sm text-[var(--dl-ink)]">{name}</div>
               ))}
             </div>
           </div>
@@ -222,21 +221,21 @@ function SkinTrackerTab() {
   return (
     <div className="flex h-full bg-[var(--canvas-base)]">
       {/* Client List */}
-      <div className="w-[320px] border-r border-[var(--canvas-border)] bg-[var(--canvas-surface)] flex flex-col flex-shrink-0">
-        <div className="p-5 border-b border-[var(--canvas-border)]">
+      <div className="w-[320px] border-r border-white/50 bg-white/40 flex flex-col flex-shrink-0">
+        <div className="p-5 border-b border-white/50">
           <div className="relative">
-            <Search className="w-4 h-4 text-[#666] absolute left-3 top-1/2 -translate-y-1/2" />
-            <input className="w-full bg-[var(--canvas-surface-raised)] border border-[var(--canvas-border)] rounded-lg py-2 pl-10 pr-4 text-sm text-white focus:outline-none focus:border-[var(--accent-rose-500)]" placeholder="Search clients..." />
+            <Search className="w-4 h-4 text-[var(--dl-muted)] absolute left-3 top-1/2 -translate-y-1/2" />
+            <input className="w-full bg-white/60 border border-white/50 rounded-lg py-2 pl-10 pr-4 text-sm text-[var(--dl-ink)] focus:outline-none focus:border-[var(--accent-rose-500)]" placeholder="Search clients..." />
           </div>
         </div>
         <div className="flex-1 overflow-y-auto p-2 space-y-1">
           {clients.map((c) => (
-            <div key={c.id} className="p-3 rounded-lg hover:bg-[var(--canvas-surface-raised)] cursor-pointer group transition-colors">
+            <div key={c.id} className="p-3 rounded-lg hover:bg-white/60 cursor-pointer group transition-colors">
               <div className="flex items-center gap-3">
-                <div className={cn("w-10 h-10 rounded-full flex items-center justify-center font-bold text-xs text-white", c.avatarColor)}>{c.initials}</div>
+                <div className={cn("w-10 h-10 rounded-full flex items-center justify-center font-bold text-xs text-[var(--dl-ink)]", c.avatarColor)}>{c.initials}</div>
                 <div className="flex-1 min-w-0">
-                  <h4 className="text-sm font-medium text-white truncate">{c.name}</h4>
-                  <p className="text-[11px] text-[#666]">{c.condition} • {c.lastVisit}</p>
+                  <h4 className="text-sm font-medium text-[var(--dl-ink)] truncate">{c.name}</h4>
+                  <p className="text-[11px] text-[var(--dl-muted)]">{c.condition} • {c.lastVisit}</p>
                 </div>
                 <ChevronRight className="w-4 h-4 text-[#333] group-hover:text-[var(--accent-rose-400)] transition-colors" />
               </div>
@@ -249,27 +248,27 @@ function SkinTrackerTab() {
       <div className="flex-1 overflow-y-auto p-8">
         <div className="flex items-start justify-between mb-8">
           <div className="flex items-center gap-6">
-            <div className="w-20 h-20 rounded-2xl bg-gradient-to-tr from-[var(--accent-rose-600)] to-[var(--accent-rose-400)] flex items-center justify-center text-xl font-bold text-white">EG</div>
+            <div className="w-20 h-20 rounded-2xl bg-gradient-to-tr from-[var(--accent-rose-600)] to-[var(--accent-rose-400)] flex items-center justify-center text-xl font-bold text-[var(--dl-ink)]">EG</div>
             <div>
               <div className="flex items-center gap-3 mb-1">
-                <h2 className="text-2xl font-bold text-white">Elena Gilbert</h2>
+                <h2 className="text-2xl font-bold text-[var(--dl-ink)]">Elena Gilbert</h2>
                 <span className="px-2 py-0.5 bg-[var(--accent-rose-10)] text-[var(--accent-rose-400)] text-[10px] font-bold rounded uppercase tracking-wider border border-[var(--accent-rose-20)]">Active Client</span>
               </div>
-              <p className="text-[#888] flex items-center gap-2 text-sm">
+              <p className="text-[var(--dl-muted)] flex items-center gap-2 text-sm">
                 <MapPin className="w-4 h-4" /> West Hollywood, CA • <Clock className="w-4 h-4 ml-1" /> Last visit: Today
               </p>
             </div>
           </div>
-          <button className="px-5 py-2.5 bg-[var(--accent-rose-500)] hover:bg-[var(--accent-rose-600)] text-white font-bold rounded-lg transition-colors">
+          <button className="px-5 py-2.5 bg-[var(--accent-rose-500)] hover:bg-[var(--accent-rose-600)] text-[var(--dl-ink)] font-bold rounded-lg transition-colors">
             Book Next
           </button>
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
-          <div className="bg-[var(--canvas-surface)] border border-[var(--canvas-border)] rounded-2xl p-6">
+          <div className="bg-white/40 border border-white/50 rounded-2xl p-6">
             <div className="flex items-center gap-2 mb-5">
               <div className="p-2 bg-[var(--accent-rose-10)] rounded-lg"><Activity className="w-4 h-4 text-[var(--accent-rose-400)]" /></div>
-              <h3 className="font-bold text-white">Skin Profile</h3>
+              <h3 className="font-bold text-[var(--dl-ink)]">Skin Profile</h3>
             </div>
             <div className="space-y-3">
               {[
@@ -279,17 +278,17 @@ function SkinTrackerTab() {
                 ["Sensitivity", "Low"],
                 ["Active Rx", "Tretinoin 0.025% (nightly)"],
               ].map(([label, value]) => (
-                <div key={label} className="flex justify-between border-b border-[var(--canvas-border)] pb-2 last:border-0">
-                  <span className="text-xs text-[#666]">{label}</span>
-                  <span className="text-sm font-medium text-white">{value}</span>
+                <div key={label} className="flex justify-between border-b border-white/50 pb-2 last:border-0">
+                  <span className="text-xs text-[var(--dl-muted)]">{label}</span>
+                  <span className="text-sm font-medium text-[var(--dl-ink)]">{value}</span>
                 </div>
               ))}
             </div>
           </div>
-          <div className="bg-[var(--canvas-surface)] border border-[var(--canvas-border)] rounded-2xl p-6">
+          <div className="bg-white/40 border border-white/50 rounded-2xl p-6">
             <div className="flex items-center gap-2 mb-5">
               <div className="p-2 bg-purple-500/10 rounded-lg"><ClipboardList className="w-4 h-4 text-purple-400" /></div>
-              <h3 className="font-bold text-white">Current Protocol</h3>
+              <h3 className="font-bold text-[var(--dl-ink)]">Current Protocol</h3>
             </div>
             <div className="space-y-3">
               {[
@@ -299,18 +298,18 @@ function SkinTrackerTab() {
                 ["SPF", "50+ daily (non-negotiable)"],
                 ["Next Goal", "Even skin tone by Q3"],
               ].map(([label, value]) => (
-                <div key={label} className="flex justify-between border-b border-[var(--canvas-border)] pb-2 last:border-0">
-                  <span className="text-xs text-[#666]">{label}</span>
-                  <span className="text-sm font-medium text-white">{value}</span>
+                <div key={label} className="flex justify-between border-b border-white/50 pb-2 last:border-0">
+                  <span className="text-xs text-[var(--dl-muted)]">{label}</span>
+                  <span className="text-sm font-medium text-[var(--dl-ink)]">{value}</span>
                 </div>
               ))}
             </div>
           </div>
         </div>
 
-        <div className="bg-[var(--canvas-surface)] border border-[var(--canvas-border)] rounded-2xl p-6">
+        <div className="bg-white/40 border border-white/50 rounded-2xl p-6">
           <div className="flex items-center justify-between mb-5">
-            <h3 className="font-bold text-white flex items-center gap-2">
+            <h3 className="font-bold text-[var(--dl-ink)] flex items-center gap-2">
               <History className="w-5 h-5 text-[var(--accent-rose-400)]" /> Treatment Notes
             </h3>
             <button className="text-[var(--accent-rose-400)] text-sm font-medium hover:underline">+ Add Entry</button>
@@ -320,13 +319,13 @@ function SkinTrackerTab() {
               { date: "May 23, 2026", note: "Hydrafacial + LED therapy. Skin looked significantly less inflamed vs last visit. Increased suction on cheeks. Added oxygen boost step. Client reported 0 sensitivity. Advised to avoid exfoliation for 48hrs.", esthetician: "Sofia (Lead)" },
               { date: "April 25, 2026", note: "Gentle chemical peel (20% lactic). Good tolerance. Mild erythema resolved within 20min. Emphasized SPF compliance — client admitted skipping on weekends. Reviewed protocol.", esthetician: "Sofia (Lead)" },
             ].map((entry) => (
-              <div key={entry.date} className="relative pl-6 border-l-2 border-[var(--canvas-border)]">
+              <div key={entry.date} className="relative pl-6 border-l-2 border-white/50">
                 <div className="absolute -left-[9px] top-0 w-4 h-4 rounded-full bg-[var(--accent-rose-500)] border-4 border-[var(--canvas-surface)]" />
                 <div className="flex justify-between mb-1">
-                  <p className="text-sm font-bold text-white">{entry.date}</p>
+                  <p className="text-sm font-bold text-[var(--dl-ink)]">{entry.date}</p>
                   <span className="text-[10px] text-[#555]">{entry.esthetician}</span>
                 </div>
-                <p className="text-sm text-[#888] leading-relaxed">{entry.note}</p>
+                <p className="text-sm text-[var(--dl-muted)] leading-relaxed">{entry.note}</p>
               </div>
             ))}
           </div>
@@ -350,28 +349,28 @@ function InventoryTab() {
     <div className="p-6 lg:p-8 max-w-[1600px] mx-auto space-y-6">
       <div className="flex items-center justify-between">
         <div>
-          <h2 className="text-2xl font-bold text-white">Product Inventory</h2>
-          <p className="text-[#888]">Track stock and reorder levels</p>
+          <h2 className="text-2xl font-bold text-[var(--dl-ink)]">Product Inventory</h2>
+          <p className="text-[var(--dl-muted)]">Track stock and reorder levels</p>
         </div>
-        <button className="px-4 py-2 bg-[var(--accent-rose-500)] text-white font-bold rounded-lg text-sm hover:bg-[var(--accent-rose-600)] transition-colors">
+        <button className="px-4 py-2 bg-[var(--accent-rose-500)] text-[var(--dl-ink)] font-bold rounded-lg text-sm hover:bg-[var(--accent-rose-600)] transition-colors">
           + Add Product
         </button>
       </div>
-      <div className="bg-[var(--canvas-surface)] border border-[var(--canvas-border)] rounded-2xl overflow-hidden">
-        <div className="grid grid-cols-5 px-6 py-3 text-xs text-[#888] uppercase tracking-wider border-b border-[var(--canvas-border)]">
+      <div className="bg-white/40 border border-white/50 rounded-2xl overflow-hidden">
+        <div className="grid grid-cols-5 px-6 py-3 text-xs text-[var(--dl-muted)] uppercase tracking-wider border-b border-white/50">
           <span className="col-span-2">Product</span>
           <span>In Stock</span>
           <span>Reorder At</span>
           <span>Status</span>
         </div>
         {items.map((item) => (
-          <div key={item.name} className="grid grid-cols-5 px-6 py-4 border-b border-[var(--canvas-border)] last:border-0 hover:bg-[var(--canvas-surface-raised)] transition-colors items-center">
+          <div key={item.name} className="grid grid-cols-5 px-6 py-4 border-b border-white/50 last:border-0 hover:bg-white/60 transition-colors items-center">
             <div className="col-span-2">
-              <p className="text-sm font-medium text-white">{item.name}</p>
-              <p className="text-xs text-[#888]">{item.brand}</p>
+              <p className="text-sm font-medium text-[var(--dl-ink)]">{item.name}</p>
+              <p className="text-xs text-[var(--dl-muted)]">{item.brand}</p>
             </div>
-            <span className="text-sm text-white">{item.qty} units</span>
-            <span className="text-sm text-[#888]">{item.reorder} units</span>
+            <span className="text-sm text-[var(--dl-ink)]">{item.qty} units</span>
+            <span className="text-sm text-[var(--dl-muted)]">{item.reorder} units</span>
             <span className={cn("text-xs font-bold uppercase", item.status === "low" ? "text-red-400" : "text-emerald-400")}>{item.status === "low" ? "Reorder" : "OK"}</span>
           </div>
         ))}
@@ -395,16 +394,16 @@ function MoreTab() {
   return (
     <div className="p-6 lg:p-8 max-w-[1600px] mx-auto space-y-6">
       <div>
-        <h2 className="text-2xl font-bold text-white">More</h2>
-        <p className="text-[#888]">Everything else you need</p>
+        <h2 className="text-2xl font-bold text-[var(--dl-ink)]">More</h2>
+        <p className="text-[var(--dl-muted)]">Everything else you need</p>
       </div>
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
         {items.map((item) => (
-          <button key={item.label} className="flex items-center gap-4 p-5 rounded-2xl border border-[var(--canvas-border)] bg-[var(--canvas-surface)] hover:bg-[var(--canvas-surface-raised)] hover:border-[var(--accent-rose-30)] transition-colors text-left">
+          <button key={item.label} className="flex items-center gap-4 p-5 rounded-2xl border border-white/50 bg-white/40 hover:bg-white/60 hover:border-[var(--accent-rose-30)] transition-colors text-left">
             <div className="p-3 rounded-xl bg-[var(--accent-rose-10)] text-[var(--accent-rose-400)]">{item.icon}</div>
             <div>
-              <p className="text-sm font-semibold text-white">{item.label}</p>
-              <p className="text-xs text-[#888]">{item.desc}</p>
+              <p className="text-sm font-semibold text-[var(--dl-ink)]">{item.label}</p>
+              <p className="text-xs text-[var(--dl-muted)]">{item.desc}</p>
             </div>
             <ChevronRight className="w-4 h-4 text-[#333] ml-auto" />
           </button>
