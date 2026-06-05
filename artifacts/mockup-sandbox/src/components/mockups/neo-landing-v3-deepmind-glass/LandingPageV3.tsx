@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
 import type { CSSProperties, MouseEvent } from 'react';
-import { ArrowRight, Check, Sparkles, Home, Camera, Scissors, ChefHat, Compass, Settings2, Clapperboard, Lock, Unlock, Play, Zap } from 'lucide-react';
+import { ArrowRight, Check, Home, Camera, Scissors, ChefHat, Compass, Settings2, Clapperboard, Lock, Unlock, Play, Zap, Star } from 'lucide-react';
 import { DeepFieldGallery } from '../../shared/DeepFieldGallery';
 import { useCountUp } from '../../../hooks/useCountUp';
 import { FEATURES, INDUSTRIES, TESTIMONIALS, STATS, PRICING } from '../../../data/landing';
@@ -93,7 +93,7 @@ export function LandingPageV3DeepMind() {
   const dockItems = [
     { idx: 4, icon: <Home className="w-4 h-4" />, label: "Realtor" },
     { idx: 0, icon: <Camera className="w-4 h-4" />, label: "Photo" },
-    { idx: 1, icon: <Sparkles className="w-4 h-4" />, label: "Aesthetician" },
+    { idx: 1, icon: <Star className="w-4 h-4" />, label: "Aesthetician" },
     { idx: 2, icon: <Scissors className="w-4 h-4" />, label: "Barber" },
     { idx: 3, icon: <ChefHat className="w-4 h-4" />, label: "Chef" },
     { idx: 5, icon: <Clapperboard className="w-4 h-4" />, label: "Business" },
@@ -112,9 +112,6 @@ export function LandingPageV3DeepMind() {
       {/* ── NAV (floating glass) ── */}
       <header className="fixed top-4 inset-x-0 z-40 flex justify-center px-4">
         <nav className="dm-glass-strip">
-          <Sparkles className="w-4 h-4" style={{ color: '#8a5cf6' }} />
-          <span className="font-semibold">NEO Gents</span>
-          <span className="text-[var(--muted)] hidden md:inline">·</span>
           <a href="#features" className="hidden md:inline hover:opacity-70">Platform</a>
           <a href="#industries" className="hidden md:inline hover:opacity-70">Industries</a>
           <a href="#pricing" className="hidden md:inline hover:opacity-70">Pricing</a>
@@ -395,7 +392,7 @@ export function LandingPageV3DeepMind() {
           </div>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
             {[
-              { n: '01', title: 'Connect Your Profiles', desc: 'Link your social media, booking platforms, and portfolio sites. NEO Gents pulls everything into one unified dashboard in seconds.' },
+              { n: '01', title: 'Connect Your Profiles', desc: 'Link your social media, booking platforms, and portfolio sites. We pull everything into one unified dashboard in seconds.' },
               { n: '02', title: 'AI Finds Your Leads', desc: 'N.O.R.I. Agent scrapes the web for warm, qualified leads in your area and industry. Wake up to a fresh pipeline every morning.' },
               { n: '03', title: 'Book, Create & Grow', desc: 'Manage bookings, publish content, and track your revenue — all from one beautiful, industry-tailored workspace.' },
             ].map((step, i) => (
@@ -505,7 +502,7 @@ export function LandingPageV3DeepMind() {
               <>
                 <div className="text-center mb-6">
                   <div className="w-12 h-12 rounded-2xl grid place-items-center mx-auto mb-3" style={{ background: 'linear-gradient(135deg, #818CF8, #6366F1)', color: '#fff' }}>
-                    <Sparkles className="w-6 h-6" />
+                    <Star className="w-6 h-6" />
                   </div>
                   <h3 className="dm-display text-xl">Custom Dashboard</h3>
                   <p className="text-sm text-[var(--muted)] mt-1">Tell us about your business and we'll design your perfect dashboard.</p>
@@ -580,7 +577,7 @@ export function LandingPageV3DeepMind() {
       {/* ── FOOTER ── */}
       <footer className="relative py-10 px-6 md:px-10">
         <div className="max-w-6xl mx-auto flex items-center justify-between flex-wrap gap-4 text-xs text-[var(--muted)]">
-          <span>NEO Gents · © 2026 · Built with intelligence</span>
+          <span>© 2026 · Built with intelligence</span>
           <span className="flex items-center gap-2"><span className="dm-thinking-dot" /><span className="dm-thinking-dot" /><span className="dm-thinking-dot" /> NORI online</span>
         </div>
       </footer>
