@@ -1,9 +1,9 @@
 services:
-  - type: web
+  - type: static
     name: neogents-tech
-    runtime: node
-    buildCommand: cd artifacts/mockup-sandbox && npm ci && npm run build
-    startCommand: node server.js
+    buildCommand: cd artifacts/mockup-sandbox && npm ci && npm run build && copy dist\index.html dist\200.html
+    staticPublishPath: artifacts/mockup-sandbox/dist
+    pullRequestPreviewsEnabled: true
     envVars:
       - key: NODE_VERSION
         value: 20
