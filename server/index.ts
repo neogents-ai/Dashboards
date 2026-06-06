@@ -5,6 +5,7 @@ import rateLimit from 'express-rate-limit';
 import dotenv from 'dotenv';
 import leadsRouter from './routes/leads';
 import storedRouter from './routes/stored';
+import affiliatesRouter from './routes/affiliates';
 
 dotenv.config();
 
@@ -69,8 +70,10 @@ const storeLimiter = rateLimit({
 // Routes
 app.use('/api/scrape', scrapeLimiter);
 app.use('/api/leads', storeLimiter);
+app.use('/api/affiliates', storeLimiter);
 app.use('/api', leadsRouter);
 app.use('/api', storedRouter);
+app.use('/api', affiliatesRouter);
 
 app.get('/health', (_req: Request, res: Response) => {
   res.json({ status: 'ok', version: 1 });
