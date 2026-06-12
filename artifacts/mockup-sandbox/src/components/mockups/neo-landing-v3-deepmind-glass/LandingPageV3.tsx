@@ -65,6 +65,26 @@ export function LandingPageV3DeepMind() {
   const activeIndex = lockedVertical !== null ? lockedVertical : industryIdx;
   const ind = INDUSTRIES[activeIndex];
 
+  // Referral tracking — read ?ref= from URL, track click, set cookie
+  useEffect(() => {
+    const params = new URLSearchParams(window.location.search);
+    const refCode = params.get('ref');
+    if (!refCode) return;
+
+    // Set attribution cookie (60 days) — mirrors backend redirect behavior
+    const maxAge = 60 * 24 * 60 * 60;
+    document.cookie = `neo_gents_ref=${encodeURIComponent(refCode.toUpperCase())}; max-age=${maxAge}; path=/; SameSite=Lax`;
+
+    // Fire-and-forget click tracking
+    fetch('/api/affiliates/track', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ referralCode: refCode }),
+    }).catch((err) => {
+      console.warn('[REFERRAL] Track ping failed:', err);
+    });
+  }, []);
+
   // Splash timer — cycle every 2.5s unless locked
   useEffect(() => {
     if (lockedVertical !== null) return;
@@ -139,6 +159,9 @@ export function LandingPageV3DeepMind() {
             <div className="flex gap-3 justify-center flex-wrap">
               <a href="#waitlist" className="dm-btn">Try the preview <ArrowRight className="w-4 h-4" /></a>
               <a href="#features" className="dm-btn-glass">Explore capabilities</a>
+            </div>
+            <div className="mt-3 text-center">
+              <a href="#/affiliates" className="dm-btn-glass text-xs">Earn $400/referral → Become an Affiliate</a>
             </div>
           </div>
 
@@ -577,8 +600,11 @@ export function LandingPageV3DeepMind() {
       {/* ── FOOTER ── */}
       <footer className="relative py-10 px-6 md:px-10">
         <div className="max-w-6xl mx-auto flex items-center justify-between flex-wrap gap-4 text-xs text-[var(--muted)]">
+          <div className="flex items-center gap-4">
+            <a href="#/affiliates" className="hover:text-[var(--dl-ink)] transition-colors">Earn $400/referral → Become an Affiliate</a>
+            <span className="flex items-center gap-2"><span className="dm-thinking-dot" /><span className="dm-thinking-dot" /><span className="dm-thinking-dot" /> NORI online</span>
+          </div>
           <span>© 2026 · Built with intelligence</span>
-          <span className="flex items-center gap-2"><span className="dm-thinking-dot" /><span className="dm-thinking-dot" /><span className="dm-thinking-dot" /> NORI online</span>
         </div>
       </footer>
 
