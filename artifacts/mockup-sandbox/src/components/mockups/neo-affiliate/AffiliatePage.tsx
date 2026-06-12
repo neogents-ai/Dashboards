@@ -481,7 +481,7 @@ function AffiliateSignup() {
       <button
         type="submit"
         disabled={loading}
-        className="w-full py-3 rounded-lg bg-slate-900 hover:bg-slate-800 disabled:opacity-50 text-white font-semibold text-sm transition-colors flex items-center justify-center gap-2 shadow-md"
+        className="w-full py-3 rounded-lg dm-grad-btn disabled:opacity-50 font-semibold text-sm flex items-center justify-center gap-2 shadow-md"
       >
         {loading ? 'Submitting...' : 'Get My Link'} <ArrowRight className="w-4 h-4" />
       </button>
@@ -556,7 +556,7 @@ export function AffiliatePage() {
           <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
             <a
               href="#signup"
-              className="px-6 py-3 rounded-lg bg-slate-900 hover:bg-slate-800 text-white font-semibold text-sm transition-colors inline-flex items-center gap-2 shadow-md"
+              className="px-6 py-3 rounded-lg dm-grad-btn font-semibold text-sm inline-flex items-center gap-2 shadow-md"
             >
               Get Your Referral Link <ArrowRight className="w-4 h-4" />
             </a>
@@ -727,7 +727,7 @@ export function AffiliatePage() {
           </p>
           <a
             href="#signup"
-            className="px-8 py-4 rounded-lg bg-slate-900 hover:bg-slate-800 text-white font-semibold text-base transition-colors inline-flex items-center gap-2 shadow-md"
+            className="px-8 py-4 rounded-lg dm-grad-btn font-semibold text-base inline-flex items-center gap-2 shadow-md"
           >
             Get My Referral Link <ArrowRight className="w-5 h-5" />
           </a>
