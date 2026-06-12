@@ -138,6 +138,22 @@ function getPreviewPath(): string | null {
 
 function App() {
   const previewPath = getPreviewPath();
+  // Public affiliate redirect: ?ref=CODE (no hash) -> ?ref=CODE#/affiliates
+  // Visitors never see owner=1; founder adds it manually when they want the click log.
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+    const params = new URLSearchParams(window.location.search);
+    const refCode = params.get("ref");
+    const hash = window.location.hash.replace(/^#/, "");
+    if (refCode && !hash) {
+      const owner = params.get("owner");
+      const qs = new URLSearchParams(window.location.search);
+      if (owner !== "1") qs.delete("owner");
+      const newSearch = qs.toString();
+      const target = `${window.location.pathname}${newSearch ? `?${newSearch}` : ""}#/affiliates`;
+      window.location.replace(target);
+    }
+  }, []);
   const [route, setRoute] = useState(() => {
     const hash = window.location.hash.replace(/^#/, "").replace(/\?.*$/, "").replace(/\/$/, "") || "/";
     return hash;

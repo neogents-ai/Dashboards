@@ -316,9 +316,12 @@ function FaqAccordion() {
 /* ─── QR Code Section ─── */
 function QRSection() {
   const [copied, setCopied] = useState(false);
+  // Public visitor QR — points to the affiliate signup page itself.
+  // The founder's personal link (with ?ref=CODE and ?to=) lives in FounderLinkPanel,
+  // which is only visible with ?owner=1.
   const affiliateUrl = typeof window !== 'undefined'
-    ? `${window.location.origin}/?ref=${FOUNDER_REF_CODE}`
-    : `https://neogents.tech/?ref=${FOUNDER_REF_CODE}`;
+    ? `${window.location.origin}/#/affiliates`
+    : `https://neogents.tech/#/affiliates`;
 
   const copyLink = () => {
     navigator.clipboard.writeText(affiliateUrl);
@@ -566,10 +569,12 @@ export function AffiliatePage() {
         </div>
       </section>
 
-      {/* ── Founder Personal Link ── */}
-      <section className="px-4 pb-4 md:pb-6">
-        <FounderLinkPanel totalOpens={totalOpens} />
-      </section>
+      {/* ── Founder Personal Link (visible only with ?owner=1) ── */}
+      {isOwnerView && (
+        <section className="px-4 pb-4 md:pb-6">
+          <FounderLinkPanel totalOpens={totalOpens} />
+        </section>
+      )}
 
       {/* ── Earnings Calculator ── */}
       <section className="px-4 py-16 md:py-20">
