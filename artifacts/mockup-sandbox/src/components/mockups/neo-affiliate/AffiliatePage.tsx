@@ -531,8 +531,9 @@ export function AffiliatePage() {
       <section className="relative overflow-hidden px-4 pt-16 pb-20 md:pt-24 md:pb-28">
         <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-[#1e3a5f]/10 via-transparent to-transparent" />
         <div className="relative max-w-4xl mx-auto text-center">
-          <div className="dm-pill mb-6">
-            <HandCoins className="w-3 h-3" /> Earn Up To $458 Per Referral
+          <div className="dm-glass-strip mb-6">
+            <HandCoins className="w-3.5 h-3.5 text-[var(--blue)]" />
+            <span className="text-[var(--muted)]">Affiliate Program · Powered by NORI Intelligence</span>
           </div>
           <h1 className="dm-display-th text-[3rem] md:text-[5rem] leading-[1.05] mb-5 max-w-4xl mx-auto">
             Did You Just Get Laid Off?<br />
