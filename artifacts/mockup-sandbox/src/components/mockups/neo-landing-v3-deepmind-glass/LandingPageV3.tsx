@@ -145,12 +145,11 @@ export function LandingPageV3DeepMind() {
           {/* PAS Copy Framework */}
           <div className="text-center mb-10">
             <div className="dm-glass-strip mb-6 mx-auto">
-              <span className="dm-thinking-dot" /><span className="dm-thinking-dot" /><span className="dm-thinking-dot" />
-              <span className="text-[var(--muted)]">N.O.R.I. is thinking — 47 languages online</span>
+              <span className="text-[var(--muted)]">Multilingual Intelligence · 47 Languages Supported</span>
             </div>
             <h1 className="dm-display-th text-[3rem] md:text-[5rem] leading-[1.05] mb-5 max-w-4xl mx-auto">
               <span>Your business runs on leads. </span>
-              <span className="dm-grad-text dm-display">We find them at scale</span>
+              <span className="dm-display text-[#1e3a5f]">We find them at scale</span>
               <span>.</span>
             </h1>
             <p className="text-[var(--muted)] text-lg md:text-xl max-w-2xl mx-auto mb-6 leading-relaxed">
@@ -322,39 +321,39 @@ export function LandingPageV3DeepMind() {
           <div className="grid grid-cols-12 gap-4">
             <GlassPanel className="col-span-12 md:col-span-6 p-7" dark>
               <span className="dm-pill" style={{ background: 'rgba(255,255,255,0.15)', borderColor: 'rgba(255,255,255,0.3)', color: '#fff' }}>
-                <span className="dm-thinking-dot" /> LIVE · 1H
+                LIVE · 1H
               </span>
               <div className="dm-display dm-num text-[6rem] leading-none mt-4" style={{ color: '#fff' }}>{live}</div>
               <div className="text-white/60">Leads scraped for {ind.label.toLowerCase()}s right now</div>
             </GlassPanel>
             {([
               [
-                { v: '$4,200', l: 'Avg booking value', c: '#3b6bff' },
+                { v: '$4,200', l: 'Avg booking value', c: '#1e3a5f' },
                 { v: '1 in 8', l: 'Lead → client rate', c: '#8a5cf6' },
                 { v: '$12.6K', l: 'Monthly revenue', c: '#c89c3f' },
               ],
               [
-                { v: '$1,200', l: 'Client LTV / year', c: '#3b6bff' },
+                { v: '$1,200', l: 'Client LTV / year', c: '#1e3a5f' },
                 { v: '73%', l: 'Rebooking rate', c: '#8a5cf6' },
                 { v: '45+', l: 'Monthly appointments', c: '#c89c3f' },
               ],
               [
-                { v: '$45', l: 'Avg service price', c: '#3b6bff' },
+                { v: '$45', l: 'Avg service price', c: '#1e3a5f' },
                 { v: '35', l: 'Clients per week', c: '#8a5cf6' },
                 { v: '$6.3K', l: 'Monthly revenue', c: '#c89c3f' },
               ],
               [
-                { v: '$3,200', l: 'Avg event revenue', c: '#3b6bff' },
+                { v: '$3,200', l: 'Avg event revenue', c: '#1e3a5f' },
                 { v: '4', l: 'Events per month', c: '#8a5cf6' },
                 { v: '60', l: 'Guest capacity', c: '#c89c3f' },
               ],
               [
-                { v: '$12.5K', l: 'Avg commission', c: '#3b6bff' },
+                { v: '$12.5K', l: 'Avg commission', c: '#1e3a5f' },
                 { v: '1 in 25', l: 'Lead → closing', c: '#8a5cf6' },
                 { v: '2', l: 'Monthly closings', c: '#c89c3f' },
               ],
               [
-                { v: '$2,500', l: 'Avg brand deal', c: '#3b6bff' },
+                { v: '$2,500', l: 'Avg brand deal', c: '#1e3a5f' },
                 { v: '4', l: 'Campaigns per month', c: '#8a5cf6' },
                 { v: '+12%', l: 'Audience growth', c: '#c89c3f' },
               ],
@@ -375,7 +374,7 @@ export function LandingPageV3DeepMind() {
             <div className="dm-pill inline-flex mb-5"><Compass className="w-3 h-3" /> capabilities</div>
             {/* AIDA: Attention → Interest → Desire → Action */}
             <h2 className="dm-display-th text-4xl md:text-6xl leading-[1] max-w-3xl mx-auto">
-              Built like an <span className="dm-grad-text dm-display">intelligence</span>, not a dashboard.
+              Built like an <span className="dm-display text-[#1e3a5f]">intelligence</span>, not a dashboard.
             </h2>
             <p className="text-[var(--muted)] mt-4 max-w-xl mx-auto">
               Every feature is designed to remove friction and multiply your output — from lead discovery to content publishing to revenue tracking.
@@ -387,7 +386,7 @@ export function LandingPageV3DeepMind() {
               <GlassPanel key={i} className={`p-6 ${wide ? 'col-span-12' : 'col-span-12 md:col-span-6 lg:col-span-4'}`}>
                 <div className="flex items-start justify-between mb-5">
                   <div className="w-11 h-11 rounded-2xl grid place-items-center"
-                       style={{ background: 'linear-gradient(135deg, #3b6bff, #8a5cf6)', color: '#fff', boxShadow: '0 8px 22px -8px rgba(138,92,246,0.5)' }}>
+                       style={{ background: 'linear-gradient(135deg, #1e3a5f, #8a5cf6)', color: '#fff', boxShadow: '0 8px 22px -8px rgba(138,92,246,0.5)' }}>
                     <Icon className="w-5 h-5" />
                   </div>
                 </div>
@@ -395,8 +394,8 @@ export function LandingPageV3DeepMind() {
                 <p className="text-sm text-[var(--muted)] leading-relaxed">{desc}</p>
                 {wide && (
                   <div className="mt-5 flex items-center gap-3 flex-wrap">
-                    <div className="dm-glass-strip"><span className="dm-thinking-dot" /><span className="dm-thinking-dot" /><span className="dm-thinking-dot" /><span className="text-[var(--muted)]">Listening · 47 langs</span></div>
-                    <span className="dm-pill" style={{ borderColor: '#3b6bff40', color: '#3b6bff' }}>Auto-detect</span>
+                    <div className="dm-glass-strip"><span className="text-[var(--muted)]">Multilingual Support · 47 Languages</span></div>
+                    <span className="dm-pill" style={{ borderColor: '#1e3a5f40', color: '#1e3a5f' }}>Auto-detect</span>
                     <span className="dm-mono text-xs text-[var(--muted)]">0.18s latency</span>
                   </div>
                 )}
@@ -437,7 +436,7 @@ export function LandingPageV3DeepMind() {
             "{TESTIMONIALS[0].text}"
           </blockquote>
           <div className="inline-flex items-center gap-3 dm-glass-strip">
-            <div className="w-7 h-7 rounded-full grid place-items-center text-xs font-bold" style={{ background: 'linear-gradient(135deg, #3b6bff, #8a5cf6)', color: '#fff' }}>{TESTIMONIALS[0].name[0]}</div>
+            <div className="w-7 h-7 rounded-full grid place-items-center text-xs font-bold" style={{ background: 'linear-gradient(135deg, #1e3a5f, #8a5cf6)', color: '#fff' }}>{TESTIMONIALS[0].name[0]}</div>
             <span>{TESTIMONIALS[0].name}</span>
             <span className="text-[var(--muted)]">{TESTIMONIALS[0].role}</span>
           </div>
@@ -459,18 +458,18 @@ export function LandingPageV3DeepMind() {
         <div className="max-w-6xl mx-auto">
           <div className="text-center mb-14">
             <div className="dm-pill inline-flex mb-4">pricing</div>
-            <h2 className="dm-display-th text-4xl md:text-5xl">Built for every stage. <span className="dm-grad-text dm-display">One mind.</span></h2>
+            <h2 className="dm-display-th text-4xl md:text-5xl">Built for every stage. <span className="dm-display text-[#1e3a5f]">One mind.</span></h2>
             {/* Annual toggle */}
             <div className="flex items-center justify-center gap-3 mt-6">
               <span className={`text-sm ${!annual ? 'font-semibold' : 'text-[var(--muted)]'}`}>Monthly</span>
               <button
                 onClick={() => setAnnual(!annual)}
                 className="relative w-12 h-6 rounded-full transition-colors"
-                style={{ background: annual ? 'linear-gradient(90deg, #3b6bff, #8a5cf6)' : 'rgba(11,16,32,0.15)' }}
+                style={{ background: annual ? 'linear-gradient(90deg, #1e3a5f, #8a5cf6)' : 'rgba(11,16,32,0.15)' }}
               >
                 <div className="absolute top-0.5 left-0.5 w-5 h-5 rounded-full bg-white transition-transform" style={{ transform: annual ? 'translateX(24px)' : 'translateX(0)' }} />
               </button>
-              <span className={`text-sm ${annual ? 'font-semibold' : 'text-[var(--muted)]'}`}>Annual <span className="text-xs" style={{ color: '#3b6bff' }}>(2 months free)</span></span>
+              <span className={`text-sm ${annual ? 'font-semibold' : 'text-[var(--muted)]'}`}>Annual <span className="text-xs" style={{ color: '#1e3a5f' }}>(2 months free)</span></span>
             </div>
           </div>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
@@ -482,20 +481,20 @@ export function LandingPageV3DeepMind() {
                             style={p.popular ? { boxShadow: '0 30px 80px -20px rgba(59,107,255,0.55)' } : p.custom ? { border: '2px solid rgba(129,140,248,0.4)' } : {}}>
                   <div className="flex items-center justify-between mb-4">
                     <span className="dm-pill" style={p.popular ? { background: 'rgba(255,255,255,0.15)', borderColor: 'rgba(255,255,255,0.3)', color: '#fff' } : p.custom ? { background: 'rgba(129,140,248,0.15)', borderColor: 'rgba(129,140,248,0.4)', color: '#818CF8' } : {}}>{p.tier}</span>
-                    {p.popular && <span className="dm-mono text-[10px] tracking-widest px-2 py-1 rounded-full" style={{ background: 'linear-gradient(90deg, #3b6bff, #8a5cf6)', color: '#fff' }}>RECOMMENDED</span>}
+                    {p.popular && <span className="dm-mono text-[10px] tracking-widest px-2 py-1 rounded-full" style={{ background: 'linear-gradient(90deg, #1e3a5f, #8a5cf6)', color: '#fff' }}>RECOMMENDED</span>}
                     {p.custom && <span className="dm-mono text-[10px] tracking-widest px-2 py-1 rounded-full" style={{ background: 'linear-gradient(90deg, #818CF8, #6366F1)', color: '#fff' }}>CUSTOM</span>}
                   </div>
                   <div className="flex items-baseline gap-1 mb-1">
                     <span className="dm-display-th text-5xl">${annualPrice}</span>
                     <span className="opacity-60 mb-1.5">{period}</span>
                   </div>
-                  {p.trial && <p className="text-xs mb-2" style={{ color: '#3b6bff' }}>{p.trial}</p>}
+                  {p.trial && <p className="text-xs mb-2" style={{ color: '#1e3a5f' }}>{p.trial}</p>}
                   {p.custom && <p className="text-xs mb-2" style={{ color: '#818CF8' }}>+$500 one-time build</p>}
                   <p className={`text-sm mb-5 ${p.popular ? 'text-white/70' : 'text-[var(--muted)]'}`}>{p.blurb}</p>
                   <ul className="space-y-2.5 flex-1 mb-6 text-sm">
                     {p.feats.map(f => (
                       <li key={f} className="flex items-start gap-2">
-                        <Check className="w-4 h-4 mt-0.5 flex-shrink-0" style={{ color: p.popular ? '#b8d4ff' : p.custom ? '#818CF8' : '#3b6bff' }} />
+                        <Check className="w-4 h-4 mt-0.5 flex-shrink-0" style={{ color: p.popular ? '#b8d4ff' : p.custom ? '#818CF8' : '#1e3a5f' }} />
                         <span>{f}</span>
                       </li>
                     ))}
@@ -581,7 +580,7 @@ export function LandingPageV3DeepMind() {
         <div className="max-w-2xl mx-auto">
           <GlassPanel className="p-10 text-center">
             <div className="flex items-center justify-center mb-6">
-              <div className="dm-orb" style={{ width: 90, height: 90 }} />
+              <div className="w-[90px] h-[90px] rounded-full bg-[#1e3a5f]/10 flex items-center justify-center"><Star className="w-8 h-8 text-[#1e3a5f]" /></div>
             </div>
             <h2 className="dm-display-th text-4xl md:text-5xl mb-3">Open the preview.</h2>
             <p className="text-[var(--muted)] mb-7">Early adopters get 3 months free. No spam, ever.</p>
@@ -592,7 +591,7 @@ export function LandingPageV3DeepMind() {
               <button className="dm-btn" type="submit">Request invite <ArrowRight className="w-4 h-4" /></button>
             </form>
             {/* Trust signal */}
-            <p className="text-[10px] text-[var(--muted)] mt-4">🔒 2,400+ creators joined. Unsubscribe anytime.</p>
+            <p className="text-[10px] text-[var(--muted)] mt-4">2,400+ creators joined. Unsubscribe anytime.</p>
           </GlassPanel>
         </div>
       </section>
@@ -602,7 +601,7 @@ export function LandingPageV3DeepMind() {
         <div className="max-w-6xl mx-auto flex items-center justify-between flex-wrap gap-4 text-xs text-[var(--muted)]">
           <div className="flex items-center gap-4">
             <a href="#/affiliates" className="hover:text-[var(--dl-ink)] transition-colors">Earn $400/referral → Become an Affiliate</a>
-            <span className="flex items-center gap-2"><span className="dm-thinking-dot" /><span className="dm-thinking-dot" /><span className="dm-thinking-dot" /> NORI online</span>
+            <span className="flex items-center gap-2 text-[var(--muted)]">System Online</span>
           </div>
           <span>© 2026 · Built with intelligence</span>
         </div>

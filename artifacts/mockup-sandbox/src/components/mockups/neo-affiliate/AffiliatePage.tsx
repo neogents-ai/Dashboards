@@ -3,7 +3,7 @@ import { QRCodeSVG } from 'qrcode.react';
 import {
   DollarSign, Users, Share2, QrCode, ArrowRight, CheckCircle2,
   Wallet, BarChart3, Mail, Smartphone, Gift, HelpCircle,
-  ChevronDown, ChevronUp, Copy, Check, Sparkles, TrendingUp,
+  ChevronDown, ChevronUp, Copy, Check, Star, TrendingUp,
   HandCoins, Network, Megaphone, Briefcase
 } from 'lucide-react';
 import { useCountUp } from '../../../hooks/useCountUp';
@@ -26,7 +26,7 @@ function EarningsCalculator() {
   const ifKeepPace = thisMonth * 12;
 
   return (
-    <div className="rounded-2xl border border-white/80 bg-white/60 backdrop-blur-xl p-6 md:p-8 max-w-lg mx-auto shadow-lg">
+    <div className="rounded-xl border border-slate-200 bg-white p-6 md:p-8 max-w-lg mx-auto shadow-sm">
       <h3 className="text-lg font-semibold text-slate-900 mb-4 text-center">How Much Will You Make?</h3>
       <div className="mb-6">
         <label className="block text-sm text-slate-500 mb-2">How many businesses will you refer this month?</label>
@@ -36,7 +36,7 @@ function EarningsCalculator() {
           max={20}
           value={referrals}
           onChange={(e) => setReferrals(Number(e.target.value))}
-          className="w-full accent-[#3b6bff]"
+          className="w-full accent-[#1e3a5f]"
         />
         <div className="flex justify-between text-xs text-slate-400 mt-1">
           <span>1</span>
@@ -53,8 +53,8 @@ function EarningsCalculator() {
               onClick={() => setTierIdx(i)}
               className={`px-3 py-2 rounded-lg text-xs font-medium transition-colors ${
                 tierIdx === i
-                  ? "bg-[#3b6bff] text-white"
-                  : "bg-white/80 border border-slate-200 text-slate-600 hover:bg-slate-50"
+                  ? "bg-[#1e3a5f] text-white"
+                  : "bg-white border border-slate-200 text-slate-600 hover:bg-slate-50"
               }`}
             >
               {tier.tier} — ${tier.commission}
@@ -62,17 +62,17 @@ function EarningsCalculator() {
           ))}
         </div>
       </div>
-      <div className="rounded-xl bg-[#3b6bff]/10 border border-[#3b6bff]/20 p-5 text-center mb-4">
-        <p className="text-xs text-[#3b6bff] uppercase tracking-wider mb-1">You get paid (one-time per referral)</p>
+      <div className="rounded-xl bg-[#1e3a5f]/10 border border-[#1e3a5f]/20 p-5 text-center mb-4">
+        <p className="text-xs text-[#1e3a5f] uppercase tracking-wider mb-1">You get paid (one-time per referral)</p>
         <p className="text-3xl font-bold text-slate-900">${thisMonth.toLocaleString()}</p>
         <p className="text-xs text-slate-500 mt-1">{referrals} referral{referrals > 1 ? 's' : ''} × ${perReferral} each</p>
       </div>
       <div className="grid grid-cols-2 gap-4">
-        <div className="rounded-xl bg-white/80 border border-slate-200/60 p-4 text-center">
+        <div className="rounded-xl bg-white border border-slate-200 p-4 text-center">
           <p className="text-xs text-slate-500 uppercase tracking-wider">Per Referral</p>
-          <p className="text-xl font-bold text-[#3b6bff]">${perReferral}</p>
+          <p className="text-xl font-bold text-[#1e3a5f]">${perReferral}</p>
         </div>
-        <div className="rounded-xl bg-white/80 border border-slate-200/60 p-4 text-center">
+        <div className="rounded-xl bg-white border border-slate-200 p-4 text-center">
           <p className="text-xs text-slate-500 uppercase tracking-wider">If you keep this pace for a year</p>
           <p className="text-xl font-bold text-emerald-600">${ifKeepPace.toLocaleString()}</p>
         </div>
@@ -101,10 +101,10 @@ function FaqAccordion() {
   return (
     <div className="space-y-3 max-w-2xl mx-auto">
       {FAQS.map((faq, i) => (
-        <div key={i} className="rounded-xl border border-slate-200/60 bg-white/60 backdrop-blur-sm overflow-hidden shadow-sm">
+        <div key={i} className="rounded-lg border border-slate-200 bg-white overflow-hidden shadow-sm">
           <button
             onClick={() => setOpenIdx(openIdx === i ? null : i)}
-            className="w-full flex items-center justify-between p-4 text-left hover:bg-white/80 transition-colors"
+            className="w-full flex items-center justify-between p-4 text-left hover:bg-slate-50 transition-colors"
           >
             <span className="text-sm font-medium text-slate-800">{faq.q}</span>
             {openIdx === i ? <ChevronUp className="w-4 h-4 text-slate-400" /> : <ChevronDown className="w-4 h-4 text-slate-400" />}
@@ -132,8 +132,8 @@ function QRSection() {
   };
 
   return (
-    <div className="rounded-2xl border border-white/80 bg-white/60 backdrop-blur-xl p-6 md:p-8 max-w-md mx-auto text-center shadow-lg">
-      <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#3b6bff]/10 text-[#3b6bff] text-xs font-medium mb-4 border border-[#3b6bff]/20">
+    <div className="rounded-xl border border-slate-200 bg-white p-6 md:p-8 max-w-md mx-auto text-center shadow-sm">
+      <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#1e3a5f]/10 text-[#1e3a5f] text-xs font-medium mb-4 border border-[#1e3a5f]/20">
         <QrCode className="w-3 h-3" /> Scan to Join
       </div>
       <div className="bg-white rounded-xl p-4 inline-block mb-4 shadow-sm border border-slate-100">
@@ -153,7 +153,7 @@ function QRSection() {
       <p className="text-sm text-slate-500 mb-4">Scan this code to visit the affiliate signup page</p>
       <button
         onClick={copyLink}
-        className="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-white/80 border border-slate-200 text-sm text-slate-700 hover:bg-slate-50 transition-colors shadow-sm"
+        className="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-white border border-slate-200 text-sm text-slate-700 hover:bg-slate-50 transition-colors shadow-sm"
       >
         {copied ? <Check className="w-4 h-4 text-emerald-600" /> : <Copy className="w-4 h-4" />}
         {copied ? "Copied!" : "Copy Referral Link"}
@@ -203,18 +203,18 @@ function AffiliateSignup() {
       ? `${window.location.origin}/api/affiliates/redirect/${referralCode}`
       : '';
     return (
-      <div className="rounded-2xl border border-emerald-200 bg-emerald-50/80 backdrop-blur-xl p-8 max-w-md mx-auto text-center shadow-lg">
+      <div className="rounded-xl border border-emerald-200 bg-emerald-50 p-8 max-w-md mx-auto text-center shadow-sm">
         <CheckCircle2 className="w-12 h-12 text-emerald-600 mx-auto mb-4" />
         <h3 className="text-xl font-semibold text-slate-900 mb-2">You're In!</h3>
         <p className="text-slate-600 mb-4">Check your email in the next few minutes for your affiliate dashboard link and QR code.</p>
         {referralCode && (
           <>
-            <div className="rounded-lg bg-white/80 border border-slate-200/60 p-3 mb-3">
+            <div className="rounded-lg bg-white border border-slate-200 p-3 mb-3">
               <p className="text-xs text-slate-400 mb-1">Your referral code</p>
-              <p className="text-lg font-bold text-[#3b6bff]">{referralCode}</p>
+              <p className="text-lg font-bold text-[#1e3a5f]">{referralCode}</p>
             </div>
             {shareUrl && (
-              <div className="rounded-lg bg-white/80 border border-slate-200/60 p-3 mb-4">
+              <div className="rounded-lg bg-white border border-slate-200 p-3 mb-4">
                 <p className="text-xs text-slate-400 mb-1">Your shareable link</p>
                 <p className="text-sm font-medium text-slate-700 break-all mb-2">{shareUrl}</p>
                 <button
@@ -223,7 +223,7 @@ function AffiliateSignup() {
                     setLinkCopied(true);
                     setTimeout(() => setLinkCopied(false), 2000);
                   }}
-                  className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-md bg-[#3b6bff] hover:bg-[#2a55d4] text-white text-xs font-medium transition-colors"
+                  className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-md bg-[#1e3a5f] hover:bg-[#2a55d4] text-white text-xs font-medium transition-colors"
                 >
                   {linkCopied ? <Check className="w-3.5 h-3.5" /> : <Copy className="w-3.5 h-3.5" />}
                   {linkCopied ? 'Copied!' : 'Copy Link'}
@@ -232,13 +232,13 @@ function AffiliateSignup() {
             )}
           </>
         )}
-        <div className="text-sm text-slate-500">Welcome to the team 🎉</div>
+        <div className="text-sm text-slate-500">Welcome to the team </div>
       </div>
     );
   }
 
   return (
-    <form onSubmit={handleSubmit} className="rounded-2xl border border-white/80 bg-white/60 backdrop-blur-xl p-6 md:p-8 max-w-md mx-auto space-y-4 shadow-lg">
+    <form onSubmit={handleSubmit} className="rounded-xl border border-slate-200 bg-white p-6 md:p-8 max-w-md mx-auto space-y-4 shadow-sm">
       <h3 className="text-lg font-semibold text-slate-900 text-center mb-2">Get Your Referral Link</h3>
       <p className="text-sm text-slate-500 text-center mb-4">Join free. Start earning today.</p>
       {error && (
@@ -250,7 +250,7 @@ function AffiliateSignup() {
         required
         value={form.name}
         onChange={(e) => setForm({ ...form, name: e.target.value })}
-        className="w-full px-4 py-3 rounded-lg bg-white border border-slate-200 text-slate-900 placeholder:text-slate-400 focus:outline-none focus:border-[#3b6bff] text-sm shadow-sm"
+        className="w-full px-4 py-3 rounded-lg bg-white border border-slate-200 text-slate-900 placeholder:text-slate-400 focus:outline-none focus:border-[#1e3a5f] text-sm shadow-sm"
       />
       <input
         type="email"
@@ -258,19 +258,19 @@ function AffiliateSignup() {
         required
         value={form.email}
         onChange={(e) => setForm({ ...form, email: e.target.value })}
-        className="w-full px-4 py-3 rounded-lg bg-white border border-slate-200 text-slate-900 placeholder:text-slate-400 focus:outline-none focus:border-[#3b6bff] text-sm shadow-sm"
+        className="w-full px-4 py-3 rounded-lg bg-white border border-slate-200 text-slate-900 placeholder:text-slate-400 focus:outline-none focus:border-[#1e3a5f] text-sm shadow-sm"
       />
       <input
         type="tel"
         placeholder="Phone number (optional)"
         value={form.phone}
         onChange={(e) => setForm({ ...form, phone: e.target.value })}
-        className="w-full px-4 py-3 rounded-lg bg-white border border-slate-200 text-slate-900 placeholder:text-slate-400 focus:outline-none focus:border-[#3b6bff] text-sm shadow-sm"
+        className="w-full px-4 py-3 rounded-lg bg-white border border-slate-200 text-slate-900 placeholder:text-slate-400 focus:outline-none focus:border-[#1e3a5f] text-sm shadow-sm"
       />
       <select
         value={form.how}
         onChange={(e) => setForm({ ...form, how: e.target.value })}
-        className="w-full px-4 py-3 rounded-lg bg-white border border-slate-200 text-slate-900 focus:outline-none focus:border-[#3b6bff] text-sm shadow-sm"
+        className="w-full px-4 py-3 rounded-lg bg-white border border-slate-200 text-slate-900 focus:outline-none focus:border-[#1e3a5f] text-sm shadow-sm"
       >
         <option value="">How do you plan to share?</option>
         <option value="friends">Friends & family</option>
@@ -321,10 +321,10 @@ export function AffiliatePage() {
       }}
     >
       {/* ── Navbar ── */}
-      <nav className="sticky top-0 z-50 border-b border-slate-200/60 bg-white/70 backdrop-blur-xl">
+      <nav className="sticky top-0 z-50 border-b border-slate-200/60 bg-white">
         <div className="max-w-6xl mx-auto px-4 h-14 flex items-center justify-between">
           <a href="#/" className="flex items-center gap-2 text-slate-900 font-semibold text-sm">
-            <Sparkles className="w-4 h-4 text-[#3b6bff]" /> NEO Gents
+            <Star className="w-4 h-4 text-[#1e3a5f]" /> NEO Gents
           </a>
           <a href="#/" className="text-xs text-slate-500 hover:text-slate-900 transition-colors">
             ← Back to Home
@@ -334,14 +334,14 @@ export function AffiliatePage() {
 
       {/* ── Hero ── */}
       <section className="relative overflow-hidden px-4 pt-16 pb-20 md:pt-24 md:pb-28">
-        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-[#3b6bff]/10 via-transparent to-transparent" />
+        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-[#1e3a5f]/10 via-transparent to-transparent" />
         <div className="relative max-w-4xl mx-auto text-center">
-          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#3b6bff]/10 border border-[#3b6bff]/20 text-[#3b6bff] text-xs font-medium mb-6">
+          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#1e3a5f]/10 border border-[#1e3a5f]/20 text-[#1e3a5f] text-xs font-medium mb-6">
             <HandCoins className="w-3 h-3" /> Earn Up To $458 Per Referral
           </div>
           <h1 className="text-4xl md:text-6xl font-bold tracking-tight mb-6 text-slate-900">
             Did You Just Get Laid Off?<br />
-            <span className="text-[#3b6bff]">Can't Find a Job?</span>
+            <span className="text-[#1e3a5f]">Can't Find a Job?</span>
           </h1>
           <p className="text-lg md:text-xl text-slate-500 max-w-2xl mx-auto mb-4 leading-relaxed">
             Or maybe you just don't want to work a traditional job anymore.
@@ -358,7 +358,7 @@ export function AffiliatePage() {
             </a>
             <a
               href="#how"
-              className="px-6 py-3 rounded-lg bg-white/80 border border-slate-200 hover:bg-white text-slate-700 font-medium text-sm transition-colors shadow-sm"
+              className="px-6 py-3 rounded-lg bg-white border border-slate-200 hover:bg-slate-50 text-slate-700 font-medium text-sm transition-colors shadow-sm"
             >
               See How It Works
             </a>
@@ -386,9 +386,9 @@ export function AffiliatePage() {
               { icon: Megaphone, title: "The Creator", desc: "You have a following on Instagram, TikTok, or YouTube. Your audience trusts your recommendations." },
               { icon: Briefcase, title: "The Side Hustler", desc: "You want flexible income without a 9-to-5. Share your QR code when it works for you." },
             ].map((p, i) => (
-              <div key={i} className="rounded-2xl border border-white/80 bg-white/60 backdrop-blur-sm p-6 hover:border-[#3b6bff]/30 transition-colors shadow-lg">
-                <div className="w-10 h-10 rounded-lg bg-[#3b6bff]/10 flex items-center justify-center mb-4">
-                  <p.icon className="w-5 h-5 text-[#3b6bff]" />
+              <div key={i} className="rounded-xl border border-slate-200 bg-white p-6 hover:border-[#1e3a5f]/30 transition-colors shadow-sm">
+                <div className="w-10 h-10 rounded-lg bg-[#1e3a5f]/10 flex items-center justify-center mb-4">
+                  <p.icon className="w-5 h-5 text-[#1e3a5f]" />
                 </div>
                 <h3 className="text-lg font-semibold text-slate-900 mb-2">{p.title}</h3>
                 <p className="text-sm text-slate-500 leading-relaxed">{p.desc}</p>
@@ -409,10 +409,10 @@ export function AffiliatePage() {
               { n: "03", icon: DollarSign, title: "Get Paid", desc: "Earn $78–$458 per referral depending on the plan they choose. Money hits your account within 30 days of their first payment." },
             ].map((step, i) => (
               <div key={i} className="relative text-center">
-                <div className="w-14 h-14 rounded-full bg-[#3b6bff]/10 border border-[#3b6bff]/20 flex items-center justify-center mx-auto mb-4">
-                  <step.icon className="w-6 h-6 text-[#3b6bff]" />
+                <div className="w-14 h-14 rounded-full bg-[#1e3a5f]/10 border border-[#1e3a5f]/20 flex items-center justify-center mx-auto mb-4">
+                  <step.icon className="w-6 h-6 text-[#1e3a5f]" />
                 </div>
-                <div className="text-xs font-bold text-[#3b6bff] mb-2">STEP {step.n}</div>
+                <div className="text-xs font-bold text-[#1e3a5f] mb-2">STEP {step.n}</div>
                 <h3 className="text-lg font-semibold text-slate-900 mb-2">{step.title}</h3>
                 <p className="text-sm text-slate-500 leading-relaxed">{step.desc}</p>
               </div>
@@ -434,9 +434,9 @@ export function AffiliatePage() {
               { icon: Gift, title: "Printable One-Pager", desc: "A beautiful PDF you can print and hand to business owners in person." },
               { icon: Wallet, title: "Monthly Payouts", desc: "Get paid via PayPal, bank transfer, or Venmo — your choice, every month." },
             ].map((item, i) => (
-              <div key={i} className="flex items-start gap-3 rounded-xl border border-white/80 bg-white/60 p-4 shadow-sm backdrop-blur-sm">
-                <div className="w-8 h-8 rounded-lg bg-[#3b6bff]/10 flex items-center justify-center shrink-0 mt-0.5">
-                  <item.icon className="w-4 h-4 text-[#3b6bff]" />
+              <div key={i} className="flex items-start gap-3 rounded-lg border border-slate-200 bg-white p-4 shadow-sm">
+                <div className="w-8 h-8 rounded-lg bg-[#1e3a5f]/10 flex items-center justify-center shrink-0 mt-0.5">
+                  <item.icon className="w-4 h-4 text-[#1e3a5f]" />
                 </div>
                 <div>
                   <h4 className="text-sm font-semibold text-slate-900 mb-1">{item.title}</h4>
@@ -454,24 +454,24 @@ export function AffiliatePage() {
           <h2 className="text-2xl md:text-3xl font-bold mb-4 text-slate-900">Real People. Real Earnings.</h2>
           <p className="text-slate-500 mb-12 max-w-lg mx-auto">Our founding affiliates have been earning for 4 months and counting.</p>
           <div className="grid md:grid-cols-3 gap-8 mb-12">
-            <div className="rounded-2xl border border-white/80 bg-white/60 p-6 shadow-lg backdrop-blur-sm">
-              <p className="text-4xl md:text-5xl font-bold text-[#3b6bff]">2</p>
+            <div className="rounded-xl border border-slate-200 bg-white p-6 shadow-sm">
+              <p className="text-4xl md:text-5xl font-bold text-[#1e3a5f]">2</p>
               <p className="text-sm text-slate-500 mt-2">Founding affiliates on Agency tier</p>
             </div>
-            <div className="rounded-2xl border border-white/80 bg-white/60 p-6 shadow-lg backdrop-blur-sm">
+            <div className="rounded-xl border border-slate-200 bg-white p-6 shadow-sm">
               <p className="text-4xl md:text-5xl font-bold text-emerald-600">$2,288</p>
               <p className="text-sm text-slate-500 mt-2">Paid out in commissions so far</p>
             </div>
-            <div className="rounded-2xl border border-white/80 bg-white/60 p-6 shadow-lg backdrop-blur-sm">
+            <div className="rounded-xl border border-slate-200 bg-white p-6 shadow-sm">
               <p className="text-4xl md:text-5xl font-bold text-slate-900">4 mo</p>
               <p className="text-sm text-slate-500 mt-2">Months of consistent payouts</p>
             </div>
           </div>
-          <div className="rounded-2xl border border-[#3b6bff]/20 bg-[#3b6bff]/5 p-6 max-w-2xl mx-auto">
+          <div className="rounded-2xl border border-[#1e3a5f]/20 bg-[#1e3a5f]/5 p-6 max-w-2xl mx-auto">
             <p className="text-sm text-slate-600 italic">
               "I referred my barber and my cousin who does wedding photography. Both signed up for Agency plans. I've made $572 each month for 4 months straight. That's $2,288 I didn't have before — just from people I already knew."
             </p>
-            <p className="text-xs text-[#3b6bff] mt-3 font-medium">— Marcus J., Founding Affiliate · Atlanta</p>
+            <p className="text-xs text-[#1e3a5f] mt-3 font-medium">— Marcus J., Founding Affiliate · Atlanta</p>
           </div>
         </div>
       </section>
@@ -501,7 +501,7 @@ export function AffiliatePage() {
       <section className="px-4 py-16 md:py-20 border-t border-slate-200/60">
         <div className="max-w-2xl mx-auto text-center">
           <h2 className="text-3xl md:text-4xl font-bold mb-4 text-slate-900">
-            We All Know Someone Who <span className="text-[#3b6bff]">Could Use New Leads</span>
+            We All Know Someone Who <span className="text-[#1e3a5f]">Could Use New Leads</span>
           </h2>
           <p className="text-slate-600 mb-8 leading-relaxed">
             That barber who stays open late? The photographer at your cousin's wedding? The realtor who helped your friend buy their first home? <strong className="text-slate-900">They all need more clients.</strong> You can help them — and get paid for it.
@@ -520,7 +520,7 @@ export function AffiliatePage() {
       <footer className="border-t border-slate-200/60 px-4 py-8 bg-white/40 backdrop-blur-sm">
         <div className="max-w-6xl mx-auto flex flex-col md:flex-row items-center justify-between gap-4">
           <div className="flex items-center gap-2 text-sm text-slate-500">
-            <Sparkles className="w-4 h-4 text-[#3b6bff]" /> NEO Gents
+            <Star className="w-4 h-4 text-[#1e3a5f]" /> NEO Gents
           </div>
           <div className="flex items-center gap-6 text-xs text-slate-400">
             <a href="#/" className="hover:text-slate-600 transition-colors">Home</a>
