@@ -1,12 +1,205 @@
-import { useState, useRef, useEffect } from 'react';
+import { useState, useRef, useEffect, useMemo } from 'react';
 import { QRCodeSVG } from 'qrcode.react';
 import {
   DollarSign, Users, Share2, QrCode, ArrowRight, CheckCircle2,
   Wallet, BarChart3, Mail, Smartphone, Gift, HelpCircle,
   ChevronDown, ChevronUp, Copy, Check, Star, TrendingUp,
-  HandCoins, Network, Megaphone, Briefcase
+  HandCoins, Network, Megaphone, Briefcase, Eye, UserPlus
 } from 'lucide-react';
 import { useCountUp } from '../../../hooks/useCountUp';
+
+/* Founder personal code — change here to swap the code you hand out. */
+const FOUNDER_REF_CODE = 'BERRY20';
+const STORAGE_KEY = 'berry20_click_log_v1';
+
+type ClickLogEntry = { to: string; ts: number; ua: string; ref: string; landing: string };
+type ClickLog = Record<string, ClickLogEntry[]>;
+
+function loadClickLog(): ClickLog {
+  if (typeof window === 'undefined') return {};
+  try {
+    const raw = window.localStorage.getItem(STORAGE_KEY);
+    return raw ? (JSON.parse(raw) as ClickLog) : {};
+  } catch { return {}; }
+}
+function saveClickLog(log: ClickLog): void {
+  if (typeof window === 'undefined') return;
+  try { window.localStorage.setItem(STORAGE_KEY, JSON.stringify(log)); } catch {}
+}
+function summarizeUa(ua: string): string {
+  if (!ua) return 'Unknown device';
+  if (/iPhone/.test(ua)) return 'iPhone';
+  if (/iPad/.test(ua)) return 'iPad';
+  if (/Android/.test(ua)) return /Mobile/.test(ua) ? 'Android phone' : 'Android tablet';
+  if (/Mac OS X/.test(ua)) return 'Mac';
+  if (/Windows/.test(ua)) return 'Windows';
+  if (/Linux/.test(ua)) return 'Linux';
+  return 'Unknown device';
+}
+function useRefCodeTracking(): { totalOpens: number; perRecipient: Array<{ to: string; count: number; last: number }> } {
+  const [tick, setTick] = useState(0);
+  useEffect(() => {
+    if (typeof window === 'undefined') return;
+    const params = new URLSearchParams(window.location.search);
+    const ref = (params.get('ref') || '').toUpperCase();
+    if (ref !== FOUNDER_REF_CODE) { setTick((t) => t + 1); return; }
+    const to = (params.get('to') || '').trim().toLowerCase() || '_anon';
+    const log = loadClickLog();
+    log[to] = log[to] || [];
+    log[to].push({
+      to, ts: Date.now(),
+      ua: typeof navigator !== 'undefined' ? navigator.userAgent : '',
+      ref, landing: window.location.hash || '#/affiliates',
+    });
+    saveClickLog(log);
+    setTick((t) => t + 1);
+  }, []);
+  return useMemo(() => {
+    const log = loadClickLog();
+    const totalOpens = Object.values(log).reduce((s, l) => s + l.length, 0);
+    const perRecipient = Object.entries(log)
+      .map(([to, list]) => ({ to, count: list.length, last: list[list.length - 1]?.ts || 0 }))
+      .sort((a, b) => b.last - a.last);
+    return { totalOpens, perRecipient };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [tick]);
+}
+
+function FounderLinkPanel({ totalOpens }: { totalOpens: number }) {
+  const [toValue, setToValue] = useState('');
+  const [copiedKind, setCopiedKind] = useState<string | null>(null);
+  const baseUrl = typeof window !== 'undefined'
+    ? `${window.location.origin}/?ref=${FOUNDER_REF_CODE}`
+    : `https://neogents.tech/?ref=${FOUNDER_REF_CODE}`;
+  const taggedUrl = toValue.trim()
+    ? `${baseUrl}&to=${encodeURIComponent(toValue.trim().toLowerCase().replace(/\s+/g, '-'))}`
+    : baseUrl;
+  const copy = (text: string, kind: string) => {
+    if (typeof navigator !== 'undefined' && navigator.clipboard) {
+      navigator.clipboard.writeText(text).catch(() => {});
+    }
+    setCopiedKind(kind);
+    setTimeout(() => setCopiedKind(null), 2000);
+  };
+  return (
+    <div className="rounded-2xl border-2 border-[#3b6bff]/30 bg-white/80 backdrop-blur-xl p-6 md:p-7 max-w-2xl mx-auto text-left shadow-xl ring-1 ring-[#3b6bff]/10">
+      <div className="flex items-center justify-between gap-2 mb-3 flex-wrap">
+        <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#3b6bff]/10 text-[#3b6bff] text-xs font-medium border border-[#3b6bff]/20">
+          <Star className="w-3 h-3" /> Your Personal Link · Code: <strong className="ml-1">{FOUNDER_REF_CODE}</strong>
+        </div>
+        <div className="inline-flex items-center gap-1.5 text-xs text-slate-500">
+          <Eye className="w-3.5 h-3.5" /> <span data-testid="berry-total-opens">{totalOpens}</span> opens tracked on this device
+        </div>
+      </div>
+      <p className="text-sm text-slate-600 mb-4 leading-relaxed">
+        Hand out the link below. To know <strong>who</strong> you sent it to, add a <code className="px-1.5 py-0.5 rounded bg-slate-100 text-slate-700 text-xs">?to=&lt;name&gt;</code> tag to the URL before you send it. The person who opens it will land on this page, and you'll see their tag on the <a href="?ref=BERRY20&owner=1#/affiliates" className="text-[#3b6bff] underline">click log</a>.
+      </p>
+      <div className="grid sm:grid-cols-[1fr_auto] gap-2 mb-3">
+        <div className="rounded-lg bg-white border border-slate-200 p-3 font-mono text-sm text-slate-800 break-all leading-snug">
+          {taggedUrl}
+        </div>
+        <button
+          onClick={() => copy(taggedUrl, 'tagged')}
+          className="inline-flex items-center justify-center gap-2 px-4 py-2 rounded-lg bg-slate-900 hover:bg-slate-800 text-white text-sm font-semibold transition-colors"
+        >
+          {copiedKind === 'tagged' ? <Check className="w-4 h-4" /> : <Copy className="w-4 h-4" />}
+          {copiedKind === 'tagged' ? 'Copied' : 'Copy'}
+        </button>
+      </div>
+      <div className="flex items-center gap-2 mb-4">
+        <UserPlus className="w-4 h-4 text-slate-400 shrink-0" />
+        <input
+          type="text"
+          value={toValue}
+          onChange={(e) => setToValue(e.target.value)}
+          placeholder="Tag the next link with a name (e.g. john-doe)"
+          className="flex-1 px-3 py-2 rounded-lg bg-white border border-slate-200 text-sm text-slate-900 placeholder:text-slate-400 focus:outline-none focus:border-[#3b6bff]"
+        />
+      </div>
+      <div className="grid sm:grid-cols-3 gap-2">
+        <button
+          onClick={() => copy(`${baseUrl}&to=sms`, 'sms')}
+          className="inline-flex items-center justify-center gap-1.5 px-3 py-2 rounded-lg bg-white border border-slate-200 text-xs text-slate-700 hover:bg-slate-50 transition-colors"
+        >
+          {copiedKind === 'sms' ? <Check className="w-3.5 h-3.5 text-emerald-600" /> : <Copy className="w-3.5 h-3.5" />}
+          {copiedKind === 'sms' ? 'Copied' : 'Copy "to=sms"'}
+        </button>
+        <button
+          onClick={() => copy(`${baseUrl}&to=email`, 'email')}
+          className="inline-flex items-center justify-center gap-1.5 px-3 py-2 rounded-lg bg-white border border-slate-200 text-xs text-slate-700 hover:bg-slate-50 transition-colors"
+        >
+          {copiedKind === 'email' ? <Check className="w-3.5 h-3.5 text-emerald-600" /> : <Copy className="w-3.5 h-3.5" />}
+          {copiedKind === 'email' ? 'Copied' : 'Copy "to=email"'}
+        </button>
+        <button
+          onClick={() => copy(`${baseUrl}&to=dm`, 'dm')}
+          className="inline-flex items-center justify-center gap-1.5 px-3 py-2 rounded-lg bg-white border border-slate-200 text-xs text-slate-700 hover:bg-slate-50 transition-colors"
+        >
+          {copiedKind === 'dm' ? <Check className="w-3.5 h-3.5 text-emerald-600" /> : <Copy className="w-3.5 h-3.5" />}
+          {copiedKind === 'dm' ? 'Copied' : 'Copy "to=dm"'}
+        </button>
+      </div>
+      <p className="text-[11px] text-slate-400 mt-3 leading-relaxed">
+        Tip: change <code className="px-1 py-0.5 rounded bg-slate-100">to</code> to a unique value per recipient (e.g. <code className="px-1 py-0.5 rounded bg-slate-100">to=john-barber</code>) — the tag is what tells them apart on your click log.
+      </p>
+    </div>
+  );
+}
+
+function OwnerClickLog({ perRecipient, totalOpens }: { perRecipient: Array<{ to: string; count: number; last: number }>; totalOpens: number }) {
+  const [, setTick] = useState(0);
+  const refresh = () => setTick((t) => t + 1);
+  useEffect(() => {
+    const onStorage = (e: StorageEvent) => { if (e.key === STORAGE_KEY) refresh(); };
+    window.addEventListener('storage', onStorage);
+    return () => window.removeEventListener('storage', onStorage);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+  const log = loadClickLog();
+  const flat: ClickLogEntry[] = [];
+  Object.values(log).forEach((list) => list.forEach((e) => flat.push(e)));
+  flat.sort((a, b) => b.ts - a.ts);
+  return (
+    <div className="rounded-2xl border border-slate-200/60 bg-white/80 backdrop-blur-sm p-5 md:p-6 shadow-md">
+      <div className="flex items-center justify-between mb-3">
+        <h3 className="text-sm font-semibold text-slate-900">Founder-only click log · {FOUNDER_REF_CODE}</h3>
+        <button onClick={refresh} className="text-xs text-[#3b6bff] hover:underline">Refresh</button>
+      </div>
+      <p className="text-xs text-slate-500 mb-4">
+        Local to this device. Use as a sanity check that each tagged link reached the recipient. Total opens on this device: <strong>{totalOpens}</strong>.
+      </p>
+      {perRecipient.length === 0 ? (
+        <div className="rounded-lg bg-slate-50 border border-slate-200/60 p-4 text-xs text-slate-500 text-center">
+          No opens yet. Send a link with <code className="px-1 py-0.5 rounded bg-white border border-slate-200">{'{BASE}&to=NAME'}</code> and open it in any browser to see it appear here.
+        </div>
+      ) : (
+        <div className="space-y-2 mb-4">
+          {perRecipient.map((p) => (
+            <div key={p.to} className="flex items-center justify-between rounded-lg bg-white border border-slate-200/60 px-3 py-2 text-sm">
+              <span className="font-mono text-slate-800">{p.to}</span>
+              <span className="text-xs text-slate-500">
+                {p.count} open{p.count > 1 ? 's' : ''} · last {new Date(p.last).toLocaleString()}
+              </span>
+            </div>
+          ))}
+        </div>
+      )}
+      {flat.length > 0 && (
+        <details className="text-xs text-slate-600">
+          <summary className="cursor-pointer text-slate-500 hover:text-slate-700">View raw log ({flat.length} entries)</summary>
+          <ul className="mt-2 space-y-1 font-mono">
+            {flat.slice(0, 50).map((e, i) => (
+              <li key={i} className="flex justify-between gap-3">
+                <span className="truncate">{e.to}</span>
+                <span className="text-slate-400 shrink-0">{summarizeUa(e.ua)} · {new Date(e.ts).toLocaleTimeString()}</span>
+              </li>
+            ))}
+          </ul>
+        </details>
+      )}
+    </div>
+  );
+}
 
 /* ─── Commission Tiers ─── */
 const COMMISSION_TIERS = [
@@ -123,7 +316,9 @@ function FaqAccordion() {
 /* ─── QR Code Section ─── */
 function QRSection() {
   const [copied, setCopied] = useState(false);
-  const affiliateUrl = "https://neogents.tech/?ref=AFFILIATE";
+  const affiliateUrl = typeof window !== 'undefined'
+    ? `${window.location.origin}/?ref=${FOUNDER_REF_CODE}`
+    : `https://neogents.tech/?ref=${FOUNDER_REF_CODE}`;
 
   const copyLink = () => {
     navigator.clipboard.writeText(affiliateUrl);
@@ -295,6 +490,11 @@ function AffiliateSignup() {
 export function AffiliatePage() {
   const statsRef = useRef<HTMLDivElement>(null);
   const [statsVisible, setStatsVisible] = useState(false);
+  const { totalOpens, perRecipient } = useRefCodeTracking();
+  const isOwnerView = useMemo(() => {
+    if (typeof window === 'undefined') return false;
+    return new URLSearchParams(window.location.search).get('owner') === '1';
+  }, []);
 
   useEffect(() => {
     const observer = new IntersectionObserver(
@@ -364,6 +564,11 @@ export function AffiliatePage() {
             </a>
           </div>
         </div>
+      </section>
+
+      {/* ── Founder Personal Link ── */}
+      <section className="px-4 pb-4 md:pb-6">
+        <FounderLinkPanel totalOpens={totalOpens} />
       </section>
 
       {/* ── Earnings Calculator ── */}
@@ -496,6 +701,15 @@ export function AffiliatePage() {
           <FaqAccordion />
         </div>
       </section>
+
+      {/* ── Owner-only click log (visible only with ?owner=1) ── */}
+      {isOwnerView && (
+        <section className="px-4 py-12 border-t border-slate-200/60">
+          <div className="max-w-3xl mx-auto">
+            <OwnerClickLog perRecipient={perRecipient} totalOpens={totalOpens} />
+          </div>
+        </section>
+      )}
 
       {/* ── Footer CTA ── */}
       <section className="px-4 py-16 md:py-20 border-t border-slate-200/60">

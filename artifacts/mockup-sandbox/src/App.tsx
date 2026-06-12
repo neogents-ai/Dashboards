@@ -8,6 +8,7 @@ import { DashboardRealtor2 } from "./components/dashboard/realtor/DashboardRealt
 import { DashboardChef } from "./components/mockups/neo-chef/DashboardChef";
 import { DashboardCreators } from "./components/dashboard/creators/DashboardCreators";
 import { LandingPageV3DeepMind } from "./components/mockups/neo-landing-v3-deepmind-glass/LandingPageV3";
+import { AffiliatePage } from "./components/mockups/neo-affiliate/AffiliatePage";
 
 type ModuleMap = Record<string, () => Promise<Record<string, unknown>>>;
 
@@ -179,6 +180,7 @@ function App() {
   if (route === "/chef") return <DashboardChef />;
   if (route === "/realtor") return <DashboardRealtor2 />;
   if (route === "/creators") return <DashboardCreators />;
+  if (route === "/affiliates") return <AffiliatePage />;
 
   return <LandingPageV3DeepMind />;
 }
