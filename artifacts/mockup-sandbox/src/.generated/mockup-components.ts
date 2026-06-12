@@ -2,8 +2,6 @@
 type ModuleMap = Record<string, () => Promise<Record<string, unknown>>>;
 export const modules: ModuleMap = {
   "./components/mockups/cal-ripken/CalRipkenLanding.tsx": () => import("../components/mockups/cal-ripken/CalRipkenLanding.tsx"),
-  "./components/mockups/neo-aesthetician/DashboardAesthetician.tsx": () => import("../components/mockups/neo-aesthetician/DashboardAesthetician.tsx"),
-  "./components/mockups/neo-aesthetician/LandingAesthetician.tsx": () => import("../components/mockups/neo-aesthetician/LandingAesthetician.tsx"),
   "./components/mockups/neo-affiliate/AffiliateDashboard.tsx": () => import("../components/mockups/neo-affiliate/AffiliateDashboard.tsx"),
   "./components/mockups/neo-affiliate/AffiliatePage.tsx": () => import("../components/mockups/neo-affiliate/AffiliatePage.tsx"),
   "./components/mockups/neo-barber/BarberHairstylistPage.tsx": () => import("../components/mockups/neo-barber/BarberHairstylistPage.tsx"),
@@ -11,6 +9,8 @@ export const modules: ModuleMap = {
   "./components/mockups/neo-barber/LandingBarber.tsx": () => import("../components/mockups/neo-barber/LandingBarber.tsx"),
   "./components/mockups/neo-chef/DashboardChef.tsx": () => import("../components/mockups/neo-chef/DashboardChef.tsx"),
   "./components/mockups/neo-chef/LandingChef.tsx": () => import("../components/mockups/neo-chef/LandingChef.tsx"),
+  "./components/mockups/neo-aesthetician/DashboardAesthetician.tsx": () => import("../components/mockups/neo-aesthetician/DashboardAesthetician.tsx"),
+  "./components/mockups/neo-aesthetician/LandingAesthetician.tsx": () => import("../components/mockups/neo-aesthetician/LandingAesthetician.tsx"),
   "./components/mockups/neo-dashboard/Dashboard.tsx": () => import("../components/mockups/neo-dashboard/Dashboard.tsx"),
   "./components/mockups/neo-dashboard-copy-lGHc8gNK/NeoDashboardCopyLGHc8gNK.tsx": () => import("../components/mockups/neo-dashboard-copy-lGHc8gNK/NeoDashboardCopyLGHc8gNK.tsx"),
   "./components/mockups/neo-landing/LandingPage.tsx": () => import("../components/mockups/neo-landing/LandingPage.tsx"),

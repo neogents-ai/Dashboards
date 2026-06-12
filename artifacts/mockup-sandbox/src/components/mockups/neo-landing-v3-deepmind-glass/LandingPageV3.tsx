@@ -149,7 +149,7 @@ export function LandingPageV3DeepMind() {
             </div>
             <h1 className="dm-display-th text-[3rem] md:text-[5rem] leading-[1.05] mb-5 max-w-4xl mx-auto">
               <span>Your business runs on leads. </span>
-              <span className="dm-display text-[#1e3a5f]">We find them at scale</span>
+              <span className="dm-display dm-grad-text">We find them at scale</span>
               <span>.</span>
             </h1>
             <p className="text-[var(--muted)] text-lg md:text-xl max-w-2xl mx-auto mb-6 leading-relaxed">
@@ -374,7 +374,7 @@ export function LandingPageV3DeepMind() {
             <div className="dm-pill inline-flex mb-5"><Compass className="w-3 h-3" /> capabilities</div>
             {/* AIDA: Attention → Interest → Desire → Action */}
             <h2 className="dm-display-th text-4xl md:text-6xl leading-[1] max-w-3xl mx-auto">
-              Built like an <span className="dm-display text-[#1e3a5f]">intelligence</span>, not a dashboard.
+              Built like an <span className="dm-display dm-grad-text">intelligence</span>, not a dashboard.
             </h2>
             <p className="text-[var(--muted)] mt-4 max-w-xl mx-auto">
               Every feature is designed to remove friction and multiply your output — from lead discovery to content publishing to revenue tracking.
@@ -458,7 +458,7 @@ export function LandingPageV3DeepMind() {
         <div className="max-w-6xl mx-auto">
           <div className="text-center mb-14">
             <div className="dm-pill inline-flex mb-4">pricing</div>
-            <h2 className="dm-display-th text-4xl md:text-5xl">Built for every stage. <span className="dm-display text-[#1e3a5f]">One mind.</span></h2>
+            <h2 className="dm-display-th text-4xl md:text-5xl">Built for every stage. <span className="dm-display dm-grad-text">One mind.</span></h2>
             {/* Annual toggle */}
             <div className="flex items-center justify-center gap-3 mt-6">
               <span className={`text-sm ${!annual ? 'font-semibold' : 'text-[var(--muted)]'}`}>Monthly</span>

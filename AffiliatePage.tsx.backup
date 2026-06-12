@@ -316,12 +316,9 @@ function FaqAccordion() {
 /* ─── QR Code Section ─── */
 function QRSection() {
   const [copied, setCopied] = useState(false);
-  // Public visitor QR — points to the affiliate signup page itself.
-  // The founder's personal link (with ?ref=CODE and ?to=) lives in FounderLinkPanel,
-  // which is only visible with ?owner=1.
   const affiliateUrl = typeof window !== 'undefined'
-    ? `${window.location.origin}/#/affiliates`
-    : `https://neogents.tech/#/affiliates`;
+    ? `${window.location.origin}/?ref=${FOUNDER_REF_CODE}`
+    : `https://neogents.tech/?ref=${FOUNDER_REF_CODE}`;
 
   const copyLink = () => {
     navigator.clipboard.writeText(affiliateUrl);
@@ -569,12 +566,10 @@ export function AffiliatePage() {
         </div>
       </section>
 
-      {/* ── Founder Personal Link (visible only with ?owner=1) ── */}
-      {isOwnerView && (
-        <section className="px-4 pb-4 md:pb-6">
-          <FounderLinkPanel totalOpens={totalOpens} />
-        </section>
-      )}
+      {/* ── Founder Personal Link ── */}
+      <section className="px-4 pb-4 md:pb-6">
+        <FounderLinkPanel totalOpens={totalOpens} />
+      </section>
 
       {/* ── Earnings Calculator ── */}
       <section className="px-4 py-16 md:py-20">
@@ -690,8 +685,9 @@ export function AffiliatePage() {
       <section id="signup" className="px-4 py-16 md:py-20 border-t border-slate-200/60">
         <div className="max-w-5xl mx-auto">
           <h2 className="text-2xl md:text-3xl font-bold text-center mb-4 text-slate-900">Ready to Start Earning?</h2>
-          <p className="text-slate-500 text-center mb-12 max-w-lg mx-auto">Get your referral link in minutes. No cost. No commitment.</p>
-          <div className="max-w-xl mx-auto">
+          <p className="text-slate-500 text-center mb-12 max-w-lg mx-auto">Get your referral link and QR code in minutes. No cost. No commitment.</p>
+          <div className="grid md:grid-cols-2 gap-8 items-start">
+            <QRSection />
             <AffiliateSignup />
           </div>
         </div>
