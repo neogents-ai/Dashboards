@@ -7,6 +7,7 @@ import {
   HandCoins, Network, Megaphone, Briefcase, Eye, UserPlus
 } from 'lucide-react';
 import { useCountUp } from '../../../hooks/useCountUp';
+import '../neo-landing-v3-deepmind-glass/_styles.css';
 
 /* Founder personal code — change here to swap the code you hand out. */
 const FOUNDER_REF_CODE = 'BERRY20';
@@ -544,7 +545,7 @@ export function AffiliatePage() {
           </div>
           <h1 className="text-4xl md:text-6xl font-bold tracking-tight mb-6 text-slate-900">
             Did You Just Get Laid Off?<br />
-            <span className="text-[#1e3a5f]">Can't Find a Job?</span>
+            <span className="dm-grad-text">Can't Find a Job?</span>
           </h1>
           <p className="text-lg md:text-xl text-slate-500 max-w-2xl mx-auto mb-4 leading-relaxed">
             Or maybe you just don't want to work a traditional job anymore.

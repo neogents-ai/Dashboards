@@ -3,7 +3,6 @@ node_modules/
 
 # Build output
 dist/
-artifacts/mockup-sandbox/dist/
 server/dist/
 
 # Local env and secrets
