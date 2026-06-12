@@ -141,22 +141,27 @@ export function LandingPageV3DeepMind() {
 
       {/* ── HERO ── */}
       <section className="relative w-full min-h-screen overflow-hidden flex items-center pt-28 pb-12 px-6 md:px-10">
+        {/* Aurora background */}
+        <div className="dm-aurora" />
         <div className="relative z-10 max-w-6xl mx-auto w-full">
           {/* PAS Copy Framework */}
           <div className="text-center mb-10">
             <div className="dm-glass-strip mb-6 mx-auto">
               <span className="text-[var(--muted)]">Multilingual Intelligence · 47 Languages Supported</span>
             </div>
+            <div className="dm-glass-strip mb-6 mx-auto">
+              <span className="text-[var(--muted)]">Powered by NORI Intelligence</span>
+            </div>
             <h1 className="dm-display-th text-[3rem] md:text-[5rem] leading-[1.05] mb-5 max-w-4xl mx-auto">
               <span>Your business runs on leads. </span>
-              <span className="dm-display dm-grad-text">We find them at scale</span>
+              <span className="dm-display dm-shimmer">We find them at scale</span>
               <span>.</span>
             </h1>
             <p className="text-[var(--muted)] text-lg md:text-xl max-w-2xl mx-auto mb-6 leading-relaxed">
               The intelligence layer for service professionals — Lead Radar, Agentic CRM, Content Engine, and AI Automation. Animated by NORI, the multilingual intelligence that opens with your morning coffee.
             </p>
             <div className="flex gap-3 justify-center flex-wrap">
-              <a href="#waitlist" className="dm-btn">Try the preview <ArrowRight className="w-4 h-4" /></a>
+              <a href="#waitlist" className="dm-btn dm-grad-btn">Try the preview <ArrowRight className="w-4 h-4" /></a>
               <a href="#features" className="dm-btn-glass">Explore capabilities</a>
             </div>
             <div className="mt-3 text-center">
@@ -374,7 +379,7 @@ export function LandingPageV3DeepMind() {
             <div className="dm-pill inline-flex mb-5"><Compass className="w-3 h-3" /> capabilities</div>
             {/* AIDA: Attention → Interest → Desire → Action */}
             <h2 className="dm-display-th text-4xl md:text-6xl leading-[1] max-w-3xl mx-auto">
-              Built like an <span className="dm-display dm-grad-text">intelligence</span>, not a dashboard.
+              Built like an <span className="dm-display dm-shimmer">intelligence</span>, not a dashboard.
             </h2>
             <p className="text-[var(--muted)] mt-4 max-w-xl mx-auto">
               Every feature is designed to remove friction and multiply your output — from lead discovery to content publishing to revenue tracking.
@@ -458,7 +463,7 @@ export function LandingPageV3DeepMind() {
         <div className="max-w-6xl mx-auto">
           <div className="text-center mb-14">
             <div className="dm-pill inline-flex mb-4">pricing</div>
-            <h2 className="dm-display-th text-4xl md:text-5xl">Built for every stage. <span className="dm-display dm-grad-text">One mind.</span></h2>
+            <h2 className="dm-display-th text-4xl md:text-5xl">Built for every stage. <span className="dm-display dm-shimmer">One mind.</span></h2>
             {/* Annual toggle */}
             <div className="flex items-center justify-center gap-3 mt-6">
               <span className={`text-sm ${!annual ? 'font-semibold' : 'text-[var(--muted)]'}`}>Monthly</span>
@@ -582,13 +587,13 @@ export function LandingPageV3DeepMind() {
             <div className="flex items-center justify-center mb-6">
               <div className="w-[90px] h-[90px] rounded-full bg-[#1e3a5f]/10 flex items-center justify-center"><Star className="w-8 h-8 text-[#1e3a5f]" /></div>
             </div>
-            <h2 className="dm-display-th text-4xl md:text-5xl mb-3">Open the preview.</h2>
+            <h2 className="dm-display-th text-4xl md:text-5xl mb-3"><span className="dm-shimmer">Open the preview.</span></h2>
             <p className="text-[var(--muted)] mb-7">Early adopters get 3 months free. No spam, ever.</p>
             <form className="flex gap-2 max-w-md mx-auto" onSubmit={(e) => e.preventDefault()}>
               <input type="email" required placeholder="you@studio.com"
                      className="flex-1 px-4 py-3 text-sm bg-white/70 rounded-full border"
                      style={{ borderColor: 'rgba(255,255,255,0.85)', backdropFilter: 'blur(8px)' }} />
-              <button className="dm-btn" type="submit">Request invite <ArrowRight className="w-4 h-4" /></button>
+              <button className="dm-btn dm-grad-btn" type="submit">Request invite <ArrowRight className="w-4 h-4" /></button>
             </form>
             {/* Trust signal */}
             <p className="text-[10px] text-[var(--muted)] mt-4">2,400+ creators joined. Unsubscribe anytime.</p>
