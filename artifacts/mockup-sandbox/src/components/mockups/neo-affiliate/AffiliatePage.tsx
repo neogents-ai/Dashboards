@@ -529,15 +529,17 @@ export function AffiliatePage() {
 
       {/* ── Hero ── */}
       <section className="relative overflow-hidden px-4 pt-16 pb-20 md:pt-24 md:pb-28">
-        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-[#1e3a5f]/10 via-transparent to-transparent" />
+        <div className="dm-aurora" />
+        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-[var(--blue)]/10 via-transparent to-transparent" />
         <div className="relative max-w-4xl mx-auto text-center">
           <div className="dm-glass-strip mb-6">
             <HandCoins className="w-3.5 h-3.5 text-[var(--blue)]" />
             <span className="text-[var(--muted)]">Affiliate Program · Powered by NORI Intelligence</span>
           </div>
+          <div className="dm-orb mx-auto mb-6" />
           <h1 className="dm-display-th text-[3rem] md:text-[5rem] leading-[1.05] mb-5 max-w-4xl mx-auto">
             Did You Just Get Laid Off?<br />
-            <span className="dm-grad-text">Can't Find a Job?</span>
+            <span className="dm-shimmer">Can't Find a Job?</span>
           </h1>
           <p className="text-[var(--muted)] text-lg md:text-xl max-w-2xl mx-auto mb-4 leading-relaxed">
             Or maybe you just don't want to work a traditional job anymore.
@@ -691,7 +693,7 @@ export function AffiliatePage() {
       </section>
 
       {/* ── FAQ ── */}
-      <section className="px-4 py-16 md:py-20 border-t border-white/20">
+      <section id="faq" className="px-4 py-16 md:py-20 border-t border-white/20">
         <div className="max-w-4xl mx-auto">
           <h2 className="text-2xl md:text-3xl font-bold text-center mb-4 text-[var(--ink)]">Questions? Answered.</h2>
           <p className="text-[var(--muted)] text-center mb-12">Everything you need to know before you start.</p>
@@ -712,7 +714,7 @@ export function AffiliatePage() {
       <section className="px-4 py-16 md:py-20 border-t border-white/20">
         <div className="max-w-2xl mx-auto text-center">
           <h2 className="text-3xl md:text-4xl font-bold mb-4 text-[var(--ink)]">
-            We All Know Someone Who <span className="dm-grad-text">Could Use New Leads</span>
+            We All Know Someone Who <span className="dm-shimmer">Could Use New Leads</span>
           </h2>
           <p className="text-[var(--muted)] mb-8 leading-relaxed">
             That barber who stays open late? The photographer at your cousin's wedding? The realtor who helped your friend buy their first home? <strong className="text-[var(--ink)]">They all need more clients.</strong> You can help them — and get paid for it.
@@ -742,6 +744,15 @@ export function AffiliatePage() {
           <p className="text-xs text-[var(--muted)]">© 2026 NEO Gents. All rights reserved.</p>
         </div>
       </footer>
+
+      {/* ── FLOATING GLASS DOCK ── */}
+      <div className="dm-dock hidden md:flex">
+        <a href="#how" className="dm-btn-glass text-xs px-3 py-1.5">How It Works</a>
+        <a href="#signup" className="dm-btn-glass text-xs px-3 py-1.5">Sign Up</a>
+        <a href="#faq" className="dm-btn-glass text-xs px-3 py-1.5">FAQ</a>
+        <div style={{ width: 1, height: 22, background: 'rgba(11,16,32,0.12)' }} />
+        <a href="#/" className="dm-btn" style={{ padding: '.4rem 1rem', fontSize: '.78rem' }}>Home <ArrowRight className="w-3 h-3" /></a>
+      </div>
     </div>
   );
 }
