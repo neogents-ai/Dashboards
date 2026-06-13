@@ -1,9 +1,11 @@
 import { useEffect, useRef, useState } from 'react';
 import type { CSSProperties, MouseEvent } from 'react';
-import { ArrowRight, Check, Home, Camera, Scissors, ChefHat, Compass, Settings2, Lock, Unlock, Play, Zap, Star } from 'lucide-react';
+import { ArrowRight, Check, Home, Camera, Scissors, ChefHat, Compass, Settings2, Lock, Unlock, Play, Zap, Star, Sparkles } from 'lucide-react';
 import { DeepFieldGallery } from '../../shared/DeepFieldGallery';
 import { useCountUp } from '../../../hooks/useCountUp';
 import { FEATURES, INDUSTRIES, TESTIMONIALS, STATS, PRICING } from '../../../data/landing';
+import { RadialOrbitalTimeline } from '@/components/ui/radial-orbital-timeline';
+import type { OrbitalNode } from '@/components/ui/radial-orbital-timeline';
 import './_styles.css';
 
 /** Glass panel that reflects cursor position */
@@ -119,6 +121,20 @@ export function LandingPageV3DeepMind() {
     { idx: 5, icon: <Zap className="w-4 h-4" />, label: "Creators" },
   ];
 
+  // Orbital nodes for the 3D vertical explorer
+  const verticalNodes: OrbitalNode[] = INDUSTRIES.map((industry, i) => ({
+    id: i + 1,
+    title: industry.label,
+    subtitle: `${industry.features.length} features`,
+    content: industry.features.slice(0, 3).join(' · '),
+    category: industry.label,
+    icon: industry.Icon,
+    relatedIds: industry.features.length > 1 ? [(i + 1) % INDUSTRIES.length + 1] : [],
+    status: i < 3 ? 'completed' : i < 5 ? 'in-progress' : 'pending',
+    energy: 60 + Math.round(Math.random() * 35),
+    color: industry.color,
+  }));
+
   return (
     <div className="dm-root w-full overflow-x-hidden" style={{
       background: `
@@ -169,150 +185,107 @@ export function LandingPageV3DeepMind() {
             </div>
           </div>
 
-          {/* ── SPLASH TIMER: Industries ── */}
+          {/* ── ORBITAL VERTICAL EXPLORER ── */}
           <div id="industries" className="mb-8">
             <div className="text-center mb-4">
               <div className="dm-pill inline-flex mb-3"><Settings2 className="w-3 h-3" /> verticals</div>
-              <h2 className="dm-display-th text-2xl md:text-3xl">Tuned for your craft.</h2>
+              <h2 className="dm-display-th text-2xl md:text-3xl">Explore your craft in 3D space.</h2>
+              <p className="text-[var(--muted)] text-sm mt-2 max-w-md mx-auto">
+                Click any node to explore. Nodes in front are larger — click through the depth of field.
+              </p>
             </div>
 
-            {/* Splash Card */}
-            <GlassPanel className="p-6 md:p-8 max-w-3xl mx-auto relative overflow-hidden">
-              {/* Subtle accent bleed */}
-              <div className="absolute inset-0 opacity-10 pointer-events-none" style={{
-                background: `radial-gradient(ellipse at 50% 50%, ${ind.color} 0%, transparent 70%)`
-              }} />
+            <GlassPanel className="p-4 md:p-6 max-w-4xl mx-auto relative overflow-hidden">
+              <RadialOrbitalTimeline
+                nodes={verticalNodes}
+                centerLabel="NORI"
+                centerColor={ind.color}
+                autoRotate={lockedVertical === null}
+                onNodeSelect={(id) => {
+                  if (id !== null) {
+                    const idx = verticalNodes.findIndex((n) => n.id === id);
+                    if (idx >= 0) lockVertical(idx);
+                  }
+                }}
+              />
 
-              <div className="relative z-10">
-                <div className="flex items-start justify-between mb-4">
-                  <div className="flex items-center gap-4">
-                    <div className="w-16 h-16 rounded-2xl grid place-items-center flex-shrink-0" style={{ background: ind.color + '20', color: ind.color, boxShadow: `0 8px 28px -8px ${ind.color}60` }}>
-                      <ind.Icon className="w-8 h-8" />
-                    </div>
-                    <div>
-                      <h3 className="dm-display text-2xl md:text-3xl mb-1">{ind.label}</h3>
-                      <p className="text-sm text-[var(--muted)]">Industry-specific intelligence tuned to your exact workflow</p>
-                    </div>
+              {/* Selected vertical info */}
+              <div className="mt-4 flex items-center justify-between">
+                <div className="flex items-center gap-3">
+                  <div
+                    className="w-10 h-10 rounded-xl grid place-items-center flex-shrink-0"
+                    style={{
+                      background: ind.color + '20',
+                      color: ind.color,
+                      boxShadow: `0 8px 28px -8px ${ind.color}60`,
+                    }}
+                  >
+                    <ind.Icon className="w-5 h-5" />
                   </div>
+                  <div>
+                    <h3 className="dm-display text-lg">{ind.label}</h3>
+                    <p className="text-xs text-[var(--muted)]">{ind.features.length} features · Click nodes to explore</p>
+                  </div>
+                </div>
+                <div className="flex items-center gap-2">
                   {lockedVertical !== null && (
-                    <button onClick={unlockVertical} className="p-2 rounded-full bg-white/40 hover:bg-white/60 transition-colors" title="Unlock rotation">
+                    <button
+                      onClick={unlockVertical}
+                      className="p-2 rounded-full bg-white/40 hover:bg-white/60 transition-colors"
+                      title="Resume rotation"
+                    >
                       <Unlock className="w-4 h-4" />
                     </button>
                   )}
+                  <a
+                    href={ind.route}
+                    className="dm-btn dm-grad-btn text-xs"
+                    style={{ padding: '.4rem .9rem' }}
+                  >
+                    Explore {ind.label} <ArrowRight className="w-3 h-3" />
+                  </a>
                 </div>
+              </div>
 
-                {/* Key Stats — real industry data on lead value */}
-                <div className="grid grid-cols-3 gap-3 mb-5">
-                  {([
-                    /* Photography — Source: candidstudios.net, narrative.so, Salary.com */
-                    [
-                      { label: 'Avg Wedding', value: '$3,500' },
-                      { label: 'Bookings/Year', value: '28' },
-                      { label: 'Annual Income', value: '$63,774' },
-                    ],
-                    /* Aesthetician — Source: worldmetrics.org, workee.ai, Zenoti */
-                    [
-                      { label: 'Client LTV', value: '$2,800' },
-                      { label: 'Rebooking Rate', value: '47%' },
-                      { label: 'Spend/Visit', value: '$220' },
-                    ],
-                    /* Barber — Source: worldmetrics.org, haircutnow.com, BLS */
-                    [
-                      { label: 'Avg Service', value: '$40' },
-                      { label: 'Clients/Week', value: '14' },
-                      { label: 'Monthly Revenue', value: '$2,400' },
-                    ],
-                    /* Chef — Source: BLS, zipdo.co, chefry.io */
-                    [
-                      { label: 'Avg Event', value: '$3,200' },
-                      { label: 'Events/Month', value: '4' },
-                      { label: 'Per Guest', value: '$75' },
-                    ],
-                    /* Realtor — Source: NAR, agentsorted.com, worldmetrics.org */
-                    [
-                      { label: 'Avg Commission', value: '$18,000' },
-                      { label: 'Transactions/Yr', value: '10' },
-                      { label: 'Annual Income', value: '$58,100' },
-                    ],
-                    /* Creators — Source: influencermarketinghub.com */
-                    [
-                      { label: 'Avg Brand Deal', value: '$2,500' },
-                      { label: 'Campaigns/Mo', value: '4' },
-                      { label: 'Audience Growth', value: '+12%' },
-                    ],
-                  ][activeIndex]).map((stat, i) => (
-                    <div key={i} className="dm-glass-strip flex-col py-3" style={{ borderRadius: 14, background: 'rgba(255,255,255,0.35)' }}>
-                      <span className="dm-mono text-[10px] tracking-widest text-[var(--muted)]">{stat.label}</span>
-                      <span className="font-semibold text-lg">{stat.value}</span>
-                    </div>
-                  ))}
-                </div>
-
-                {/* CTA */}
-                <div className="flex items-center gap-3 flex-wrap">
-                  {lockedVertical !== null ? (
-                    <a href={ind.route} className="dm-btn" style={{ background: `linear-gradient(180deg, ${ind.color} 0%, ${ind.color}cc 100%)`, borderColor: 'rgba(255,255,255,0.2)' }}>
-                      Explore Dashboard <ArrowRight className="w-4 h-4" />
-                    </a>
-                  ) : (
-                    <button onClick={() => lockVertical(activeIndex)} className="dm-btn" style={{ background: `linear-gradient(180deg, ${ind.color} 0%, ${ind.color}cc 100%)`, borderColor: 'rgba(255,255,255,0.2)' }}>
-                      Select This Vertical <ArrowRight className="w-4 h-4" />
-                    </button>
-                  )}
-                  <span className="dm-pill" style={{ borderColor: ind.color + '40', color: ind.color }}>
-                    {ind.features.length} features
-                  </span>
-                </div>
-
-                {/* Progress bar */}
-                {lockedVertical === null && <SplashProgress duration={2500} active={true} />}
-                {lockedVertical !== null && (
-                  <div className="flex items-center gap-2 mt-4">
-                    <Lock className="w-3 h-3 text-[var(--muted)]" />
-                    <span className="text-xs text-[var(--muted)]">Rotation paused — click unlock to resume</span>
-                  </div>
-                )}
+              {/* Dot indicators */}
+              <div className="flex justify-center gap-2 mt-4">
+                {INDUSTRIES.map((_, i) => (
+                  <button
+                    key={i}
+                    onClick={() => lockVertical(i)}
+                    className="transition-all duration-300 rounded-full"
+                    style={{
+                      width: activeIndex === i ? 24 : 8,
+                      height: 8,
+                      background: activeIndex === i ? ind.color : 'rgba(11,16,32,0.2)',
+                    }}
+                    aria-label={`Select ${INDUSTRIES[i].label}`}
+                  />
+                ))}
               </div>
             </GlassPanel>
 
-            {/* Dot indicators */}
-            <div className="flex justify-center gap-2 mt-4">
-              {INDUSTRIES.map((_, i) => (
-                <button
-                  key={i}
-                  onClick={() => lockVertical(i)}
-                  className="transition-all duration-300 rounded-full"
-                  style={{
-                    width: activeIndex === i ? 24 : 8,
-                    height: 8,
-                    background: activeIndex === i ? ind.color : 'rgba(11,16,32,0.2)',
-                  }}
-                  aria-label={`Select ${INDUSTRIES[i].label}`}
-                />
-              ))}
-            </div>
-          </div>
-
-          {/* Feature Preview Card (when locked) */}
-          {lockedVertical !== null && (
-            <div className="max-w-3xl mx-auto mb-12 animate-fade-in">
-              <GlassPanel className="p-6">
-                <h4 className="text-sm font-semibold mb-3 flex items-center gap-2" style={{ color: ind.color }}>
-                  <Play className="w-4 h-4" /> Feature Preview
-                </h4>
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                  {ind.features.slice(0, 4).map((f, i) => (
-                    <div key={i} className="flex items-center gap-3 p-3 rounded-2xl" style={{ background: 'rgba(255,255,255,0.45)', border: '1px solid rgba(255,255,255,0.7)' }}>
-                      <div className="w-7 h-7 rounded-full grid place-items-center flex-shrink-0" style={{ background: ind.color + '20', color: ind.color }}>
-                        <Check className="w-4 h-4" />
+            {/* Feature Preview Card (when locked) */}
+            {lockedVertical !== null && (
+              <div className="max-w-4xl mx-auto mt-6 mb-12 animate-fade-in">
+                <GlassPanel className="p-6">
+                  <h4 className="text-sm font-semibold mb-3 flex items-center gap-2" style={{ color: ind.color }}>
+                    <Play className="w-4 h-4" /> Feature Preview
+                  </h4>
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                    {ind.features.slice(0, 4).map((f, i) => (
+                      <div key={i} className="flex items-center gap-3 p-3 rounded-2xl" style={{ background: 'rgba(255,255,255,0.45)', border: '1px solid rgba(255,255,255,0.7)' }}>
+                        <div className="w-7 h-7 rounded-full grid place-items-center flex-shrink-0" style={{ background: ind.color + '20', color: ind.color }}>
+                          <Check className="w-4 h-4" />
+                        </div>
+                        <span className="text-sm">{f}</span>
                       </div>
-                      <span className="text-sm">{f}</span>
-                    </div>
-                  ))}
-                </div>
-              </GlassPanel>
-            </div>
-          )}
+                    ))}
+                  </div>
+                </GlassPanel>
+              </div>
+            )}
+          </div>
         </div>
       </section>
 
