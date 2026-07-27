@@ -17,11 +17,14 @@ app.use(helmet({
   crossOriginResourcePolicy: { policy: 'cross-origin' },
 }));
 
-// CORS — only allow the Replit dev domain and localhost
+// CORS — allow local dev, Replit, and production domains
 const allowedOrigins = [
   /^http:\/\/localhost(:\d+)?$/,
   /^https?:\/\/.*\.replit\.dev(:\d+)?$/,
   /^https?:\/\/.*\.picard\.replit\.dev(:\d+)?$/,
+  /^https:\/\/neogents\.tech(:\d+)?$/,
+  /^https:\/\/.*\.neogents\.tech(:\d+)?$/,
+  /^https:\/\/.*\.render\.com$/,
 ];
 app.use(cors({
   origin: (origin, callback) => {

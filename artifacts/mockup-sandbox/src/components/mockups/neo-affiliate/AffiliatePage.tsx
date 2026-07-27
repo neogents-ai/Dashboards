@@ -361,6 +361,12 @@ function QRSection() {
   );
 }
 
+const API_BASE = import.meta.env.VITE_API_BASE_URL || '';
+
+function api(path: string) {
+  return `${API_BASE}/api${path}`;
+}
+
 /* ─── Signup Form ─── */
 function AffiliateSignup() {
   const [form, setForm] = useState({ name: '', email: '', phone: '', how: '' });
@@ -375,7 +381,7 @@ function AffiliateSignup() {
     setError('');
 
     try {
-      const res = await fetch('/api/affiliates/signup', {
+      const res = await fetch(api('/affiliates/signup'), {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(form),
@@ -399,7 +405,7 @@ function AffiliateSignup() {
 
   if (submitted) {
     const shareUrl = referralCode
-      ? `${window.location.origin}/api/affiliates/redirect/${referralCode}`
+      ? `${window.location.origin}/?ref=${referralCode}#/affiliates`
       : '';
     return (
       <div className="dm-glass p-8 max-w-md mx-auto text-center">
@@ -507,6 +513,24 @@ export function AffiliatePage() {
     );
     if (statsRef.current) observer.observe(statsRef.current);
     return () => observer.disconnect();
+  }, []);
+
+  // Report this page view to the backend click tracker (fire-and-forget).
+  useEffect(() => {
+    if (typeof window === 'undefined') return;
+    const params = new URLSearchParams(window.location.search);
+    const ref = params.get('ref');
+    if (!ref) return;
+    const to = params.get('to') || undefined;
+    fetch(api('/affiliates/click'), {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        referralCode: ref,
+        to,
+        landing: window.location.hash || '#/affiliates',
+      }),
+    }).catch(() => {});
   }, []);
 
   const affiliates = useCountUp(500, statsVisible, 1800);
