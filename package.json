@@ -4,6 +4,7 @@
   "description": "NEO Gents Dashboards - SPA server",
   "main": "server.js",
   "scripts": {
+    "build": "cd artifacts/mockup-sandbox && npm ci && npm run build",
     "start": "node server.js"
   },
   "dependencies": {
