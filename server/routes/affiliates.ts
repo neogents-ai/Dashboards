@@ -37,7 +37,7 @@ function sanitizeEmail(val: unknown): string {
   return val.trim().toLowerCase().replace(/[<>"'`\s]/g, '').slice(0, 120);
 }
 
-function getClientIp(req: Parameters<Parameters<typeof router['post']>[2]>[0]): string | null {
+function getClientIp(req: Request): string | null {
   const forwarded = req.headers['x-forwarded-for'];
   if (typeof forwarded === 'string') return forwarded.split(',')[0].trim();
   if (Array.isArray(forwarded)) return forwarded[0].trim();
@@ -76,7 +76,7 @@ router.post('/affiliates/signup', async (req, res) => {
     const emailUser = process.env.EMAIL_USER;
     const emailPass = process.env.EMAIL_PASS;
     if (emailUser && emailPass) {
-      const transporter = nodemailer.createTransporter({
+      const transporter = nodemailer.createTransport({
         service: 'gmail',
         auth: { user: emailUser, pass: emailPass },
       });

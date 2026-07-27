@@ -48,6 +48,7 @@ export function DashboardPhotography() {
       userInitials="DR"
       businessName="Photography Studio"
       avatarGradient={["#f59e0b", "#fbbf24"]}
+      verticalName="Photography"
       quickStats={<>
         <StatPill label="3 Shoots Today" />
         <StatPill label="12 Galleries Pending" />

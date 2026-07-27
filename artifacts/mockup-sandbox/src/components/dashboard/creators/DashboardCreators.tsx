@@ -49,6 +49,7 @@ export function DashboardCreators() {
       userInitials="KN"
       businessName="Creator Studio"
       avatarGradient={["#818CF8", "#A78BFA"]}
+      verticalName="Creators"
     >
       {activeTab === "home" && <HomeTab />}
       {activeTab === "calendar" && <CalendarTab />}

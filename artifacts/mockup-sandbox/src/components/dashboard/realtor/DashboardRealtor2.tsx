@@ -47,6 +47,7 @@ export function DashboardRealtor2() {
       userInitials="JW"
       businessName="Premier Realty"
       avatarGradient={["#6366F1", "#818CF8"]}
+      verticalName="Realtor"
     >
       {activeTab === "home" && <HomeTab />}
       {activeTab === "calendar" && <ListingsTab />}

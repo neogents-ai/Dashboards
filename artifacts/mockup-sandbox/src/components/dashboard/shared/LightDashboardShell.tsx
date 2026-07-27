@@ -2,7 +2,7 @@
 
 import * as React from "react";
 import { cn } from "@/lib/utils";
-import { Bell, Settings, Menu, X } from "lucide-react";
+import { Bell, Settings, Menu, X, ArrowLeft, Sparkles } from "lucide-react";
 import "./dashboard-light.css";
 
 export interface TabDef {
@@ -25,6 +25,9 @@ interface LightDashboardShellProps {
   userInitials?: string;
   businessName?: string;
   avatarGradient?: [string, string];
+  verticalName?: string;
+  clientName?: string;
+  isDemo?: boolean;
 }
 
 export function LightDashboardShell({
@@ -41,6 +44,9 @@ export function LightDashboardShell({
   userInitials = "U",
   businessName = "",
   avatarGradient = ["#3b6bff", "#6366f1"],
+  verticalName,
+  clientName,
+  isDemo = true,
 }: LightDashboardShellProps) {
   const [mobileMenuOpen, setMobileMenuOpen] = React.useState(false);
 
@@ -178,16 +184,33 @@ export function LightDashboardShell({
       <main className="flex-1 flex flex-col h-[100dvh] overflow-hidden">
         {/* Topbar */}
         <header className="h-16 lg:h-20 flex-shrink-0 flex items-center justify-between px-4 lg:px-8 dashboard-light-header z-10">
-          <div className="flex items-center gap-3">
+          <div className="flex items-center gap-3 min-w-0">
             <button
               className="lg:hidden p-2 rounded-lg hover:bg-white/40 transition-colors"
               onClick={() => setMobileMenuOpen(true)}
             >
               <Menu className="w-5 h-5 text-[var(--dl-ink)]" />
             </button>
-            <div className="flex flex-col">
-              {greeting && <h1 className="text-lg lg:text-xl font-semibold text-[var(--dl-ink)]">{greeting}</h1>}
+            <a
+              href="#/"
+              className="hidden sm:inline-flex items-center gap-1.5 text-xs font-medium text-[var(--dl-muted)] hover:text-[var(--dl-ink)] transition-colors mr-2"
+            >
+              <ArrowLeft className="w-3.5 h-3.5" /> Site
+            </a>
+            <div className="flex flex-col min-w-0">
+              {greeting && <h1 className="text-lg lg:text-xl font-semibold text-[var(--dl-ink)] truncate">{greeting}</h1>}
               {dateLabel && <p className="text-[var(--dl-muted)] text-sm">{dateLabel}</p>}
+              {(verticalName || clientName || isDemo) && (
+                <div className="flex items-center gap-2 mt-0.5">
+                  {verticalName && <span className="text-[10px] uppercase tracking-wider text-[var(--dl-muted)]">{verticalName}</span>}
+                  {clientName && <span className="text-[10px] uppercase tracking-wider text-[var(--dl-ink)] font-semibold">{clientName}</span>}
+                  {isDemo && (
+                    <span className="inline-flex items-center gap-1 px-1.5 py-0.5 rounded bg-amber-500/10 border border-amber-500/20 text-amber-600 text-[10px] font-semibold">
+                      <Sparkles className="w-3 h-3" /> Demo
+                    </span>
+                  )}
+                </div>
+              )}
             </div>
           </div>
 
@@ -195,7 +218,7 @@ export function LightDashboardShell({
             {quickStats}
           </div>
 
-          <div className="flex items-center gap-4">
+          <div className="flex items-center gap-4 flex-shrink-0">
             <button className="relative text-[var(--dl-muted)] hover:text-[var(--dl-ink)] transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--dl-blue)] rounded-lg p-1">
               <Bell className="w-5 h-5" />
               <span

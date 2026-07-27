@@ -49,6 +49,7 @@ export function DashboardHairstylist() {
       userInitials="LC"
       businessName="Luxe Hair Studio"
       avatarGradient={["#EC4899", "#F472B6"]}
+      verticalName="Hairstylist"
     >
       {activeTab === "home" && <HomeTab />}
       {activeTab === "calendar" && <CalendarTab />}

@@ -47,6 +47,7 @@ export function DashboardBarber2() {
       userInitials="MJ"
       businessName="The Fade Room"
       avatarGradient={["#3B82F6", "#60A5FA"]}
+      verticalName="Barber / Stylist"
     >
       {activeTab === "home" && <HomeTab />}
       {activeTab === "calendar" && <ScheduleTab />}

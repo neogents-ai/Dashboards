@@ -15,7 +15,13 @@ export function DashboardChef() {
   };
 
   return (
-    <div className="min-h-[100dvh] bg-white flex flex-col items-center justify-center px-6 py-12">
+    <div className="min-h-[100dvh] bg-white flex flex-col items-center justify-center px-6 py-12 relative">
+      <a
+        href="#/"
+        className="absolute top-4 left-4 text-xs font-medium text-gray-400 hover:text-gray-600 transition-colors"
+      >
+        ← Back to site
+      </a>
       <div className="max-w-md w-full text-center">
         {/* Logo */}
         <div className="mb-8 flex items-center justify-center">

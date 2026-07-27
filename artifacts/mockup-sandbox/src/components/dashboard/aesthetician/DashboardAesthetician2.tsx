@@ -47,6 +47,7 @@ export function DashboardAesthetician2() {
       userInitials="SC"
       businessName="Glow Aesthetics"
       avatarGradient={["#EC4899", "#F472B6"]}
+      verticalName="Aesthetician"
     >
       {activeTab === "home" && <HomeTab />}
       {activeTab === "calendar" && <BookingsTab />}
