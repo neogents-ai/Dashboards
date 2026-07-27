@@ -1,6 +1,18 @@
 services:
-  - type: static
+  - type: web
     name: neogents-tech
-    staticPublishPath: artifacts/mockup-sandbox/dist
-    buildCommand: cd artifacts/mockup-sandbox && npm ci && npm run build
+    env: node
+    buildCommand: cd artifacts/mockup-sandbox && npm ci && npm run build && cd ../../server && npm ci && npm run build
+    startCommand: cd server && node dist/index.js
     pullRequestPreviewsEnabled: true
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: AFFILIATE_ADMIN_TOKEN
+        generateValue: true
+      - key: EMAIL_USER
+        sync: false
+      - key: EMAIL_PASS
+        sync: false
+      - key: DATA_DIR
+        value: /var/render/data
