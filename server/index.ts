@@ -1,4 +1,5 @@
 import express, { Request, Response, NextFunction } from 'express';
+import path from 'path';
 import cors from 'cors';
 import helmet from 'helmet';
 import rateLimit from 'express-rate-limit';
@@ -11,6 +12,10 @@ dotenv.config();
 
 const app = express();
 const port = process.env.PORT || 3001;
+
+// SPA static files
+const STATIC_DIR = path.join(__dirname, '..', 'artifacts', 'mockup-sandbox', 'dist');
+app.use(express.static(STATIC_DIR));
 
 // Security headers
 app.use(helmet({
@@ -80,6 +85,11 @@ app.use('/api', affiliatesRouter);
 
 app.get('/health', (_req: Request, res: Response) => {
   res.json({ status: 'ok', version: 1 });
+});
+
+// SPA fallback — serve index.html for any non-API route
+app.get('*', (_req: Request, res: Response) => {
+  res.sendFile(path.join(STATIC_DIR, 'index.html'));
 });
 
 // Global error handler — never leak stack traces
