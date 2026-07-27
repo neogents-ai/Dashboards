@@ -9,6 +9,7 @@ import { DashboardChef } from "./components/mockups/neo-chef/DashboardChef";
 import { DashboardCreators } from "./components/dashboard/creators/DashboardCreators";
 import { LandingPageV3DeepMind } from "./components/mockups/neo-landing-v3-deepmind-glass/LandingPageV3";
 import { AffiliatePage } from "./components/mockups/neo-affiliate/AffiliatePage";
+import { AuditPage } from "./components/audit/AuditPage";
 
 type ModuleMap = Record<string, () => Promise<Record<string, unknown>>>;
 
@@ -136,6 +137,23 @@ function getPreviewPath(): string | null {
   return match ? match[1] : null;
 }
 
+function getDirectRoute(): string | null {
+  const basePath = getBasePath();
+  const { pathname } = window.location;
+  const local =
+    basePath && pathname.startsWith(basePath)
+      ? pathname.slice(basePath.length) || "/"
+      : pathname;
+  const route = local.replace(/\/$/, "") || "/";
+  return route === "/audit" ? route : null;
+}
+
+function getCurrentRoute(): string {
+  const hash = window.location.hash.replace(/^#/, "").replace(/\?.*$/, "").replace(/\/$/, "");
+  if (hash) return hash;
+  return getDirectRoute() || "/";
+}
+
 function App() {
   const previewPath = getPreviewPath();
   // Public affiliate redirect: ?ref=CODE (no hash) -> ?ref=CODE#/affiliates
@@ -155,28 +173,25 @@ function App() {
     }
   }, []);
   const [route, setRoute] = useState(() => {
-    const hash = window.location.hash.replace(/^#/, "").replace(/\?.*$/, "").replace(/\/$/, "") || "/";
-    return hash;
+    return getCurrentRoute();
   });
 
   useEffect(() => {
-    const onHashChange = () => {
-      const hash = window.location.hash.replace(/^#/, "").replace(/\?.*$/, "").replace(/\/$/, "") || "/";
-      setRoute(hash);
-    };
+    const onHashChange = () => setRoute(getCurrentRoute());
     window.addEventListener("hashchange", onHashChange);
+    window.addEventListener("popstate", onHashChange);
     // Also handle direct clicks on anchor tags that might not trigger hashchange in some browsers
     const onClick = (e: MouseEvent) => {
       const target = e.target as HTMLElement;
       const anchor = target.closest("a");
       if (anchor?.hash) {
-        const hash = anchor.hash.replace(/^#/, "").replace(/\?.*$/, "").replace(/\/$/, "") || "/";
-        setRoute(hash);
+        setRoute(getCurrentRoute());
       }
     };
     document.addEventListener("click", onClick);
     return () => {
       window.removeEventListener("hashchange", onHashChange);
+      window.removeEventListener("popstate", onHashChange);
       document.removeEventListener("click", onClick);
     };
   }, []);
@@ -197,6 +212,7 @@ function App() {
   if (route === "/realtor") return <DashboardRealtor2 />;
   if (route === "/creators") return <DashboardCreators />;
   if (route === "/affiliates") return <AffiliatePage />;
+  if (route === "/audit") return <AuditPage />;
 
   return <LandingPageV3DeepMind />;
 }
