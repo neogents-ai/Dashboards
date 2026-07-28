@@ -361,10 +361,12 @@ function QRSection() {
   );
 }
 
-const API_BASE = import.meta.env.VITE_API_BASE_URL || '';
+const FORMSPREE_ENDPOINT = import.meta.env.VITE_FORMSPREE_AFFILIATE_ENDPOINT || '';
 
-function api(path: string) {
-  return `${API_BASE}/api${path}`;
+function generateReferralCode(name: string): string {
+  const clean = name.toUpperCase().replace(/[^A-Z]/g, '').slice(0, 6);
+  const random = Math.random().toString(36).substring(2, 6).toUpperCase();
+  return `${clean}${random}`;
 }
 
 /* ─── Signup Form ─── */
@@ -374,28 +376,37 @@ function AffiliateSignup() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
   const [referralCode, setReferralCode] = useState('');
+  const endpointReady = FORMSPREE_ENDPOINT.startsWith('https://formspree.io/f/');
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    if (!endpointReady) {
+      setError('Form endpoint pending. Add VITE_FORMSPREE_AFFILIATE_ENDPOINT before going live.');
+      return;
+    }
     setLoading(true);
     setError('');
 
-    try {
-      const res = await fetch(api('/affiliates/signup'), {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(form),
-      });
-      const data = await res.json();
+    const code = generateReferralCode(form.name);
+    setReferralCode(code);
 
-      if (data.success) {
-        setReferralCode(data.affiliate.referralCode);
-        setSubmitted(true);
-      } else {
-        setError(data.error || 'Something went wrong. Please try again.');
-      }
+    const formEl = e.currentTarget;
+    const formData = new FormData(formEl);
+    formData.append('referral_code', code);
+    formData.append('source', 'affiliate-page');
+    formData.append('signup_time', new Date().toISOString());
+
+    try {
+      const res = await fetch(FORMSPREE_ENDPOINT, {
+        method: 'POST',
+        body: formData,
+        headers: { Accept: 'application/json' },
+      });
+      if (!res.ok) throw new Error('Formspree rejected the submission');
+      formEl.reset();
+      setSubmitted(true);
     } catch {
-      setError('Network error. Please try again.');
+      setError('Submission failed. Please try again or email us directly.');
     } finally {
       setLoading(false);
     }
@@ -513,24 +524,6 @@ export function AffiliatePage() {
     );
     if (statsRef.current) observer.observe(statsRef.current);
     return () => observer.disconnect();
-  }, []);
-
-  // Report this page view to the backend click tracker (fire-and-forget).
-  useEffect(() => {
-    if (typeof window === 'undefined') return;
-    const params = new URLSearchParams(window.location.search);
-    const ref = params.get('ref');
-    if (!ref) return;
-    const to = params.get('to') || undefined;
-    fetch(api('/affiliates/click'), {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        referralCode: ref,
-        to,
-        landing: window.location.hash || '#/affiliates',
-      }),
-    }).catch(() => {});
   }, []);
 
   const affiliates = useCountUp(500, statsVisible, 1800);

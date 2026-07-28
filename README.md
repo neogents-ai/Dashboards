@@ -43,10 +43,16 @@ Marketing site + vertical dashboards + affiliate system for **neogents.tech**.
 
 Copy `.env.example` to `.env` and fill in:
 
-- `EMAIL_USER` / `EMAIL_PASS` — Gmail account for affiliate signup notifications
+- `VITE_FORMSPREE_AUDIT_ENDPOINT` — Formspree form for the Revenue Leak Audit
+- `VITE_FORMSPREE_AFFILIATE_ENDPOINT` — Formspree form for affiliate signups
+- `EMAIL_USER` / `EMAIL_PASS` — Gmail account for affiliate signup notifications (optional)
 - `AFFILIATE_ADMIN_TOKEN` — secret token for `/affiliates/admin`
 - `DATA_DIR` — where the affiliate JSON store lives (defaults to `server/data`)
 - `VITE_API_BASE_URL` — optional; leave empty for same-origin API calls
+
+## Public forms
+
+Both the **Revenue Leak Audit** and **Affiliate Signup** forms submit to **Formspree** so all submissions arrive in one place. The backend affiliate dashboard is used separately to track conversions, commissions, and payouts from those signups.
 
 ## Branch strategy
 
