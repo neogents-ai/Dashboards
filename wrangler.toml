@@ -1,0 +1,9 @@
+name = "neogents-dashboards"
+compatibility_date = "2026-07-27"
+pages_build_output_dir = "artifacts/mockup-sandbox/dist"
+
+# D1 database binding used by Pages Functions in functions/_shared/db.ts
+[[d1_databases]]
+binding = "DB"
+database_name = "neogents-affiliates"
+database_id = "REPLACE_WITH_YOUR_D1_DATABASE_ID"

@@ -361,7 +361,12 @@ function QRSection() {
   );
 }
 
+const API_BASE = import.meta.env.VITE_API_BASE_URL || '';
 const FORMSPREE_ENDPOINT = import.meta.env.VITE_FORMSPREE_AFFILIATE_ENDPOINT || '';
+
+function api(path: string) {
+  return `${API_BASE}/api${path}`;
+}
 
 function generateReferralCode(name: string): string {
   const clean = name.toUpperCase().replace(/[^A-Z]/g, '').slice(0, 6);
@@ -390,23 +395,41 @@ function AffiliateSignup() {
     const code = generateReferralCode(form.name);
     setReferralCode(code);
 
-    const formEl = e.currentTarget;
+    const formEl = e.currentTarget as HTMLFormElement;
     const formData = new FormData(formEl);
     formData.append('referral_code', code);
     formData.append('source', 'affiliate-page');
     formData.append('signup_time', new Date().toISOString());
 
     try {
-      const res = await fetch(FORMSPREE_ENDPOINT, {
+      // First: register in the Cloudflare backend (D1 + affiliate admin dashboard)
+      const apiRes = await fetch(api('/affiliates/signup'), {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
+        body: JSON.stringify({
+          name: form.name,
+          email: form.email,
+          phone: form.phone,
+          how: form.how,
+        }),
+      });
+      if (!apiRes.ok) {
+        const data = await apiRes.json().catch(() => ({}));
+        throw new Error(data.error || 'Backend signup failed');
+      }
+
+      // Second: forward to Formspree so you can review submissions in your inbox
+      const fsRes = await fetch(FORMSPREE_ENDPOINT, {
         method: 'POST',
         body: formData,
         headers: { Accept: 'application/json' },
       });
-      if (!res.ok) throw new Error('Formspree rejected the submission');
+      if (!fsRes.ok) throw new Error('Formspree rejected the submission');
+
       formEl.reset();
       setSubmitted(true);
-    } catch {
-      setError('Submission failed. Please try again or email us directly.');
+    } catch (err) {
+      setError(err instanceof Error ? err.message : 'Submission failed. Please try again or email us directly.');
     } finally {
       setLoading(false);
     }

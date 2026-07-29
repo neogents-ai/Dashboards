@@ -22,6 +22,36 @@ function api(path: string) {
   return `${API_BASE}/api${path}`;
 }
 
+function normalizeAffiliate(raw: Record<string, any>): Affiliate {
+  const code = raw.referral_code || raw.referralCode || '';
+  return {
+    id: raw.id,
+    name: raw.name,
+    email: raw.email,
+    phone: raw.phone || null,
+    how: raw.how || '',
+    referralCode: code,
+    createdAt: raw.created_at || raw.createdAt,
+    status: raw.status,
+    referralUrl: `https://neogents.tech/?ref=${code}`,
+  };
+}
+
+function normalizeConversion(raw: Record<string, any>): Conversion {
+  return {
+    id: raw.id,
+    affiliateId: raw.affiliate_id || raw.affiliateId,
+    referralCode: raw.referral_code || raw.referralCode,
+    customerEmail: raw.customer_email || raw.customerEmail,
+    customerName: raw.customer_name || raw.customerName || null,
+    plan: raw.plan,
+    commission: raw.commission,
+    status: raw.status,
+    createdAt: raw.created_at || raw.createdAt,
+    paidAt: raw.paid_at || raw.paidAt || null,
+  };
+}
+
 interface Affiliate {
   id: string;
   name: string;
@@ -206,13 +236,12 @@ export function AffiliateAdmin() {
     setError("");
     try {
       const headers = { Authorization: `Bearer ${token}` };
-      const [affRes, statsRes, convRes] = await Promise.all([
+      const [affRes, statsRes] = await Promise.all([
         fetch(api("/affiliates"), { headers }),
         fetch(api("/affiliates/stats/admin"), { headers }),
-        fetch(api("/affiliates/conversions/all"), { headers }),
       ]);
 
-      if (affRes.status === 401 || statsRes.status === 401 || convRes.status === 401) {
+      if (affRes.status === 401 || statsRes.status === 401) {
         localStorage.removeItem("neogents_admin_token");
         setToken(null);
         setError("Invalid admin token. Please log in again.");
@@ -222,11 +251,12 @@ export function AffiliateAdmin() {
 
       const affData = await affRes.json();
       const statsData = await statsRes.json();
-      const convData = await convRes.json();
 
-      if (affData.success) setAffiliates(affData.affiliates);
-      if (statsData.success) setStats(statsData.stats);
-      if (convData.success) setConversions(convData.conversions);
+      if (affData.success) setAffiliates((affData.affiliates || []).map(normalizeAffiliate));
+      if (statsData.success) {
+        setStats(statsData.stats);
+        setConversions((statsData.conversions || []).map(normalizeConversion));
+      }
     } catch (err) {
       setError(err instanceof Error ? err.message : "Failed to load admin data");
     } finally {
