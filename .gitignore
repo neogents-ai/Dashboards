@@ -15,6 +15,7 @@ server/dist/
 .local/
 .cache/
 .netlify/
+.wrangler/
 *.log
 
 # OS/editor
