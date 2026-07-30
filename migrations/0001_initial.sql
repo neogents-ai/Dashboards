@@ -1,4 +1,4 @@
--- NEO Gents affiliate schema for Cloudflare D1
+-- NEO Gents affiliate schema for Neon PostgreSQL
 
 CREATE TABLE IF NOT EXISTS affiliates (
   id TEXT PRIMARY KEY,
@@ -10,8 +10,8 @@ CREATE TABLE IF NOT EXISTS affiliates (
   status TEXT NOT NULL DEFAULT 'pending',
   payout_method TEXT,
   payout_address TEXT,
-  created_at TEXT NOT NULL DEFAULT (datetime('now')),
-  updated_at TEXT NOT NULL DEFAULT (datetime('now'))
+  created_at TIMESTAMPTZ NOT NULL DEFAULT now(),
+  updated_at TIMESTAMPTZ NOT NULL DEFAULT now()
 );
 
 CREATE TABLE IF NOT EXISTS clicks (
@@ -22,8 +22,8 @@ CREATE TABLE IF NOT EXISTS clicks (
   user_agent TEXT,
   to_tag TEXT,
   landing TEXT,
-  created_at TEXT NOT NULL DEFAULT (datetime('now')),
-  FOREIGN KEY (affiliate_id) REFERENCES affiliates(id) ON DELETE CASCADE
+  created_at TIMESTAMPTZ NOT NULL DEFAULT now(),
+  CONSTRAINT fk_clicks_affiliate FOREIGN KEY (affiliate_id) REFERENCES affiliates(id) ON DELETE CASCADE
 );
 
 CREATE TABLE IF NOT EXISTS conversions (
@@ -35,9 +35,9 @@ CREATE TABLE IF NOT EXISTS conversions (
   plan TEXT NOT NULL,
   commission INTEGER NOT NULL,
   status TEXT NOT NULL DEFAULT 'pending',
-  created_at TEXT NOT NULL DEFAULT (datetime('now')),
-  paid_at TEXT,
-  FOREIGN KEY (affiliate_id) REFERENCES affiliates(id) ON DELETE CASCADE
+  created_at TIMESTAMPTZ NOT NULL DEFAULT now(),
+  paid_at TIMESTAMPTZ,
+  CONSTRAINT fk_conversions_affiliate FOREIGN KEY (affiliate_id) REFERENCES affiliates(id) ON DELETE CASCADE
 );
 
 CREATE INDEX IF NOT EXISTS idx_affiliates_email ON affiliates(email);

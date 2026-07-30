@@ -1,6 +1,6 @@
-import { getDb, recordClick, findAffiliateByCode } from '../../_shared/db';
-import { json, errorResponse, sanitize, getClientIp, getUserAgent, withCors, handleCorsPreflight } from '../../_shared/utils';
-import type { Env } from '../../_shared/utils';
+import { getDb, recordClick, findAffiliateByCode } from '../../_shared/db.js';
+import { json, errorResponse, sanitize, getClientIp, getUserAgent, withCors, handleCorsPreflight } from '../../_shared/utils.js';
+import type { Env } from '../../_shared/utils.js';
 import type { PagesFunction } from '@cloudflare/workers-types';
 
 export const onRequestPost: PagesFunction<Env> = async ({ request, env }) => {

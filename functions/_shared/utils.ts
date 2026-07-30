@@ -1,7 +1,5 @@
-import type { D1Database } from '@cloudflare/workers-types';
-
 export interface Env {
-  DB?: D1Database;
+  DATABASE_URL?: string;
   AFFILIATE_ADMIN_TOKEN?: string;
   FORMSPREE_AFFILIATE_ENDPOINT?: string;
 }

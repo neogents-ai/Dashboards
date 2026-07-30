@@ -1,4 +1,4 @@
-import { getDb, createAffiliate, findAffiliateByEmail } from '../../_shared/db';
+import { getDb, createAffiliate, findAffiliateByEmail } from '../../_shared/db.js';
 import {
   json,
   errorResponse,
@@ -7,8 +7,8 @@ import {
   forwardToFormspree,
   withCors,
   handleCorsPreflight,
-} from '../../_shared/utils';
-import type { Env } from '../../_shared/utils';
+} from '../../_shared/utils.js';
+import type { Env } from '../../_shared/utils.js';
 import type { PagesFunction } from '@cloudflare/workers-types';
 
 export const onRequestPost: PagesFunction<Env> = async ({ request, env }) => {

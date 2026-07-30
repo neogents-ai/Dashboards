@@ -11,6 +11,7 @@
     "d1:list": "wrangler d1 migrations list neogents-affiliates"
   },
   "dependencies": {
+    "@neondatabase/serverless": "^1.1.0",
     "express": "^4.18.2"
   },
   "devDependencies": {

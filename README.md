@@ -6,8 +6,8 @@ Marketing site + vertical dashboards + affiliate system for **neogents.tech**.
 
 - `artifacts/mockup-sandbox/` — Vite + React + TypeScript SPA
 - `functions/` — Cloudflare Pages Functions (serverless API)
-- `migrations/` — Cloudflare D1 SQL migrations
-- `wrangler.toml` — Pages + D1 configuration
+- `migrations/` — Neon PostgreSQL schema
+- `wrangler.toml` — Pages configuration
 - `server/` — Legacy Express API (kept for reference; no longer used in production)
 - `render.yaml` — Legacy Render web service config (kept for reference)
 
@@ -29,7 +29,7 @@ Marketing site + vertical dashboards + affiliate system for **neogents.tech**.
 ## Local development
 
 ```bash
-# Install root dependencies (wrangler, workers-types, etc.)
+# Install root dependencies (wrangler, workers-types, neon, etc.)
 npm install
 
 # Install SPA dependencies and run the dev server
@@ -38,12 +38,7 @@ npm install
 npm run dev          # http://localhost:5173
 ```
 
-The affiliate signup form will post to the Cloudflare Pages Functions backend. To test the backend locally:
-
-```bash
-# In a separate terminal, run Wrangler dev (uses a local D1 simulator)
-wrangler pages dev artifacts/mockup-sandbox/dist --d1 DB=neogents-affiliates
-```
+The affiliate signup form will post to the Cloudflare Pages Functions backend, which writes to Neon PostgreSQL. To test the backend locally you need a `DATABASE_URL` in scope.
 
 ## Environment variables
 
@@ -52,15 +47,15 @@ Copy `.env.example` to `.env` and fill in:
 - `VITE_FORMSPREE_AUDIT_ENDPOINT` — Formspree form for the Revenue Leak Audit
 - `VITE_FORMSPREE_AFFILIATE_ENDPOINT` — Formspree form for affiliate signups
 - `VITE_API_BASE_URL` — optional; leave empty for same-origin API calls, or set to `https://neogents.tech` during local dev
-- `AFFILIATE_ADMIN_TOKEN` — secret token for `/affiliates/admin`
+- `DATABASE_URL` — Neon PostgreSQL connection string
 
-`AFFILIATE_ADMIN_TOKEN` should be set as a **Cloudflare Pages secret** in production (not committed to `.env`).
+`DATABASE_URL` and `AFFILIATE_ADMIN_TOKEN` must be set as **Cloudflare Pages secrets** in production (not committed to `.env`).
 
 ## Affiliate system
 
 Signups flow through two channels:
 
-1. **Cloudflare Pages Functions** → D1 database + admin dashboard (`functions/api/affiliates/signup.ts`)
+1. **Cloudflare Pages Functions** → Neon PostgreSQL + admin dashboard (`functions/api/affiliates/signup.ts`)
 2. **Formspree** → your inbox for human review (`VITE_FORMSPREE_AFFILIATE_ENDPOINT`)
 
 Admin endpoints require a `Bearer <AFFILIATE_ADMIN_TOKEN>` token.
@@ -77,39 +72,50 @@ Admin endpoints require a `Bearer <AFFILIATE_ADMIN_TOKEN>` token.
 | GET | `/api/affiliates/stats/admin` | admin | Admin stats + conversions |
 | GET | `/api/affiliates/stats/{referralCode}` | public | Affiliate public stats |
 
+## Database schema
+
+The affiliate tables live in **Neon PostgreSQL**. Run `migrations/0001_initial.sql` against your Neon project to create the `affiliates`, `clicks`, and `conversions` tables.
+
 ## Branch strategy
 
 - `main` — production branch, deployed to Cloudflare Pages
 - `vertical/realtor`, `vertical/barber`, `vertical/photography`, `vertical/aesthetician`, `vertical/chef`, `vertical/creators` — isolated workspaces for each vertical
 - `feature/affiliates-full-system` — affiliate system work
-- `feature/cloudflare-pages-backend` — Cloudflare Pages + D1 backend migration
+- `feature/cloudflare-pages-backend` — Cloudflare Pages + Neon backend migration
 
 Work on a vertical in its branch, then open a PR to merge into `main` when ready.
 
 ## Deploy to Cloudflare Pages
 
-### 1. Create the D1 database
+### 1. Provision Neon PostgreSQL
 
-```bash
-npx wrangler d1 create neogents-affiliates
+Create a new Neon project. Copy the connection string from the Neon dashboard.
+
+### 2. Apply the schema
+
+Connect to your Neon database and run:
+
+```sql
+-- contents of migrations/0001_initial.sql
 ```
 
-Copy the returned `database_id` into `wrangler.toml` under `[[d1_databases]]`.
+Or use the Neon SQL editor to paste it.
 
-### 2. Run migrations
+### 3. Log in to Wrangler
 
 ```bash
-npx wrangler d1 migrations apply neogents-affiliates
+npx wrangler login
 ```
 
-### 3. Set secrets
+### 4. Set secrets
 
 ```bash
+npx wrangler pages secret put DATABASE_URL
 npx wrangler pages secret put AFFILIATE_ADMIN_TOKEN
 npx wrangler pages secret put FORMSPREE_AFFILIATE_ENDPOINT
 ```
 
-### 4. Deploy
+### 5. Deploy
 
 ```bash
 npm run build

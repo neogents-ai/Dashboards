@@ -1,6 +1,6 @@
-import { getDb, recordConversion, findAffiliateByCode } from '../../_shared/db';
-import { json, errorResponse, sanitize, sanitizeEmail, requireAdmin, withCors, handleCorsPreflight } from '../../_shared/utils';
-import type { Env } from '../../_shared/utils';
+import { getDb, recordConversion, findAffiliateByCode } from '../../_shared/db.js';
+import { json, errorResponse, sanitize, sanitizeEmail, requireAdmin, withCors, handleCorsPreflight } from '../../_shared/utils.js';
+import type { Env } from '../../_shared/utils.js';
 import type { PagesFunction } from '@cloudflare/workers-types';
 
 const VALID_PLANS = ['Starter', 'Pro', 'Agency', 'Custom'] as const;

@@ -1,6 +1,6 @@
-import { getDb, listConversions } from '../../../_shared/db';
-import { json, requireAdmin, withCors, handleCorsPreflight } from '../../../_shared/utils';
-import type { Env } from '../../../_shared/utils';
+import { getDb, listConversions } from '../../../_shared/db.js';
+import { json, requireAdmin, withCors, handleCorsPreflight } from '../../../_shared/utils.js';
+import type { Env } from '../../../_shared/utils.js';
 import type { PagesFunction } from '@cloudflare/workers-types';
 
 export const onRequestGet: PagesFunction<Env> = async ({ request, env }) => {

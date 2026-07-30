@@ -1,6 +1,6 @@
-import { getDb, updateAffiliateStatus, findAffiliateById } from '../../../_shared/db';
-import { json, errorResponse, requireAdmin, notFound, withCors, handleCorsPreflight } from '../../../_shared/utils';
-import type { Env } from '../../../_shared/utils';
+import { getDb, updateAffiliateStatus, findAffiliateById } from '../../../_shared/db.js';
+import { json, errorResponse, requireAdmin, notFound, withCors, handleCorsPreflight } from '../../../_shared/utils.js';
+import type { Env } from '../../../_shared/utils.js';
 import type { PagesFunction } from '@cloudflare/workers-types';
 
 const VALID_STATUSES = ['pending', 'active', 'inactive'] as const;
