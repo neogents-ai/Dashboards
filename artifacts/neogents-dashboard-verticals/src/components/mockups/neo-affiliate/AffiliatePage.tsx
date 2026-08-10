@@ -9,6 +9,31 @@ import {
 import { useCountUp } from '../../../hooks/useCountUp';
 import '../neo-landing-v3-deepmind-glass/_styles.css';
 
+function scrollToId(id: string) {
+  const el = document.getElementById(id);
+  if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+}
+
+function ScrollButton({
+  id,
+  className,
+  children,
+}: {
+  id: string;
+  className: string;
+  children: React.ReactNode;
+}) {
+  return (
+    <button
+      type="button"
+      onClick={() => scrollToId(id)}
+      className={className}
+    >
+      {children}
+    </button>
+  );
+}
+
 /* Founder personal code — change here to swap the code you hand out. */
 const FOUNDER_REF_CODE = 'BERRY20';
 const STORAGE_KEY = 'berry20_click_log_v1';
@@ -580,28 +605,28 @@ export function AffiliatePage() {
           </div>
           <div className="dm-orb mx-auto mb-6" />
           <h1 className="dm-display-th text-[3rem] md:text-[5rem] leading-[1.05] mb-5 max-w-4xl mx-auto">
-            Earn Recurring Income<br />
-            <span className="dm-shimmer">By Sharing Real AI Leads</span>
+            Did You Just Get Laid Off?<br />
+            <span className="dm-shimmer">Turn Your Network into Income</span>
           </h1>
           <p className="text-[var(--muted)] text-lg md:text-xl max-w-2xl mx-auto mb-4 leading-relaxed">
-            Know business owners who need more clients? Refer them to NEO Gents and get paid every time they sign up.
+            You know business owners — at the barbershop, the coffee shop, your church, your gym. Refer them to NEO Gents and get paid every time they sign up.
           </p>
           <p className="text-[var(--muted)] text-lg md:text-xl max-w-2xl mx-auto mb-8 leading-relaxed">
             <strong className="text-[var(--ink)]">NEO Gents finds, books, and nurtures leads on autopilot</strong> for barbers, photographers, realtors, chefs, and creators. You share the link. We handle the rest. Earn <strong className="text-[var(--ink)]">$78–$458</strong> per referral, paid within 30 days.
           </p>
           <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
-            <a
-              href="#signup"
+            <ScrollButton
+              id="signup"
               className="px-6 py-3 rounded-lg dm-grad-btn font-semibold text-sm inline-flex items-center gap-2 shadow-md"
             >
               Get Your Referral Link <ArrowRight className="w-4 h-4" />
-            </a>
-            <a
-              href="#how"
+            </ScrollButton>
+            <ScrollButton
+              id="how"
               className="dm-btn-glass px-6 py-3 text-sm font-medium inline-flex items-center gap-2"
             >
               See How It Works
-            </a>
+            </ScrollButton>
           </div>
         </div>
       </section>
@@ -761,12 +786,12 @@ export function AffiliatePage() {
           <p className="text-[var(--muted)] mb-8 leading-relaxed">
             That barber who stays open late? The photographer at your cousin's wedding? The realtor who helped your friend buy their first home? <strong className="text-[var(--ink)]">They all need more clients.</strong> You can help them — and get paid for it.
           </p>
-          <a
-            href="#signup"
+          <ScrollButton
+            id="signup"
             className="px-8 py-4 rounded-lg dm-grad-btn font-semibold text-base inline-flex items-center gap-2 shadow-md"
           >
             Get My Referral Link <ArrowRight className="w-5 h-5" />
-          </a>
+          </ScrollButton>
           <p className="text-xs text-[var(--muted)] mt-4">Free to join. No hidden fees. Built for the people Silicon Valley forgot.</p>
         </div>
       </section>
@@ -789,9 +814,9 @@ export function AffiliatePage() {
 
       {/* ── FLOATING GLASS DOCK ── */}
       <div className="dm-dock hidden md:flex">
-        <a href="#how" className="dm-btn-glass text-xs px-3 py-1.5">How It Works</a>
-        <a href="#signup" className="dm-btn-glass text-xs px-3 py-1.5">Sign Up</a>
-        <a href="#faq" className="dm-btn-glass text-xs px-3 py-1.5">FAQ</a>
+        <ScrollButton id="how" className="dm-btn-glass text-xs px-3 py-1.5">How It Works</ScrollButton>
+        <ScrollButton id="signup" className="dm-btn-glass text-xs px-3 py-1.5">Sign Up</ScrollButton>
+        <ScrollButton id="faq" className="dm-btn-glass text-xs px-3 py-1.5">FAQ</ScrollButton>
         <div style={{ width: 1, height: 22, background: 'rgba(11,16,32,0.12)' }} />
         <a href="#/" className="dm-btn" style={{ padding: '.4rem 1rem', fontSize: '.78rem' }}>Home <ArrowRight className="w-3 h-3" /></a>
       </div>

@@ -2,7 +2,7 @@ services:
   - type: web
     name: neogents-tech
     env: node
-    buildCommand: cd artifacts/mockup-sandbox && npm ci && npm run build && cd ../../server && npm ci && npm run build
+    buildCommand: cd artifacts/neogents-dashboard-verticals && npm ci && npm run build && cd ../../server && npm ci && npm run build
     startCommand: cd server && node dist/index.js
     pullRequestPreviewsEnabled: true
     envVars:

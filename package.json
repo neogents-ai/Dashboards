@@ -3,9 +3,9 @@
   "version": "1.0.0",
   "description": "NEO Gents Dashboards — Cloudflare Pages + D1",
   "scripts": {
-    "build": "cd artifacts/mockup-sandbox && npm ci && npm run build",
-    "dev": "cd artifacts/mockup-sandbox && npm run dev",
-    "preview": "cd artifacts/mockup-sandbox && npm run preview",
+    "build": "cd artifacts/neogents-dashboard-verticals && npm ci && npm run build",
+    "dev": "cd artifacts/neogents-dashboard-verticals && npm run dev",
+    "preview": "cd artifacts/neogents-dashboard-verticals && npm run preview",
     "deploy": "wrangler pages deploy",
     "d1:migrate": "wrangler d1 migrations apply neogents-affiliates",
     "d1:list": "wrangler d1 migrations list neogents-affiliates"

@@ -1,5 +1,5 @@
 [build]
-  base = "artifacts/mockup-sandbox"
+  base = "artifacts/neogents-dashboard-verticals"
   command = "npm ci && npm run build"
   publish = "dist"
 

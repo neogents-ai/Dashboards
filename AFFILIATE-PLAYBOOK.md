@@ -2,10 +2,10 @@
 
 **Program Name:** The Gentlemen's Circle  
 **Tagline:** *"Build your empire by helping others build theirs."*  
-**Version:** 1.0  
-**Date:** June 8, 2026  
+**Version:** 2.0  
+**Date:** August 10, 2026  
 **Owner:** NEO Gents Business Track (Nori)  
-**Status:** Ready for Implementation
+**Status:** Updated for flat-fee affiliate model
 
 ---
 
@@ -19,6 +19,7 @@
 6. [Promotional Assets Checklist](#6-promotional-assets-checklist)
 7. [30-Day Launch Timeline](#7-30-day-launch-timeline)
 8. [Appendix: Financial Model](#appendix-financial-model)
+9. [Related Files](#9-related-files)
 
 ---
 
@@ -57,9 +58,9 @@
 
 | Tier | Name | Qualification | Commission | Bonus Structure | Support Level |
 |------|------|---------------|------------|-----------------|---------------|
-| **Tier 1** | **Founding Affiliate** | First 50 approved affiliates (legacy status) | 20% of first-year revenue | $500 bonus at 5 referrals; $2,000 bonus at 15 referrals | Dedicated Slack channel; monthly 1:1 with Nori |
-| **Tier 2** | **Partner** | 3+ successful referrals OR $500+ in lifetime earnings | 20% of first-year revenue | $250 bonus at 5 referrals; $1,000 bonus at 15 referrals | Priority email support; quarterly strategy call |
-| **Tier 3** | **Ambassador** | 10+ successful referrals OR $2,000+ in lifetime earnings | 20% of first-year revenue + 5% second-year residual | $500 bonus at 10 referrals; $5,000 bonus at 25 referrals; exclusive NEO Gents swag & event invites | White-glove support; co-marketing opportunities; early access to new verticals |
+| **Tier 1** | **Founding Affiliate** | First 50 approved affiliates (legacy status) | $78–$458 per referral, based on plan | $500 bonus at 5 referrals; $2,000 bonus at 15 referrals | Dedicated Slack channel; monthly 1:1 with Nori |
+| **Tier 2** | **Partner** | 3+ successful referrals OR $500+ in lifetime earnings | $78–$458 per referral, based on plan | $250 bonus at 5 referrals; $1,000 bonus at 15 referrals | Priority email support; quarterly strategy call |
+| **Tier 3** | **Ambassador** | 10+ successful referrals OR $2,000+ in lifetime earnings | $78–$458 per referral, based on plan + 5% second-year residual on select programs | $500 bonus at 10 referrals; $5,000 bonus at 25 referrals; exclusive NEO Gents swag & event invites | White-glove support; co-marketing opportunities; early access to new verticals |
 
 ### Tier Progression Rules
 
@@ -75,7 +76,7 @@
 - Highest visibility on affiliate leaderboard
 - Exclusive "Founding Affiliate" badge on all materials
 - Input on new vertical launches (beta access + feedback sessions)
-- Lifetime 20% first-year rate (locked in even if program terms change later)
+- Locked-in commission rates even if program terms change later
 
 #### Partner
 - Access to Partner-only resource library (advanced scripts, case studies)
@@ -94,71 +95,35 @@
 
 ## 3. Commission Structure
 
-### Base Commission: 20% of First-Year Revenue
+### Base Commission: Flat One-Time Payout Per Referral
 
 **How it works:**
-- For every referred client, the affiliate earns **20% of all revenue that client pays in their first 12 months**.
-- This includes: subscription fees, upsells, add-ons, setup fees, and team seat expansions.
-- Commission is calculated on **net revenue** (after payment processing fees, ~2.9%).
+- For every referred business that becomes a paying client, the affiliate earns a **flat one-time commission based on the plan they choose**.
+- Commissions are paid within 30 days of the referred client's first payment.
+- There is no cap on total earnings.
 
-### Commission by Plan
+| Plan | Monthly Price | Affiliate Commission |
+|------|---------------|----------------------|
+| **Starter** | $39/mo | $78 |
+| **Pro** | $79/mo | $190 |
+| **Agency** | $119/mo | $286 |
+| **Custom** | $149/mo + $500 one-time build | $458 |
 
-| Client Plan | Monthly Price | First-Year Revenue | Affiliate Commission (20%) |
-|-------------|---------------|-------------------|---------------------------|
-| **Pro** | $49/mo | $588 | **$117.60** |
-| **Agency** | $97/mo | $1,164 | **$232.80** |
-| **Agency Annual** | $970/yr | $970 | **$194.00** |
-| **Pro + Avatar Upsell** | $49 + $49 = $98/mo | $1,176 | **$235.20** |
-| **Agency + Go Live + Avatar** | $97 + $29 + $49 = $175/mo | $2,100 | **$420.00** |
-| **Trinity White-Glove** | $250/mo | $3,000 | **$600.00** |
-| **Custom Build + Agency** | $500 setup + $97/mo | $1,664 | **$332.80** |
+### Commission Examples
 
-### Milestone Bonuses
+| Referrals This Month | Plan Mix | Commission Earned |
+|----------------------|----------|-------------------|
+| 1 referral | Starter | $78 |
+| 1 referral | Pro | $190 |
+| 1 referral | Agency | $286 |
+| 2 referrals | Agency + Pro | $476 |
+| 5 referrals | all Agency | $1,430 |
 
-| Milestone | Bonus | Cumulative Earnings Example* |
-|-----------|-------|------------------------------|
-| 1st referral | $50 "First Win" bonus | $50 + commission |
-| 5th referral | $250 bonus | $300 + commissions |
-| 10th referral | $500 bonus | $800 + commissions |
-| 15th referral | $1,000 bonus | $1,800 + commissions |
-| 25th referral | $2,500 bonus | $4,300 + commissions |
-| 50th referral | $5,000 bonus + Ambassador tier | $9,300 + commissions |
-| 100th referral | $10,000 bonus + equity consideration | $19,300 + commissions |
+### Ambassador Residual
 
-*Example assumes average commission of $200 per referral.
-
-### Quarterly Performance Multipliers
-
-| Quarterly Referrals | Multiplier | Applied To |
-|---------------------|------------|------------|
-| 3–5 | 1.1× | All commissions that quarter |
-| 6–10 | 1.25× | All commissions that quarter |
-| 11–20 | 1.5× | All commissions that quarter |
-| 21+ | 2.0× | All commissions that quarter |
-
-**Example:** An Ambassador refers 8 clients in Q3. Their base commissions total $1,600. With the 1.25× multiplier, they earn **$2,000** for the quarter.
-
-### Payout Mechanics
-
-| Element | Specification |
-|---------|---------------|
-| **Payout trigger** | 30 days after referred client's first successful payment |
-| **Minimum payout** | $50 |
-| **Payout frequency** | Monthly (on the 15th of each month) |
-| **Payout methods** | Stripe Connect (primary), PayPal (fallback), Bank transfer (US only) |
-| **Currency** | USD |
-| **Tax handling** | 1099-NEC issued for US affiliates earning $600+/year; W-8BEN for international |
-| **Chargeback protection** | If a referred client charges back within 60 days, the commission is clawed back from the affiliate's next payout |
-
-### Cookie & Attribution
-
-| Element | Specification |
-|---------|---------------|
-| **Cookie window** | 60 days |
-| **Attribution model** | Last-click wins |
-| **Cross-device tracking** | Enabled via email hash matching |
-| **Sub-affiliate tracking** | Ambassadors can recruit sub-affiliates (5% override on sub-affiliate earnings) |
-| **Offline referrals** | QR code scans tracked to affiliate; manual attribution available for pre-qualified warm intros |
+- Ambassadors continue to earn **5% of referred-client payments in the second year**.
+- Residual applies to Starter, Pro, and Agency plans only.
+- This is in addition to the flat first-year commission.
 
 ---
 
@@ -281,15 +246,13 @@ Referred client pays invoice
 
 #### 2. Commission Structure
 
-2.1. **Base Commission:** Affiliates earn **20% of net revenue** generated by referred clients in their first 12 months of paid subscription.
+2.1. **Base Commission:** Affiliates earn a **flat one-time commission** based on the plan chosen by the referred client: $78 for Starter, $190 for Pro, $286 for Agency, or $458 for Custom.
 
-2.2. **Net Revenue** means gross payments minus payment processing fees (approximately 2.9%), refunds, chargebacks, and discounts.
+2.2. **Commission is earned** when: (a) the referred user clicks your affiliate link or scans your QR code; (b) signs up for a paid NEO Gents plan within 60 days; and (c) completes their first successful payment.
 
-2.3. **Commission is earned** when: (a) the referred user clicks your affiliate link or scans your QR code; (b) signs up for a paid NEO Gents plan within 60 days; and (c) completes their first successful payment.
+2.3. **Milestone Bonuses** are awarded according to the published bonus schedule and are paid in the same monthly batch as commissions.
 
-2.4. **Milestone Bonuses** are awarded according to the published bonus schedule and are paid in the same monthly batch as commissions.
-
-2.5. **Quarterly Multipliers** apply to all commissions earned within a calendar quarter based on total quarterly referral count.
+2.4. **Ambassador Residual:** Ambassadors earn 5% of referred-client payments during the second year, in addition to the flat first-year commission.
 
 #### 3. Payout Terms
 
@@ -349,7 +312,7 @@ Affiliates may NOT:
 
 9.1. NEO Gents may modify this agreement with 30 days' written notice. Continued participation constitutes acceptance.
 
-9.2. **Founding Affiliates** are grandfathered at their 20% first-year rate for 24 months from program launch, regardless of subsequent term changes.
+9.2. **Founding Affiliates** are grandfathered at their flat-fee commission rates for 24 months from program launch, regardless of subsequent term changes.
 
 #### 10. Governing Law
 

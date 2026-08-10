@@ -3,60 +3,60 @@ outputs = []
 
 [[generated]]
 id = "de_CmJwAigaASd_mR8y7M"
-uri = "file://artifacts/mockup-sandbox/public/images/neo_1.png"
+uri = "file://artifacts/neogents-dashboard-verticals/public/images/neo_1.png"
 type = "image"
 title = "Editorial portrait photography golden hour"
 
 [[generated]]
 id = "z5x8vN-KzuTsAEFibCgD3"
-uri = "file://artifacts/mockup-sandbox/public/images/neo_2.png"
+uri = "file://artifacts/neogents-dashboard-verticals/public/images/neo_2.png"
 type = "image"
 title = "Fashion photography black and white"
 
 [[generated]]
 id = "XaWoIqPd0xJmjydeXQY8G"
-uri = "file://artifacts/mockup-sandbox/public/images/neo_3.png"
+uri = "file://artifacts/neogents-dashboard-verticals/public/images/neo_3.png"
 type = "image"
 title = "Landscape photography blue hour mist"
 
 [[generated]]
 id = "8nfMOhblN_0EnhOjWxURQ"
-uri = "file://artifacts/mockup-sandbox/public/images/neo_4.png"
+uri = "file://artifacts/neogents-dashboard-verticals/public/images/neo_4.png"
 type = "image"
 title = "Cinematic street photography night rain"
 
 [[generated]]
 id = "OWPf2D5mgI9hadUaUsZdP"
-uri = "file://artifacts/mockup-sandbox/public/images/neo_5.png"
+uri = "file://artifacts/neogents-dashboard-verticals/public/images/neo_5.png"
 type = "image"
 title = "Moody still life photography minimal"
 
 [[generated]]
 id = "niWuUB03RLP31-_Iy8U_4"
-uri = "file://artifacts/mockup-sandbox/public/images/neo_6.png"
+uri = "file://artifacts/neogents-dashboard-verticals/public/images/neo_6.png"
 type = "image"
 title = "Abstract architecture photography shadows"
 
 [[generated]]
 id = "1SSVZ_FgusFakq8vgCpTT"
-uri = "file://artifacts/mockup-sandbox/public/images/neo_7.png"
+uri = "file://artifacts/neogents-dashboard-verticals/public/images/neo_7.png"
 type = "image"
 title = "High fashion editorial studio lighting"
 
 [[generated]]
 id = "_mYHyTGwZIGAC9G7s-aLx"
-uri = "file://artifacts/mockup-sandbox/public/images/neo_8.png"
+uri = "file://artifacts/neogents-dashboard-verticals/public/images/neo_8.png"
 type = "image"
 title = "Analog film portrait double exposure"
 
 [[generated]]
 id = "hs2qCBcA6kbmhEWjZsp09"
-uri = "file://artifacts/mockup-sandbox/public/images/neo_9.png"
+uri = "file://artifacts/neogents-dashboard-verticals/public/images/neo_9.png"
 type = "image"
 title = "Minimalist nature photography"
 
 [[generated]]
 id = "641ttgaNuc1EU1ZlG8_qY"
-uri = "file://artifacts/mockup-sandbox/public/images/neo_10.png"
+uri = "file://artifacts/neogents-dashboard-verticals/public/images/neo_10.png"
 type = "image"
 title = "Avant-garde portrait soft focus"

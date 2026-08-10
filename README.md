@@ -4,7 +4,7 @@ Marketing site + vertical dashboards + affiliate system for **neogents.tech**.
 
 ## What’s inside
 
-- `artifacts/mockup-sandbox/` — Vite + React + TypeScript SPA
+- `artifacts/neogents-dashboard-verticals/` — Vite + React + TypeScript SPA
 - `functions/` — Cloudflare Pages Functions (serverless API)
 - `migrations/` — Neon PostgreSQL schema
 - `wrangler.toml` — Pages configuration
@@ -33,7 +33,7 @@ Marketing site + vertical dashboards + affiliate system for **neogents.tech**.
 npm install
 
 # Install SPA dependencies and run the dev server
-cd artifacts/mockup-sandbox
+cd artifacts/neogents-dashboard-verticals
 npm install
 npm run dev          # http://localhost:5173
 ```
@@ -125,7 +125,7 @@ npm run deploy
 Or connect the GitHub repo in the Cloudflare dashboard and use the following Pages build settings:
 
 - **Build command:** `npm run build`
-- **Build output directory:** `artifacts/mockup-sandbox/dist`
+- **Build output directory:** `artifacts/neogents-dashboard-verticals/dist`
 
 Cloudflare will auto-detect `functions/` and deploy the API alongside the static site.
 

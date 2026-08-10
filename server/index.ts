@@ -14,7 +14,7 @@ const app = express();
 const port = process.env.PORT || 3001;
 
 // SPA static files
-const STATIC_DIR = path.join(__dirname, '..', 'artifacts', 'mockup-sandbox', 'dist');
+const STATIC_DIR = path.join(__dirname, '..', 'artifacts', 'neogents-dashboard-verticals', 'dist');
 app.use(express.static(STATIC_DIR));
 
 // Security headers

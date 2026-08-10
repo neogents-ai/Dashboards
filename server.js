@@ -3,7 +3,7 @@ const path = require('path');
 const app = express();
 const PORT = process.env.PORT || 3000;
 
-const DIST = path.join(__dirname, 'artifacts', 'mockup-sandbox', 'dist');
+const DIST = path.join(__dirname, 'artifacts', 'neogents-dashboard-verticals', 'dist');
 
 // Serve static files
 app.use(express.static(DIST));

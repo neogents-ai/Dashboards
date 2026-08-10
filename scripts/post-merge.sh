@@ -1,4 +1,4 @@
 #!/bin/bash
 set -e
 
-cd artifacts/mockup-sandbox && npm install --legacy-peer-deps
+cd artifacts/neogents-dashboard-verticals && npm install --legacy-peer-deps
